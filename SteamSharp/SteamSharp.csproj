@@ -5,7 +5,7 @@
     <MinimumVisualStudioVersion>10.0</MinimumVisualStudioVersion>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{49402e73-477c-48bf-81b3-f2349657869b}</ProjectGuid>
+    <ProjectGuid>{4a4a16ce-92a7-4d2f-9b96-2d6f22a91518}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>SteamSharp</RootNamespace>
