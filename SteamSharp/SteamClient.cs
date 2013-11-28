@@ -77,7 +77,7 @@ namespace SteamSharp {
 				destination = BaseAPIEndpoint;
 
 			IEnumerable<SteamRequestParameter> parameters = null;
-			if( request.Method == HttpMethod.POST || request.Method == HttpMethod.PUT || request.Method == HttpMethod.PATCH ) {
+			if( request.Method == HttpMethod.Post || request.Method == HttpMethod.Put ) {
 				// This conforms to a POST-style request
 				parameters = request.Parameters.Where( p => p.Type == ParameterType.QueryString );
 			} else {
@@ -104,11 +104,9 @@ namespace SteamSharp {
 		/// Constructs the <see cref="HttpWebRequest" /> object which will be used to execute the web request. 
 		/// </summary>
 		/// <param name="request">Request for execution.</param>
-		private HttpWebRequest BuildHttpRequest( ISteamRequest request ) {
+		private HttpRequestMessage BuildHttpRequest( ISteamRequest request ) {
 
-			HttpWebRequest httpRequest = (HttpWebRequest)WebRequest.Create( BuildUri( request ) );
-
-			
+			HttpRequestMessage httpRequest = new HttpRequestMessage( request.Method, BuildUri( request ) );
 
 			return httpRequest;
 

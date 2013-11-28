@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -52,7 +53,7 @@ namespace SteamSharp {
 		/// </summary>
 		/// <param name="resource">Resource to use for this request</param>
 		public SteamRequest( string resource )
-			: this( resource, HttpMethod.GET )
+			: this( resource, HttpMethod.Get )
 		{
 		}
 
@@ -61,7 +62,7 @@ namespace SteamSharp {
 		/// </summary>
 		/// <param name="resource">Resource to use for this request</param>
 		public SteamRequest( Uri resource )
-			: this( resource, HttpMethod.GET )
+			: this( resource, HttpMethod.Get )
 		{
 		}
 
