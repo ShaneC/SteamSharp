@@ -10,7 +10,7 @@ SteamSharp uses the uUnit tool for execution and evaluation of the test cases co
 
 Quick set up:
 
-* Add the xUnit reference to the SteamSharp.TestFramework project in Visual Studio. NuGet is the easiest way of accomplishing this
+* Add the xUnit reference to `SteamSharp.TestFramework` in Visual Studio (NuGet is an easy way of accomplishing this)
 * Download the xUnit files [here](http://xunit.codeplex.com/releases/view/90058). Be sure to use `xunit.gui.clr4.exe`
 
 Useful resources:
