@@ -13,12 +13,8 @@ namespace SteamSharp {
 		/// <summary>
 		/// Steam API endpoint. This could be subject to change and thus needs to be overrideable.
 		/// </summary>
-		private static string _apiEndpoint = "https://api.steampowered.com/";
-
-		/// <summary>
-		/// Public accessor for the _apiEndpoint variable. Sets the Steam API endpoint.
-		/// </summary>
-		public static string BaseAPIEndpoint {
+		private static string _apiEndpoint = "https://api.steampowered.com";
+		public string BaseAPIEndpoint {
 			get { return _apiEndpoint; }
 			set { _apiEndpoint = value; }
 		}
@@ -48,10 +44,22 @@ namespace SteamSharp {
 			}
 		}
 
+		/// <summary>
+		/// Helper method which creates the final Uri used in the HTTP request.
+		/// </summary>
+		/// <param name="request">Request for execution.</param>
+		/// <returns>Well formed Uri for use in an <see cref="HTTPWebRequest"/>.</returns>
 		public Uri BuildUri( ISteamRequest request ) {
 
 			string destination = request.Resource;
-			
+
+			// Add trailing slash if none exists
+			if( !BaseAPIEndpoint.EndsWith( "/" ) )
+				BaseAPIEndpoint = BaseAPIEndpoint + "/";
+
+			if( !Uri.IsWellFormedUriString( BaseAPIEndpoint, UriKind.RelativeOrAbsolute ) )
+				throw new FormatException( "BaseAPIEndpoint specified does not conform to a valid Uri format. BaseAPIEndpoint specified: " + BaseAPIEndpoint );
+
 			// URL Segement replacement is only valid if the Resource URI is non-empty
 			if( !String.IsNullOrEmpty( destination ) ) {
 
@@ -63,11 +71,10 @@ namespace SteamSharp {
 				foreach( SteamRequestParameter p in urlParams )
 					destination = destination.Replace( "{" + p.Name + "}", p.Value.ToString() );
 
-				destination = BaseAPIEndpoint + "/" + destination;
+				destination = BaseAPIEndpoint + destination;
 
 			} else
 				destination = BaseAPIEndpoint;
-
 
 			IEnumerable<SteamRequestParameter> parameters = null;
 			if( request.Method == HttpMethod.POST || request.Method == HttpMethod.PUT || request.Method == HttpMethod.PATCH ) {
@@ -93,6 +100,20 @@ namespace SteamSharp {
 
 		}
 
+		/// <summary>
+		/// Constructs the <see cref="HttpWebRequest" /> object which will be used to execute the web request. 
+		/// </summary>
+		/// <param name="request">Request for execution.</param>
+		private HttpWebRequest BuildHttpRequest( ISteamRequest request ) {
+
+			HttpWebRequest httpRequest = (HttpWebRequest)WebRequest.Create( BuildUri( request ) );
+
+			
+
+			return httpRequest;
+
+		}
+
 		private SteamResponse ConvertToResponse( ISteamRequest request, HttpResponseMessage response ) {
 
 
@@ -101,11 +122,6 @@ namespace SteamSharp {
 			return steamResponse;
 
 		}
-
-		/// <summary>
-		/// Object containing the HTTP Request used to query the Steam API.
-		/// </summary>
-		public HttpWebRequest HttpRequest = null;
 
 		/// <summary>
 		/// Pulls the current version of SteamSharp. This is the recommended way in .NET 4.5+.

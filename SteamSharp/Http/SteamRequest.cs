@@ -37,24 +37,23 @@ namespace SteamSharp {
 		public int Timeout { get; set; }
 
 		/// <summary>
+		/// Initializes SteamRequest with the targeted resource URL and the HTTP Method for the request.
+		/// </summary>
+		/// <param name="resource">Resource to use for this request</param>
+		/// <param name="method">HTTP Method to use for this request</param>
+		public SteamRequest( string resource, HttpMethod method ) {
+			Parameters = new List<SteamRequestParameter>(); 
+			Resource = resource;
+			Method = method;
+		}
+
+		/// <summary>
 		/// Initializes SteamRequest with the targeted resource URL.
 		/// </summary>
 		/// <param name="resource">Resource to use for this request</param>
 		public SteamRequest( string resource )
 			: this( resource, HttpMethod.GET )
 		{
-			Resource = resource;
-		}
-
-		/// <summary>
-		/// Initializes SteamRequest with the targeted resource URL and the HTTP Method for the request.
-		/// </summary>
-		/// <param name="resource">Resource to use for this request</param>
-		/// <param name="method">HTTP Method to use for this request</param>
-		public SteamRequest( string resource, HttpMethod method )
-			: this( resource ) 
-		{
-			Method = method;
 		}
 
 		/// <summary>
