@@ -2,7 +2,7 @@
 
 ## 1.0.0.0
 
-* This is the release currently in development
+This is the release currently in development
 
 ### Feature Set
 
