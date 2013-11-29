@@ -92,7 +92,7 @@ namespace SteamSharp {
 		/// <param name="name">Name of the segement to register.</param>
 		/// <param name="value">Value to replace the named segement with.</param>
 		/// <returns>This request.</returns>
-		public ISteamRequest AddUrlSegement( string name, string value ) {
+		public ISteamRequest AddUrlSegment( string name, string value ) {
 			return AddParameter( name, value, ParameterType.UrlSegment );
 		}
 

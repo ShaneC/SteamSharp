@@ -45,7 +45,7 @@ namespace SteamSharp {
 		/// <param name="name">Name of the segement to register.</param>
 		/// <param name="value">Value to replace the named segement with.</param>
 		/// <returns>This request.</returns>
-		ISteamRequest AddUrlSegement( string name, string value );
+		ISteamRequest AddUrlSegment( string name, string value );
 
 		/// <summary>
 		/// Adds an custom HTTP Header to the request.

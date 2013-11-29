@@ -107,6 +107,41 @@ namespace SteamSharp.TestFramework {
 
 		}
 
+
+		[Fact]
+		public void GET_With_Resource_Containing_Tokens() {
+
+			var request = new SteamRequest( "resource/{foo}" );
+			request.AddUrlSegment( "foo", "bar" );
+
+			var client = new SteamClient {
+				BaseAPIEndpoint = "http://steamapiurl.com/"
+			};
+
+			var expected = new Uri( "http://steamapiurl.com/resource/bar" );
+			var output = client.BuildUri( request );
+
+			Assert.Equal( expected, output );
+
+		}
+
+		[Fact]
+		public void POST_With_Resource_Containing_Tokens() {
+			
+			var request = new SteamRequest( "resource/{foo}", HttpMethod.Post );
+			request.AddUrlSegment( "foo", "bar" );
+
+			var client = new SteamClient {
+				BaseAPIEndpoint = "http://steamapiurl.com/"
+			};
+
+			var expected = new Uri( "http://steamapiurl.com/resource/bar" );
+			var output = client.BuildUri( request );
+
+			Assert.Equal( expected, output );
+
+		}
+
 	}
 
 }

@@ -31,7 +31,6 @@ namespace SteamSharp.TestFramework {
 			};
 
 			client.Timeout = 1;
-
 			SteamRequest request = new SteamRequest( "/resource" );
 			var response = client.Execute( request );
 
@@ -47,16 +46,12 @@ namespace SteamSharp.TestFramework {
 			};
 
 			SteamRequest request = new SteamRequest( "/resource" );
-			
 			request.Timeout = 1;
-
 			var response = client.Execute( request );
 
 			Assert.Equal( ResponseStatus.TimedOut, response.ResponseStatus );
 
 		}
-
-
 
 	}
 
