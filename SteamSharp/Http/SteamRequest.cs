@@ -38,6 +38,33 @@ namespace SteamSharp {
 		public int Timeout { get; set; }
 
 		/// <summary>
+		/// Steam API Interface to access (i.e. ISteamNews)
+		/// </summary>
+		private SteamInterface _steamInterface = SteamInterface.Unknown;
+		public SteamInterface SteamInterface { 
+			get { return _steamInterface; }
+			private set { _steamInterface = value; }
+		}
+
+		/// <summary>
+		/// Method within the Steam API to use (i.e. GetNewsForApp)
+		/// </summary>
+		private string _steamApiMethod = null;
+		public string SteamApiMethod {
+			get { return _steamApiMethod; }
+			private set { _steamApiMethod = value; }
+		}
+
+		/// <summary>
+		/// Version of the API being requested (i.e. v0001)
+		/// </summary>
+		private SteamMethodVersion _steamMethodVersion = SteamMethodVersion.Unknown;
+		public SteamMethodVersion SteamMethodVersion {
+			get { return _steamMethodVersion; }
+			private set { _steamMethodVersion = value; }
+		}
+
+		/// <summary>
 		/// Initializes SteamRequest with the targeted resource URL and the HTTP Method for the request.
 		/// </summary>
 		/// <param name="resource">Resource to use for this request</param>
@@ -82,7 +109,8 @@ namespace SteamSharp {
 		/// <param name="steamApi">Method within the Steam API to use (i.e. GetNewsForApp)</param>
 		/// <param name="version">Version of the API being requested (i.e. v0001)</param>
 		public SteamRequest( SteamInterface steamInterface, string steamApi, SteamMethodVersion version )
-			: this( steamInterface, steamApi, version, HttpMethod.Get ) {
+			: this( steamInterface, steamApi, version, HttpMethod.Get )
+		{
 		}
 
 		/// <summary>
@@ -95,6 +123,9 @@ namespace SteamSharp {
 		public SteamRequest( SteamInterface steamInterface, string steamApi, SteamMethodVersion version, HttpMethod method )
 			: this( ( Enum.GetName( typeof( SteamInterface ), steamInterface ) + "/" + steamApi + "/" + Enum.GetName( typeof( SteamMethodVersion ), version ) ), method )
 		{
+			SteamInterface = steamInterface;
+			SteamApiMethod = steamApi;
+			SteamMethodVersion = version;
 		}
 
 		/// <summary>

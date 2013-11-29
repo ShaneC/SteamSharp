@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -148,7 +149,7 @@ namespace SteamSharp {
 				HttpContent content = new StringContent( body.ToString() );
 				content.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse( "application/json" );
 				httpRequest.Content = content;
-			}
+			} 
 
 			return httpRequest;
 
@@ -198,8 +199,10 @@ namespace SteamSharp {
 				Request = request,
 				ResponseStatus = SteamSharp.ResponseStatus.Completed,
 				StatusCode = response.StatusCode,
-				Content = response.Content.ReadAsStringAsync().Result
 			};
+
+			StreamReader stream = new StreamReader( response.Content.ReadAsStreamAsync().Result, System.Text.Encoding.UTF8 );
+			steamResponse.Content = stream.ReadToEnd();
 
 			return steamResponse;
 

@@ -25,6 +25,7 @@ namespace SteamSharp {
 
 				HttpResponseMessage response;
 				try {
+					request.IncreaseNumAttempts();
 					response = await httpClient.SendAsync( httpRequest );
 				}catch( Exception ex ) {
 					if( ex.InnerException != null && ex.InnerException is WebException )

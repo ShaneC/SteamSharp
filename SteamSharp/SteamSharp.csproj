@@ -39,6 +39,7 @@
     <Compile Include="Constants.cs" />
     <Compile Include="Http\ISteamRequest.cs" />
     <Compile Include="Http\ISteamResponse.cs" />
+    <Compile Include="SteamInterfaces\SteamNews.cs" />
     <Compile Include="Http\SteamRequestParameter.cs" />
     <Compile Include="SteamClient.Sync.cs" />
     <Compile Include="SteamClient.Async.cs" />

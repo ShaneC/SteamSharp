@@ -33,6 +33,20 @@ namespace SteamSharp {
 		int Timeout { get; set; }
 
 		/// <summary>
+		/// Steam API Interface to access (i.e. ISteamNews)
+		/// </summary>
+		SteamInterface SteamInterface { get; }
+
+		/// <summary>
+		/// Method within the Steam API to use (i.e. GetNewsForApp)
+		/// </summary>
+		string SteamApiMethod { get; }
+		/// <summary>
+		/// Version of the API being requested (i.e. v0001)
+		/// </summary>
+		SteamMethodVersion SteamMethodVersion { get; }
+
+		/// <summary>
 		/// Serializes object obj into JSON, which is then used as the Body of the HTTP request.
 		/// </summary>
 		/// <param name="obj">Object to be serialized and used as the Body of the HTTP request.</param>

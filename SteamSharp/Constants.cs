@@ -10,6 +10,7 @@ namespace SteamSharp {
 	/// Available Steam Web APIs
 	/// </summary>
 	public enum SteamInterface {
+		Unknown,
 		ISteamNews,
 		ISteamUserStats,
 		ISteamUser
@@ -19,6 +20,7 @@ namespace SteamSharp {
 	/// Possible values for API version. NOTE: Not all APIs contain all versions listed.
 	/// </summary>
 	public enum SteamMethodVersion {
+		Unknown,
 		v0001,
 		v0002,
 		v0003,
