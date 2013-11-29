@@ -52,7 +52,11 @@ namespace SteamSharp {
 		}
 
 		public SteamClient() {
-			DefaultParameters = new List<SteamRequestParameter>();
+
+			DefaultParameters = new List<SteamRequestParameter> {
+				new SteamRequestParameter { Name = "format", Value = "json", Type = ParameterType.GetOrPost }
+			};
+
 		}
 
 		/// <summary>
@@ -190,7 +194,11 @@ namespace SteamSharp {
 		private SteamResponse ConvertToResponse( ISteamRequest request, HttpResponseMessage response ) {
 
 			SteamResponse steamResponse = new SteamResponse {
-				HttpResponse = response
+				HttpResponse = response,
+				Request = request,
+				ResponseStatus = SteamSharp.ResponseStatus.Completed,
+				StatusCode = response.StatusCode,
+				Content = response.Content.ReadAsStringAsync().Result
 			};
 
 			return steamResponse;

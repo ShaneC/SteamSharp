@@ -40,6 +40,11 @@ namespace SteamSharp {
 		/// </summary>
 		HttpStatusCode StatusCode { get; set; }
 
+		/// <summary>
+		/// Response content
+		/// </summary>
+		string Content { get; set; }
+
 	}
 
 }

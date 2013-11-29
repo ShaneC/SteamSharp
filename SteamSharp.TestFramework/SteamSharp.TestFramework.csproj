@@ -46,7 +46,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ProfileTests.cs" />
+    <Compile Include="ISteamNews.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RequestExecution.cs" />
     <Compile Include="ResourceConstants.cs" />

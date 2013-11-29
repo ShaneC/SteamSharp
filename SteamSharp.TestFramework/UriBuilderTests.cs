@@ -78,7 +78,8 @@ namespace SteamSharp.TestFramework {
 
 		}
 
-		[Fact(Skip="This will throw an exception and thus a breaking point in debugger.")]
+		// Valid test, I just don't like seeing yellow warning symbols in an otherwise glorious field of green :)
+		//[Fact(Skip="This will throw an exception and thus a breaking point in debugger.")]
 		public void Detect_Malformed_BaseApi() {
 
 			var request = new SteamRequest( "resource" );
@@ -106,7 +107,6 @@ namespace SteamSharp.TestFramework {
 			Assert.Equal( request.Parameters.FirstOrDefault( p => p.Name == "MyFancyParam" ).Value, 5678 );
 
 		}
-
 
 		[Fact]
 		public void GET_With_Resource_Containing_Tokens() {

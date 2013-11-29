@@ -76,6 +76,28 @@ namespace SteamSharp {
 		}
 
 		/// <summary>
+		/// Initializes SteamRequest with a GET resource constructed via the Steam Interface, Steam API Method, and Steam API Version
+		/// </summary>
+		/// <param name="steamInterface">Steam API Interface to access (i.e. ISteamNews)</param>
+		/// <param name="steamApi">Method within the Steam API to use (i.e. GetNewsForApp)</param>
+		/// <param name="version">Version of the API being requested (i.e. v0001)</param>
+		public SteamRequest( SteamInterface steamInterface, string steamApi, SteamMethodVersion version )
+			: this( steamInterface, steamApi, version, HttpMethod.Get ) {
+		}
+
+		/// <summary>
+		/// Initializes SteamRequest with a resource constructed via the Steam Interface, Steam API Method, and Steam API Version
+		/// </summary>
+		/// <param name="steamInterface">Steam API Interface to access (i.e. ISteamNews)</param>
+		/// <param name="steamApi">Method within the Steam API to use (i.e. GetNewsForApp)</param>
+		/// <param name="version">Version of the API being requested (i.e. v0001)</param>
+		/// <param name="method">HTTP Method to use for this request</param>
+		public SteamRequest( SteamInterface steamInterface, string steamApi, SteamMethodVersion version, HttpMethod method )
+			: this( ( Enum.GetName( typeof( SteamInterface ), steamInterface ) + "/" + steamApi + "/" + Enum.GetName( typeof( SteamMethodVersion ), version ) ), method )
+		{
+		}
+
+		/// <summary>
 		/// Serializes object into JSON which is then used as the Body of the HTTP request.
 		/// If the request body had already been set, then the body is overwritten with the new value.
 		/// </summary>

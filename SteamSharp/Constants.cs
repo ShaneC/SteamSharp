@@ -7,6 +7,31 @@ using System.Threading.Tasks;
 namespace SteamSharp {
 
 	/// <summary>
+	/// Available Steam Web APIs
+	/// </summary>
+	public enum SteamInterface {
+		ISteamNews,
+		ISteamUserStats,
+		ISteamUser
+	}
+
+	/// <summary>
+	/// Possible values for API version. NOTE: Not all APIs contain all versions listed.
+	/// </summary>
+	public enum SteamMethodVersion {
+		v0001,
+		v0002,
+		v0003,
+		v0004,
+		v0005,
+		v0006,
+		v0007,
+		v0008,
+		v0009,
+		v0010
+	}
+
+	/// <summary>
 	/// HTTP Response States
 	/// </summary>
 	public enum ResponseStatus {
