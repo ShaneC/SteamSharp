@@ -19,5 +19,5 @@ Useful resources:
 
 ## Notable Packages
 
-* Much of the Rest access layer (including portions of the Client, Request, and Response components) are forked from [RestSharp](https://github.com/restsharp/RestSharp)
+* Much of the Rest access layer (including portions of the Client, Request, and Response components) is either forked from or inspired by [RestSharp](https://github.com/restsharp/RestSharp)
 * SteamSharp uses [NewtonSoft's Json.NET](https://github.com/JamesNK/Newtonsoft.Json) for JSON deserialization
