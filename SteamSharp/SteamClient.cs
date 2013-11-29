@@ -130,10 +130,7 @@ namespace SteamSharp {
 				request.Parameters.Add( new SteamRequestParameter { Name = "User-Agent", Value = "SteamSharp/" + AssemblyVersion, Type = ParameterType.HttpHeader } );
 
 			// Currently we only accept and deserialize JSON responses
-			//httpRequest.Headers.Accept. = "application/json";
-
-			//request.Parameters.Add( new SteamRequestParameter { Name = "Accept", Value = "application/json", Type = ParameterType.HttpHeader } );
-			//request.Parameters.Add( new SteamRequestParameter { Name = "Content-Type", Value = "application/json", Type = ParameterType.HttpHeader } );
+			request.Parameters.Add( new SteamRequestParameter { Name = "Accept", Value = "application/json", Type = ParameterType.HttpHeader } );
 
 			IEnumerable<SteamRequestParameter> headers = request.Parameters.Where( p => p.Type == ParameterType.HttpHeader );
 			foreach( var header in headers ) {
@@ -144,7 +141,9 @@ namespace SteamSharp {
 
 			var body = request.Parameters.FirstOrDefault( p => p.Type == ParameterType.RequestBody );
 			if( body != null ) {
-				httpRequest.Content = new StringContent( body.ToString() );
+				HttpContent content = new StringContent( body.ToString() );
+				content.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse( "application/json" );
+				httpRequest.Content = content;
 			}
 
 			return httpRequest;
