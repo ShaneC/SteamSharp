@@ -5,6 +5,7 @@ using System.Net;
 using System.Net.Http;
 using System.Reflection;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace SteamSharp {
 
@@ -29,6 +30,12 @@ namespace SteamSharp {
 		}
 
 		/// <summary>
+		/// Parameters that should be included with every request executed via this instance
+		/// If specified in both the client and request, the request's parameter is used.
+		/// </summary>
+		public List<SteamRequestParameter> DefaultParameters { get; private set; }
+
+		/// <summary>
 		/// Authenticator to use for requests made by this client instance.
 		/// </summary>
 		public ISteamAuthenticator Authenticator { get; set; }
@@ -42,6 +49,10 @@ namespace SteamSharp {
 			if( Authenticator != null ) {
 				Authenticator.Authenticate( client, request );
 			}
+		}
+
+		public SteamClient() {
+			DefaultParameters = new List<SteamRequestParameter>();
 		}
 
 		/// <summary>
@@ -106,16 +117,82 @@ namespace SteamSharp {
 		/// <param name="request">Request for execution.</param>
 		private HttpRequestMessage BuildHttpRequest( ISteamRequest request ) {
 
+			// Add any Default client parameters (if it exists in the request, the request wins)
+			foreach( var param in DefaultParameters ) {
+				if( !request.Parameters.Any( p => p.Name == param.Name && p.Type == param.Type ) )
+					request.AddParameter( param );
+			}
+
 			HttpRequestMessage httpRequest = new HttpRequestMessage( request.Method, BuildUri( request ) );
+
+			// Add UserAgent header, if it does not already exist in both the request and the standard request message (shouldn't overwrite valuable system/platform data)
+			if( !request.Parameters.Any( p => p.Name == "User-Agent" && p.Type == ParameterType.HttpHeader ) && !httpRequest.Headers.Any( h => h.Key == "User-Agent" ) )
+				request.Parameters.Add( new SteamRequestParameter { Name = "User-Agent", Value = "SteamSharp/" + AssemblyVersion, Type = ParameterType.HttpHeader } );
+
+			// Currently we only accept and deserialize JSON responses
+			//httpRequest.Headers.Accept. = "application/json";
+
+			//request.Parameters.Add( new SteamRequestParameter { Name = "Accept", Value = "application/json", Type = ParameterType.HttpHeader } );
+			//request.Parameters.Add( new SteamRequestParameter { Name = "Content-Type", Value = "application/json", Type = ParameterType.HttpHeader } );
+
+			IEnumerable<SteamRequestParameter> headers = request.Parameters.Where( p => p.Type == ParameterType.HttpHeader );
+			foreach( var header in headers ) {
+				if( httpRequest.Headers.Contains( header.Name ) )
+					httpRequest.Headers.Remove( header.Name );
+				httpRequest.Headers.Add( header.Name, header.Value.ToString() );
+			}
+
+			var body = request.Parameters.FirstOrDefault( p => p.Type == ParameterType.RequestBody );
+			if( body != null ) {
+				httpRequest.Content = new StringContent( body.ToString() );
+			}
 
 			return httpRequest;
 
 		}
 
+		private SteamResponse CreateErrorResponse( ISteamRequest request, Exception ex ) {
+
+			SteamResponse response = new SteamResponse();
+			response.Request = request;
+
+			response.ErrorMessage = ex.Message;
+
+			if( ex is WebException ) {
+
+				var webException = ex as WebException;
+				if( webException != null ) {
+
+					if( webException.Status == WebExceptionStatus.RequestCanceled )
+						response.ResponseStatus = ResponseStatus.Aborted;
+					else
+						response.ResponseStatus = ResponseStatus.Error;
+
+					response.ErrorException = ex;
+
+					return response;
+				}
+
+			} else if( ex is TaskCanceledException ) {
+
+				response.ErrorMessage = "The request timed out.";
+				response.ResponseStatus = ResponseStatus.TimedOut;
+				return response;
+
+			}
+
+			response.ErrorException = ex;
+			response.ResponseStatus = ResponseStatus.Error;
+
+			return response;
+
+		}
+
 		private SteamResponse ConvertToResponse( ISteamRequest request, HttpResponseMessage response ) {
 
-
-			SteamResponse steamResponse = new SteamResponse();
+			SteamResponse steamResponse = new SteamResponse {
+				HttpResponse = response
+			};
 
 			return steamResponse;
 

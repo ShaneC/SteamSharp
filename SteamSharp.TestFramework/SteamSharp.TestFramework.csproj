@@ -48,7 +48,7 @@
   <ItemGroup>
     <Compile Include="ProfileTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RequestFormation.cs" />
+    <Compile Include="RequestExecution.cs" />
     <Compile Include="ResourceConstants.cs" />
     <Compile Include="UriBuilderTests.cs" />
   </ItemGroup>

@@ -76,16 +76,18 @@ namespace SteamSharp {
 		}
 
 		/// <summary>
-		/// Serializes object obj into JSON, which is then used as the Body of the HTTP request.
+		/// Serializes object into JSON which is then used as the Body of the HTTP request.
+		/// If the request body had already been set, then the body is overwritten with the new value.
 		/// </summary>
 		/// <param name="obj">Object to be serialized and used as the Body of the HTTP request.</param>
 		/// <returns>This request</returns>
 		public ISteamRequest AddBody( object obj ) {
-			return AddParameter( "application/json", JsonConvert.SerializeObject( obj ), ParameterType.RequestBody );
+			return AddParameter( "RequestBody", JsonConvert.SerializeObject( obj ), ParameterType.RequestBody );
 		}
 
 		/// <summary>
 		/// Registers a URL Segement with the request. This will replace {name} with value in the specified Resource.
+		/// Updates value if segement already exists.
 		/// </summary>
 		/// <param name="name">Name of the segement to register.</param>
 		/// <param name="value">Value to replace the named segement with.</param>
@@ -95,7 +97,7 @@ namespace SteamSharp {
 		}
 
 		/// <summary>
-		/// Adds an custom HTTP Header to the request.
+		/// Adds an custom HTTP Header to the request. Updates value if header already exists.
 		/// </summary>
 		/// <param name="name">The name of the header (i.e. X-CustomHeader)</param>
 		/// <param name="value">The value of the custom header</param>
@@ -105,7 +107,7 @@ namespace SteamSharp {
 		}
 
 		/// <summary>
-		/// Adds a parameter to the request.
+		/// Adds a parameter to the request. Updates value if parameter already exists.
 		/// </summary>
 		/// <param name="name">Name of the parameter</param>
 		/// <param name="value">Value of the parameter</param>
@@ -115,15 +117,39 @@ namespace SteamSharp {
 		}
 
 		/// <summary>
-		/// Adds a parameter to the request. 
+		/// Adds a parameter to the request. Updates value if parameter already exists.
 		/// </summary>
 		/// <param name="name">Name of the parameter</param>
 		/// <param name="value">Value of the parameter</param>
 		/// <param name="type">The type of the parameter</param>
 		/// <returns>This request</returns>
 		public ISteamRequest AddParameter( string name, object value, ParameterType type ) {
+			
+			// If a parameter with this name and type already exists, delete it so we can add the newer version
+			// (There's a tradeoff here, going from O(1) to O(n), but it saves headaches when not getting expected behavior
+			// because the Steam endpoint is evaluating two of the same parameter)
+			Parameters.RemoveAll( p => p.Name == name && p.Type == type );
+
 			Parameters.Add( new SteamRequestParameter { Name = name, Value = value, Type = type } );
 			return this;
+
+		}
+
+		/// <summary>
+		/// Adds a parameter to the request.
+		/// </summary>
+		/// <param name="param"><see cref="SteamRequestParameter"/> to add to the request.</param>
+		/// <returns>This request</returns>
+		public ISteamRequest AddParameter( SteamRequestParameter param ) {
+
+			// If a parameter with this name and type already exists, delete it so we can add the newer version
+			// (There's a tradeoff here, going from O(1) to O(n), but it saves headaches when not getting expected behavior
+			// because the Steam endpoint is evaluating two of the same parameter)
+			Parameters.RemoveAll( p => p.Name == param.Name && p.Type == param.Type );
+
+			Parameters.Add( param );
+			return this;
+
 		}
 
 		/// <summary>

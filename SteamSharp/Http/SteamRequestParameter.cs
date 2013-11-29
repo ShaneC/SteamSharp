@@ -24,7 +24,7 @@ namespace SteamSharp {
 		public ParameterType Type { get; set; }
 
 		/// <summary>
-		/// Return a human-readable representation of this parameter
+		/// Return a query-string formatted representation of this parameter
 		/// </summary>
 		/// <returns>String</returns>
 		public override string ToString() {

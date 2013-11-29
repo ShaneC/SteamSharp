@@ -58,6 +58,13 @@ namespace SteamSharp {
 		/// <summary>
 		/// Adds a parameter to the request.
 		/// </summary>
+		/// <param name="param"><see cref="SteamRequestParameter"/> to add to the request.</param>
+		/// <returns>This request</returns>
+		ISteamRequest AddParameter( SteamRequestParameter param );
+
+		/// <summary>
+		/// Adds a parameter to the request.
+		/// </summary>
 		/// <param name="name">Name of the parameter</param>
 		/// <param name="value">Value of the parameter</param>
 		/// <returns>This request</returns>
