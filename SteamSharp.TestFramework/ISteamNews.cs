@@ -45,7 +45,9 @@ namespace SteamSharp.TestFramework {
 		[Fact]
 		public void GET_GetNewsForApp_ByClass() {
 
-			var response = SteamNews.GetNewsForApp( 440, 2, 100 );
+			SteamClient client = new SteamClient();
+
+			var response = SteamNews.GetNewsForApp( client, 440, 2, 100 );
 
 			Assert.NotNull( response );
 			Assert.IsType<SteamNews.AppNews>( response );

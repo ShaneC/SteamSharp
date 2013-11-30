@@ -7,7 +7,8 @@ using System.Threading.Tasks;
 namespace SteamSharp {
 
 	public class SteamRequestException : Exception {
-	
+
+		public bool IsDeserializationIssue { get; private set; }
 	
 	}
 

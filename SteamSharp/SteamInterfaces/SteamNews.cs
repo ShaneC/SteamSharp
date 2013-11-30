@@ -16,33 +16,31 @@ namespace SteamSharp {
 		/// <summary>
 		/// Returns the latest of a game specified by its AppID.
 		/// </summary>
+		/// <param name="client">(optional) <see cref="SteamClient"/> instance to use.</param>
 		/// <param name="appID">AppID of the game you want the news of.</param>
 		/// <param name="count">How many news enties you want to get returned.</param>
 		/// <param name="maxLength">Maximum length of each news entry.</param>
-		/// <param name="client">(optional) <see cref="SteamClient"/> instance to use. If none specified, a new instance will be created.</param>
 		/// <returns></returns>
-		public static AppNews GetNewsForApp( int appID, int count, int maxLength, SteamClient client = null ) {
-			return GetNewsForAppAsync( appID, count, maxLength, client ).Result;
+		public static AppNews GetNewsForApp( SteamClient client, int appID, int count, int maxLength ) {
+			return GetNewsForAppAsync( client, appID, count, maxLength ).Result;
 		}
 
 		/// <summary>
 		/// Asynchronously returns the latest of a game specified by its AppID.
 		/// </summary>
+		/// <param name="client">(optional) <see cref="SteamClient"/> instance to use.</param>
 		/// <param name="appID">AppID of the game you want the news of.</param>
 		/// <param name="count">How many news enties you want to get returned.</param>
 		/// <param name="maxLength">Maximum length of each news entry.</param>
-		/// <param name="client">(optional) <see cref="SteamClient"/> instance to use. If none specified, a new instance will be created.</param>
 		/// <returns></returns>
-		public async static Task<AppNews> GetNewsForAppAsync( int appID, int count, int maxLength, SteamClient client = null ) {
+		public async static Task<AppNews> GetNewsForAppAsync( SteamClient client, int appID, int count, int maxLength ) {
 
 			SteamRequest request = new SteamRequest( SteamInterface.ISteamNews, "GetNewsForApp", SteamMethodVersion.v0002 );
 			request.AddParameter( "appid", appID );
 			request.AddParameter( "count", count );
 			request.AddParameter( "maxlength", maxLength );
 
-			var steamClient = ( client == null ) ? new SteamClient() : client;
-
-			AppNewsResponse responseObj = JsonConvert.DeserializeObject<AppNewsResponse>( ( await steamClient.ExecuteAsync( request ) ).Content );
+			AppNewsResponse responseObj = JsonConvert.DeserializeObject<AppNewsResponse>( ( await client.ExecuteAsync( request ) ).Content );
 
 			return responseObj.appnews;
 
