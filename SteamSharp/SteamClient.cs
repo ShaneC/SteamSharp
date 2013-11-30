@@ -144,6 +144,8 @@ namespace SteamSharp {
 				httpRequest.Headers.Add( header.Name, header.Value.ToString() );
 			}
 
+
+
 			var body = request.Parameters.FirstOrDefault( p => p.Type == ParameterType.RequestBody );
 			if( body != null ) {
 				HttpContent content = new StringContent( body.ToString() );

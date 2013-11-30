@@ -16,7 +16,7 @@ namespace SteamSharp {
 		/// <param name="request"><see cref="ISteamRequest"/> object for execution.</param>
 		/// <returns><see cref="ISteamResponse object"/> containing the result of the request.</returns>
 		public async Task<ISteamResponse> ExecuteAsync( ISteamRequest request ) {
-
+			
 			HttpRequestMessage httpRequest = BuildHttpRequest( request );
 
 			using( var httpClient = new HttpClient() ){
