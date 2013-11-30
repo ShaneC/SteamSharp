@@ -9,7 +9,7 @@ namespace SteamSharp {
 
 	public abstract class SteamInterface {
 
-		public static T VerifyAndDeserialize<T>( ISteamResponse response ) {
+		protected static T VerifyAndDeserialize<T>( ISteamResponse response ) {
 
 			if( !response.IsSuccessful )
 				throw new SteamRequestException( "The HTTP request to Steam was not successful.", response );

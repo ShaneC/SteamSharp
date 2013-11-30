@@ -1,5 +1,5 @@
 ﻿
-namespace SteamSharp {
+namespace SteamSharp.Authenticators {
 
 	public interface ISteamAuthenticator {
 

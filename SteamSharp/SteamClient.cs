@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SteamSharp.Authenticators;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -143,8 +144,6 @@ namespace SteamSharp {
 					httpRequest.Headers.Remove( header.Name );
 				httpRequest.Headers.Add( header.Name, header.Value.ToString() );
 			}
-
-
 
 			var body = request.Parameters.FirstOrDefault( p => p.Type == ParameterType.RequestBody );
 			if( body != null ) {

@@ -67,7 +67,6 @@ namespace SteamSharp {
 				if( response.ErrorException != null )
 					InnerException = response.ErrorException;
 
-
 			}
 			
 		}
