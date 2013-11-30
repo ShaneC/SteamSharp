@@ -41,6 +41,16 @@ namespace SteamSharp {
 		HttpStatusCode StatusCode { get; set; }
 
 		/// <summary>
+		/// HTTP response status description
+		/// </summary>
+		string StatusDescription { get; set; }
+
+		/// <summary>
+		/// Indicates whether or not the response was a success.
+		/// </summary>
+		bool IsSuccessful { get; set;  }
+
+		/// <summary>
 		/// Response content
 		/// </summary>
 		string Content { get; set; }

@@ -23,17 +23,14 @@ namespace SteamSharp {
 
 				httpClient.Timeout = TimeSpan.FromMilliseconds( ( ( request.Timeout > 0 ) ? request.Timeout : this.Timeout ) );
 
-				HttpResponseMessage response;
 				try {
 					request.IncreaseNumAttempts();
-					response = await httpClient.SendAsync( httpRequest );
+					return ConvertToResponse( request, await httpClient.SendAsync( httpRequest ) );
 				}catch( Exception ex ) {
 					if( ex.InnerException != null && ex.InnerException is WebException )
 						return CreateErrorResponse( request, ex.InnerException );
 					return CreateErrorResponse( request, ex );
 				}
-
-				return ConvertToResponse( request, response );
 
 			}
 

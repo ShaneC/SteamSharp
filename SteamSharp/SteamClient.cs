@@ -199,6 +199,8 @@ namespace SteamSharp {
 				Request = request,
 				ResponseStatus = SteamSharp.ResponseStatus.Completed,
 				StatusCode = response.StatusCode,
+				StatusDescription = response.StatusCode.ToString(),
+				IsSuccessful = response.IsSuccessStatusCode
 			};
 
 			StreamReader stream = new StreamReader( response.Content.ReadAsStreamAsync().Result, System.Text.Encoding.UTF8 );

@@ -2,6 +2,7 @@
 using Xunit;
 using SteamSharp;
 using System.Net;
+using Newtonsoft.Json;
 
 namespace SteamSharp.TestFramework {
 
@@ -46,8 +47,8 @@ namespace SteamSharp.TestFramework {
 
 			var response = SteamNews.GetNewsForApp( 440, 2, 100 );
 
-			Assert.Equal( HttpStatusCode.OK, response.StatusCode );
-			Assert.NotNull( response.Content );
+			Assert.NotNull( response );
+			Assert.IsType<SteamNews.AppNews>( response );
 
 		}
 

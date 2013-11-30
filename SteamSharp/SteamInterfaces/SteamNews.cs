@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
@@ -10,7 +11,7 @@ namespace SteamSharp {
 	/// <summary>
 	/// Class allowing for abstracted querying of the ISteamNews interface
 	/// </summary>
-	public class SteamNews {
+	public partial class SteamNews {
 
 		/// <summary>
 		/// Returns the latest of a game specified by its AppID.
@@ -20,7 +21,7 @@ namespace SteamSharp {
 		/// <param name="maxLength">Maximum length of each news entry.</param>
 		/// <param name="client">(optional) <see cref="SteamClient"/> instance to use. If none specified, a new instance will be created.</param>
 		/// <returns></returns>
-		public static ISteamResponse GetNewsForApp( int appID, int count, int maxLength, SteamClient client = null ) {
+		public static AppNews GetNewsForApp( int appID, int count, int maxLength, SteamClient client = null ) {
 			return GetNewsForAppAsync( appID, count, maxLength, client ).Result;
 		}
 
@@ -32,7 +33,7 @@ namespace SteamSharp {
 		/// <param name="maxLength">Maximum length of each news entry.</param>
 		/// <param name="client">(optional) <see cref="SteamClient"/> instance to use. If none specified, a new instance will be created.</param>
 		/// <returns></returns>
-		public async static Task<ISteamResponse> GetNewsForAppAsync( int appID, int count, int maxLength, SteamClient client = null ) {
+		public async static Task<AppNews> GetNewsForAppAsync( int appID, int count, int maxLength, SteamClient client = null ) {
 
 			SteamRequest request = new SteamRequest( SteamInterface.ISteamNews, "GetNewsForApp", SteamMethodVersion.v0002 );
 			request.AddParameter( "appid", appID );
@@ -40,7 +41,10 @@ namespace SteamSharp {
 			request.AddParameter( "maxlength", maxLength );
 
 			var steamClient = ( client == null ) ? new SteamClient() : client;
-			return await steamClient.ExecuteAsync( request );
+
+			AppNewsResponse responseObj = JsonConvert.DeserializeObject<AppNewsResponse>( ( await steamClient.ExecuteAsync( request ) ).Content );
+
+			return responseObj.appnews;
 
 		}
 
