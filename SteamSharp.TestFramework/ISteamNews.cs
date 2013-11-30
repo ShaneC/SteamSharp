@@ -29,7 +29,7 @@ namespace SteamSharp.TestFramework {
 		public void GET_GetNewsForApp_ByEnums() {
 
 			SteamClient client = new SteamClient();
-			SteamRequest request = new SteamRequest( SteamInterface.ISteamNews, "GetNewsForApp", SteamMethodVersion.v0002 );
+			SteamRequest request = new SteamRequest( SteamAPIInterface.ISteamNews, "GetNewsForApp", SteamMethodVersion.v0002 );
 
 			request.AddParameter( "appid", 440 );
 			request.AddParameter( "count", 2 );

@@ -41,6 +41,7 @@
     <Compile Include="Http\ISteamRequest.cs" />
     <Compile Include="Http\ISteamResponse.cs" />
     <Compile Include="Models\SteamNewsModel.cs" />
+    <Compile Include="SteamInterfaces\SteamInterface.cs" />
     <Compile Include="SteamInterfaces\SteamNews.cs" />
     <Compile Include="Http\SteamRequestParameter.cs" />
     <Compile Include="SteamClient.Sync.cs" />

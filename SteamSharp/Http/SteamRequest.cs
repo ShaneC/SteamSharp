@@ -40,8 +40,8 @@ namespace SteamSharp {
 		/// <summary>
 		/// Steam API Interface to access (i.e. ISteamNews)
 		/// </summary>
-		private SteamInterface _steamInterface = SteamInterface.Unknown;
-		public SteamInterface SteamInterface { 
+		private SteamAPIInterface _steamInterface = SteamAPIInterface.Unknown;
+		public SteamAPIInterface SteamInterface { 
 			get { return _steamInterface; }
 			private set { _steamInterface = value; }
 		}
@@ -108,7 +108,7 @@ namespace SteamSharp {
 		/// <param name="steamInterface">Steam API Interface to access (i.e. ISteamNews)</param>
 		/// <param name="steamApi">Method within the Steam API to use (i.e. GetNewsForApp)</param>
 		/// <param name="version">Version of the API being requested (i.e. v0001)</param>
-		public SteamRequest( SteamInterface steamInterface, string steamApi, SteamMethodVersion version )
+		public SteamRequest( SteamAPIInterface steamInterface, string steamApi, SteamMethodVersion version )
 			: this( steamInterface, steamApi, version, HttpMethod.Get )
 		{
 		}
@@ -120,8 +120,8 @@ namespace SteamSharp {
 		/// <param name="steamApi">Method within the Steam API to use (i.e. GetNewsForApp)</param>
 		/// <param name="version">Version of the API being requested (i.e. v0001)</param>
 		/// <param name="method">HTTP Method to use for this request</param>
-		public SteamRequest( SteamInterface steamInterface, string steamApi, SteamMethodVersion version, HttpMethod method )
-			: this( ( Enum.GetName( typeof( SteamInterface ), steamInterface ) + "/" + steamApi + "/" + Enum.GetName( typeof( SteamMethodVersion ), version ) ), method )
+		public SteamRequest( SteamAPIInterface steamInterface, string steamApi, SteamMethodVersion version, HttpMethod method )
+			: this( ( Enum.GetName( typeof( SteamAPIInterface ), steamInterface ) + "/" + steamApi + "/" + Enum.GetName( typeof( SteamMethodVersion ), version ) ), method )
 		{
 			SteamInterface = steamInterface;
 			SteamApiMethod = steamApi;

@@ -161,7 +161,7 @@ namespace SteamSharp {
 
 			SteamResponse response = new SteamResponse();
 			response.Request = request;
-
+			response.IsSuccessful = false;
 			response.ErrorMessage = ex.Message;
 
 			if( ex is WebException ) {
@@ -204,6 +204,9 @@ namespace SteamSharp {
 				StatusDescription = response.StatusCode.ToString(),
 				IsSuccessful = response.IsSuccessStatusCode
 			};
+
+			if( !steamResponse.IsSuccessful && response.ReasonPhrase != null )
+				steamResponse.ErrorMessage = response.ReasonPhrase;
 
 			StreamReader stream = new StreamReader( response.Content.ReadAsStreamAsync().Result, System.Text.Encoding.UTF8 );
 			steamResponse.Content = stream.ReadToEnd();

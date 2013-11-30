@@ -9,7 +9,7 @@ namespace SteamSharp {
 	/// <summary>
 	/// Available Steam Web APIs
 	/// </summary>
-	public enum SteamInterface {
+	public enum SteamAPIInterface {
 		Unknown,
 		ISteamNews,
 		ISteamUserStats,

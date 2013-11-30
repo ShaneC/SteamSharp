@@ -35,7 +35,7 @@ namespace SteamSharp {
 		/// <summary>
 		/// Steam API Interface to access (i.e. ISteamNews)
 		/// </summary>
-		SteamInterface SteamInterface { get; }
+		SteamAPIInterface SteamInterface { get; }
 
 		/// <summary>
 		/// Method within the Steam API to use (i.e. GetNewsForApp)

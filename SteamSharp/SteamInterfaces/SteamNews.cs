@@ -10,10 +10,11 @@ namespace SteamSharp {
 	/// <summary>
 	/// Class allowing for abstracted querying of the ISteamNews interface
 	/// </summary>
-	public partial class SteamNews {
+	public partial class SteamNews : SteamInterface {
 
 		/// <summary>
 		/// Returns the latest of a game specified by its AppID.
+		/// Throws <see cref="SteamRequestException"/> on failure.
 		/// </summary>
 		/// <param name="client">(optional) <see cref="SteamClient"/> instance to use.</param>
 		/// <param name="appID">AppID of the game you want the news of.</param>
@@ -26,6 +27,7 @@ namespace SteamSharp {
 
 		/// <summary>
 		/// Asynchronously returns the latest of a game specified by its AppID.
+		/// Throws <see cref="SteamRequestException"/> on failure.
 		/// </summary>
 		/// <param name="client">(optional) <see cref="SteamClient"/> instance to use.</param>
 		/// <param name="appID">AppID of the game you want the news of.</param>
@@ -34,14 +36,12 @@ namespace SteamSharp {
 		/// <returns></returns>
 		public async static Task<AppNews> GetNewsForAppAsync( SteamClient client, int appID, int count, int maxLength ) {
 
-			SteamRequest request = new SteamRequest( SteamInterface.ISteamNews, "GetNewsForApp", SteamMethodVersion.v0002 );
+			SteamRequest request = new SteamRequest( SteamAPIInterface.ISteamNews, "GetNewsForApp", SteamMethodVersion.v0002 );
 			request.AddParameter( "appid", appID );
 			request.AddParameter( "count", count );
 			request.AddParameter( "maxlength", maxLength );
 
-			AppNewsResponse responseObj = JsonConvert.DeserializeObject<AppNewsResponse>( ( await client.ExecuteAsync( request ) ).Content );
-
-			return responseObj.appnews;
+			return VerifyAndDeserialize<AppNewsResponse>( ( await client.ExecuteAsync( request ) ) ).appnews;
 
 		}
 
