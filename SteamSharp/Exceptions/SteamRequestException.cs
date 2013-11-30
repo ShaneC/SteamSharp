@@ -11,7 +11,7 @@ namespace SteamSharp {
 		/// <summary>
 		/// Exception encountered causing this exception to be thrown. May be a deserialization exception or the exception from an HTTP request.
 		/// </summary>
-		public Exception InnerException { get; set; }
+		public new Exception InnerException { get; set; }
 
 		/// <summary>
 		/// Indicates whether or not this exception was caused from the inability to deserialize the Steam API response.

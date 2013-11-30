@@ -20,7 +20,7 @@ namespace SteamSharp {
 		/// <param name="appID">AppID of the game you want the news of.</param>
 		/// <param name="count">How many news enties you want to get returned.</param>
 		/// <param name="maxLength">Maximum length of each news entry.</param>
-		/// <returns></returns>
+		/// <returns>An <see cref="AppNews"/> object.</returns>
 		public static AppNews GetNewsForApp( SteamClient client, int appID, int count, int maxLength ) {
 			return GetNewsForAppAsync( client, appID, count, maxLength ).Result;
 		}
@@ -33,7 +33,7 @@ namespace SteamSharp {
 		/// <param name="appID">AppID of the game you want the news of.</param>
 		/// <param name="count">How many news enties you want to get returned.</param>
 		/// <param name="maxLength">Maximum length of each news entry.</param>
-		/// <returns></returns>
+		/// <returns>An <see cref="AppNews"/> object.</returns>
 		public async static Task<AppNews> GetNewsForAppAsync( SteamClient client, int appID, int count, int maxLength ) {
 
 			SteamRequest request = new SteamRequest( SteamAPIInterface.ISteamNews, "GetNewsForApp", SteamMethodVersion.v0002 );
