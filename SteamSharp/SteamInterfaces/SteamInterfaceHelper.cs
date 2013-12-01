@@ -3,7 +3,7 @@ using System;
 
 namespace SteamSharp {
 
-	public static class SteamInterfaceHelper {
+	public class SteamInterfaceHelper {
 
 		public static T VerifyAndDeserialize<T>( ISteamResponse response ) {
 
