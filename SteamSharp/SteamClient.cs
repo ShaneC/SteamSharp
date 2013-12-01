@@ -53,6 +53,10 @@ namespace SteamSharp {
 			}
 		}
 
+		/// <summary>
+		/// Creates a SteamClient which facilitates requests to and responses from the Steam API.
+		/// All Steam API transactions are conducted through this object.
+		/// </summary>
 		public SteamClient() {
 
 			DefaultParameters = new List<SteamRequestParameter> {
@@ -61,6 +65,11 @@ namespace SteamSharp {
 
 		}
 
+		/// <summary>
+		/// Creates a SteamClient with a Steam API endpoint at the specified value.
+		/// Using this constructor is not recommended unless mitigating a known change in the Steam API endpoint or during execution of a test case.
+		/// </summary>
+		/// <param name="customApiEndpoint">Base URL for the Steam API Endpoint</param>
 		public SteamClient( string customApiEndpoint )
 			: this()
 		{
