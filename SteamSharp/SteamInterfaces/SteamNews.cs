@@ -10,7 +10,7 @@ namespace SteamSharp {
 		/// <summary>
 		/// Returns the latest of a game specified by its AppID.
 		/// Throws <see cref="SteamRequestException"/> on failure.
-		/// Documentation: <see href="https://developer.valvesoftware.com/wiki/Steam_Web_API#GetNewsForApp_.28v0002.29" />
+		/// <a href="https://developer.valvesoftware.com/wiki/Steam_Web_API#GetNewsForApp_.28v0002.29">See official documentation.</a>
 		/// </summary>
 		/// <param name="client"><see cref="SteamClient"/> instance to use.</param>
 		/// <param name="appID">AppID of the game you want the news of.</param>
@@ -24,7 +24,7 @@ namespace SteamSharp {
 		/// <summary>
 		/// (Asynchronous) Returns the latest of a game specified by its AppID.
 		/// Throws <see cref="SteamRequestException"/> on failure.
-		/// Documentation: <see href="https://developer.valvesoftware.com/wiki/Steam_Web_API#GetNewsForApp_.28v0002.29" />
+		/// <a href="https://developer.valvesoftware.com/wiki/Steam_Web_API#GetNewsForApp_.28v0002.29">See official documentation.</a>
 		/// </summary>
 		/// <param name="client"><see cref="SteamClient"/> instance to use.</param>
 		/// <param name="appID">AppID of the game you want the news of.</param>
