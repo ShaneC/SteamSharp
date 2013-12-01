@@ -9,6 +9,7 @@ namespace SteamSharp.TestFramework {
 
 	public class ISteamUserStats {
 
+		#region GetGlobalAchievementPercentagesForApp
 		[Fact]
 		public void GET_GetGlobalAchievementPercentagesForApp_ByClass() {
 
@@ -17,7 +18,7 @@ namespace SteamSharp.TestFramework {
 			var response = SteamUserStats.GetGlobalAchievementPercentagesForApp( client, 440 );
 
 			Assert.NotNull( response );
-			Assert.IsType<List<SteamUserStats.Achievement>>( response );
+			Assert.IsType<List<SteamUserStats.GlobalAchievement>>( response );
 
 		}
 
@@ -32,6 +33,61 @@ namespace SteamSharp.TestFramework {
 			Assert.Equal( HttpStatusCode.BadRequest, response.StatusCode );
 
 		}
+		#endregion
+
+		#region GetPlayerAchievements 
+		[Fact]
+		public void GET_GetPlayerAchievements_ByClass_NoLanguage() {
+
+			SteamClient client = new SteamClient();
+			client.Authenticator = SteamSharp.Authenticators.APIKeyAuthenticator.ForProtectedResource( ResourceConstants.AccessToken );
+
+			var response = SteamUserStats.GetPlayerAchievements( client, "76561197972495328", 440 );
+
+			Assert.NotNull( response );
+			Assert.IsType<SteamUserStats.PlayerStats>( response );
+
+		}
+
+		[Fact]
+		public void GET_GetPlayerAchievements_ByClass_EnglishLanguage() {
+
+			SteamClient client = new SteamClient();
+			client.Authenticator = SteamSharp.Authenticators.APIKeyAuthenticator.ForProtectedResource( ResourceConstants.AccessToken );
+
+			var response = SteamUserStats.GetPlayerAchievements( client, "76561197972495328", 440, SteamInterface.RequestedLangage.English );
+
+			Assert.NotNull( response );
+			Assert.IsType<SteamUserStats.PlayerStats>( response );
+
+		}
+
+		[Fact]
+		public void GET_GetPlayerAchievements_ByClass_JapaneseLanguage() {
+
+			SteamClient client = new SteamClient();
+			client.Authenticator = SteamSharp.Authenticators.APIKeyAuthenticator.ForProtectedResource( ResourceConstants.AccessToken );
+
+			var response = SteamUserStats.GetPlayerAchievements( client, "76561197972495328", 440, SteamInterface.RequestedLangage.Japanese );
+
+			Assert.NotNull( response );
+			Assert.IsType<SteamUserStats.PlayerStats>( response );
+
+		}
+
+		[Fact]
+		public void GET_GetPlayerAchievements_ByClass_RussianLanguage() {
+
+			SteamClient client = new SteamClient();
+			client.Authenticator = SteamSharp.Authenticators.APIKeyAuthenticator.ForProtectedResource( ResourceConstants.AccessToken );
+
+			var response = SteamUserStats.GetPlayerAchievements( client, "76561197972495328", 440, SteamInterface.RequestedLangage.Russian );
+
+			Assert.NotNull( response );
+			Assert.IsType<SteamUserStats.PlayerStats>( response );
+
+		}
+		#endregion
 
 	}
 

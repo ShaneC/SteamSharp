@@ -8,8 +8,10 @@ namespace SteamSharp {
 	
 	public partial class SteamUser : SteamInterface {
 
+		#region GetPlayerSummaries (and overload GetPlayerSummary)
 		/// <summary>
-		/// (Requires <see cref="SteamSharp.Authenticators.APIKeyAuthenticator"/>) Returns basic profile information for a given 64-bit Steam ID.
+		/// (Requires <see cref="SteamSharp.Authenticators.APIKeyAuthenticator"/>)
+		/// Returns basic profile information for a given 64-bit Steam ID.
 		/// Throws <see cref="SteamRequestException"/> on failure.
 		/// <a href="https://developer.valvesoftware.com/wiki/Steam_Web_API#GetPlayerSummaries_.28v0002.29">See official documentation.</a>
 		/// </summary>
@@ -30,7 +32,8 @@ namespace SteamSharp {
 		}
 
 		/// <summary>
-		/// (Requires <see cref="SteamSharp.Authenticators.APIKeyAuthenticator"/>) Returns basic profile information for a list of 64-bit Steam IDs.
+		/// (Requires <see cref="SteamSharp.Authenticators.APIKeyAuthenticator"/>)
+		/// Returns basic profile information for a list of 64-bit Steam IDs.
 		/// Throws <see cref="SteamRequestException"/> on failure.
 		/// <a href="https://developer.valvesoftware.com/wiki/Steam_Web_API#GetPlayerSummaries_.28v0002.29">See official documentation.</a>
 		/// </summary>
@@ -51,7 +54,8 @@ namespace SteamSharp {
 		}
 
 		/// <summary>
-		/// (Requires <see cref="SteamSharp.Authenticators.APIKeyAuthenticator"/>) (Async) Returns basic profile information for a given 64-bit Steam ID.
+		/// (Requires <see cref="SteamSharp.Authenticators.APIKeyAuthenticator"/>)
+		/// (Async) Returns basic profile information for a given 64-bit Steam ID.
 		/// Throws <see cref="SteamRequestException"/> on failure.
 		/// <a href="https://developer.valvesoftware.com/wiki/Steam_Web_API#GetPlayerSummaries_.28v0002.29">See official documentation.</a>
 		/// </summary>
@@ -71,7 +75,8 @@ namespace SteamSharp {
 		}
 
 		/// <summary>
-		/// (Requires <see cref="SteamSharp.Authenticators.APIKeyAuthenticator"/>) (Async) Returns basic profile information for a list of 64-bit Steam IDs.
+		/// (Requires <see cref="SteamSharp.Authenticators.APIKeyAuthenticator"/>)
+		/// (Async) Returns basic profile information for a list of 64-bit Steam IDs.
 		/// Throws <see cref="SteamRequestException"/> on failure.
 		/// <a href="https://developer.valvesoftware.com/wiki/Steam_Web_API#GetPlayerSummaries_.28v0002.29">See official documentation.</a>
 		/// </summary>
@@ -92,6 +97,70 @@ namespace SteamSharp {
 			return VerifyAndDeserialize<GetPlayerSummariesResponse>( ( await client.ExecuteAsync( request ) ) ).response.players;
 
 		}
+		#endregion
+
+		#region GetFriendList
+		/// <summary>
+		/// (Requires <see cref="SteamSharp.Authenticators.APIKeyAuthenticator"/>)
+		/// Returns the friend list of any Steam user, provided the user's Steam Community profile visibility is set to "Public."
+		/// Throws <see cref="SteamRequestException"/> on failure.
+		/// <a href="https://developer.valvesoftware.com/wiki/Steam_Web_API#GetFriendList_.28v0001.29">See official documentation.</a>
+		/// </summary>
+		/// <param name="client"><see cref="SteamClient"/> instance to use.</param>
+		/// <param name="steamID">SteamID to return friend's list for.</param>
+		/// <param name="relationship">Relationship filter. Possibles values: all, friend.</param>
+		/// <returns>List of <see cref="Friend"/> objects mapping to the Friend's list of the target user.</returns>
+		public static List<Friend> GetFriendList( SteamClient client, string steamID, PlayerRelationshipType relationship ) {
+			try {
+				return GetFriendListAsync( client, steamID, relationship ).Result;
+			} catch( AggregateException e ) {
+				if( e.InnerException != null )
+					throw e.InnerException;
+				throw e;
+			}
+		}
+
+		/// <summary>
+		/// (Requires <see cref="SteamSharp.Authenticators.APIKeyAuthenticator"/>)
+		/// (Async) Returns the friend list of any Steam user, provided the user's Steam Community profile visibility is set to "Public."
+		/// Throws <see cref="SteamRequestException"/> on failure.
+		/// <a href="https://developer.valvesoftware.com/wiki/Steam_Web_API#GetFriendList_.28v0001.29">See official documentation.</a>
+		/// </summary>
+		/// <param name="client"><see cref="SteamClient"/> instance to use.</param>
+		/// <param name="steamID">SteamID to return friend's list for.</param>
+		/// <param name="relationship">Relationship filter. Possibles values: all, friend.</param>
+		/// <returns>List of <see cref="Friend"/> objects mapping to the Friend's list of the target user.</returns>
+		public async static Task<List<Friend>> GetFriendListAsync( SteamClient client, string steamID, PlayerRelationshipType relationship ) {
+
+			SteamRequest request = new SteamRequest( SteamAPIInterface.ISteamUser, "GetFriendList", SteamMethodVersion.v0001 );
+
+			string relationshipType = "";
+			switch( relationship ) {
+				case PlayerRelationshipType.Friend :
+					relationshipType = "friend";
+					break;
+				default :
+					relationshipType = "all";
+					break;
+			}
+
+			request.AddParameter( "steamid", steamID );
+			request.AddParameter( "relationship", relationshipType );
+
+			return VerifyAndDeserialize<GetFriendsListResponse>( ( await client.ExecuteAsync( request ) ) ).friendslist.friends;
+
+		}
+		#endregion
+
+		#region Interface Specific Enums
+		/// <summary>
+		/// Relationship filter for profile/friend's list filtering. Possible values: All, Friend
+		/// </summary>
+		public enum PlayerRelationshipType {
+			All,
+			Friend
+		}
+		#endregion
 
 	}
 

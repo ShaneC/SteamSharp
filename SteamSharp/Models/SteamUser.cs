@@ -38,6 +38,20 @@ namespace SteamSharp {
 			public int loccityid { get; set; }
 		}
 
+		public class GetFriendsListResponse {
+			public FriendsList friendslist { get; set; }
+		}
+
+		public class FriendsList {
+			public List<Friend> friends { get; set; }
+		}
+
+		public class Friend {
+			public string steamid { get; set; }
+			public string relationship { get; set; }
+			public int friend_since { get; set; }
+		}
+
 	}
 
 }

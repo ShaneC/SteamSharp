@@ -105,6 +105,45 @@ namespace SteamSharp.TestFramework {
 		}
 		#endregion
 
+		#region GetFriendList
+		[Fact]
+		public void GET_GetFriendList_ByClass_AllRelationships() {
+
+			SteamClient client = new SteamClient();
+			client.Authenticator = SteamSharp.Authenticators.APIKeyAuthenticator.ForProtectedResource( ResourceConstants.AccessToken );
+
+			var response = SteamUser.GetFriendList( client, "76561197960435530", SteamUser.PlayerRelationshipType.All );
+
+			Assert.NotNull( response );
+			Assert.IsType<List<SteamUser.Friend>>( response );
+
+		}
+
+		[Fact]
+		public void GET_GetFriendList_ByClass_FriendRelationships() {
+
+			SteamClient client = new SteamClient();
+			client.Authenticator = SteamSharp.Authenticators.APIKeyAuthenticator.ForProtectedResource( ResourceConstants.AccessToken );
+
+			var response = SteamUser.GetFriendList( client, "76561197960435530", SteamUser.PlayerRelationshipType.Friend );
+
+			Assert.NotNull( response );
+			Assert.IsType<List<SteamUser.Friend>>( response );
+
+		}
+
+		[Fact]
+		public void GET_GetFriendList_ByClass_Unauthenticated() {
+
+			SteamClient client = new SteamClient();
+
+			Assert.Throws<SteamRequestException>( () => {
+				SteamUser.GetFriendList( client, "76561197960435530", SteamUser.PlayerRelationshipType.All );
+			} );
+
+		}
+		#endregion
+		
 	}
 
 }
