@@ -1,5 +1,4 @@
-﻿using System;
-
+﻿
 namespace SteamSharp.Authenticators {
 
 	public class APIKeyAuthenticator : ISteamAuthenticator {

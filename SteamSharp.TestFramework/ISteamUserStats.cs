@@ -1,9 +1,6 @@
-﻿using System;
-using Xunit;
-using SteamSharp;
+﻿using System.Collections.Generic;
 using System.Net;
-using Newtonsoft.Json;
-using System.Collections.Generic;
+using Xunit;
 
 namespace SteamSharp.TestFramework {
 

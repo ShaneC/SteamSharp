@@ -1,8 +1,5 @@
-﻿using System;
+﻿using System.Net;
 using Xunit;
-using SteamSharp;
-using System.Net;
-using Newtonsoft.Json;
 
 namespace SteamSharp.TestFramework {
 
