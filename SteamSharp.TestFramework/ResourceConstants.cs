@@ -15,7 +15,7 @@ namespace SteamSharp.TestFramework {
 
 		/// <summary>
 		/// Address of the simulated web server for handling response call tests.
-		/// Only time you will likely to need a change this is if there is an active local service on the same port.
+		/// The only time you will likely need to change this is if there is an active local service on the same port.
 		/// </summary>
 		public const string SimulatedServerUrl = "http://localhost:8080/";
 
