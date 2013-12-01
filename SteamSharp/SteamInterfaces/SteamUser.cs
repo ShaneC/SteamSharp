@@ -20,7 +20,13 @@ namespace SteamSharp {
 		/// Some data associated with a Steam account may be hidden if the user has their profile visibility set to "Friends Only" or "Private". In that case, only public data will be returned.
 		/// </returns>
 		public static Player GetPlayerSummary( SteamClient client, string steamID ) {
-			return GetPlayerSummaryAsync( client, steamID ).Result;
+			try {
+				return GetPlayerSummaryAsync( client, steamID ).Result;
+			} catch( AggregateException e ) {
+				if( e.InnerException != null )
+					throw e.InnerException;
+				throw e;
+			}
 		}
 
 		/// <summary>
@@ -35,7 +41,13 @@ namespace SteamSharp {
 		/// Some data associated with a Steam account may be hidden if the user has their profile visibility set to "Friends Only" or "Private". In that case, only public data will be returned.
 		/// </returns>
 		public static List<Player> GetPlayerSummaries( SteamClient client, string[] steamIDs ) {
-			return GetPlayerSummariesAsync( client, steamIDs ).Result;
+			try {
+				return GetPlayerSummariesAsync( client, steamIDs ).Result;
+			} catch( AggregateException e ) {
+				if( e.InnerException != null )
+					throw e.InnerException;
+				throw e;
+			}
 		}
 
 		/// <summary>

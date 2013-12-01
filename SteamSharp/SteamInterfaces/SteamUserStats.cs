@@ -17,7 +17,13 @@ namespace SteamSharp {
 		/// <param name="gameID">AppID of the game you want the news of.</param>
 		/// <returns>A List of <see cref="Achievement"/> objects containing the achievement name and percentage.</returns>
 		public static List<Achievement> GetGlobalAchievementPercentagesForApp( SteamClient client, int gameID ) {
-			return GetGlobalAchievementPercentagesForAppAsync( client, gameID ).Result;
+			try {
+				return GetGlobalAchievementPercentagesForAppAsync( client, gameID ).Result;
+			} catch( AggregateException e ) {
+				if( e.InnerException != null )
+					throw e.InnerException;
+				throw e;
+			}
 		}
 
 		/// <summary>

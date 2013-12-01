@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 
 namespace SteamSharp {
 
@@ -18,7 +19,13 @@ namespace SteamSharp {
 		/// <param name="maxLength">Maximum length of each news entry.</param>
 		/// <returns>An <see cref="AppNews"/> object.</returns>
 		public static AppNews GetNewsForApp( SteamClient client, int appID, int count, int maxLength ) {
-			return GetNewsForAppAsync( client, appID, count, maxLength ).Result;
+			try {
+				return GetNewsForAppAsync( client, appID, count, maxLength ).Result;
+			} catch( AggregateException e ) {
+				if( e.InnerException != null )
+					throw e.InnerException;
+				throw e;
+			}
 		}
 
 		/// <summary>

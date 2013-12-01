@@ -9,6 +9,7 @@ namespace SteamSharp.TestFramework {
 
 	public class ISteamUser {
 
+		#region GetPlayerSummaries
 		[Fact]
 		public void GET_GetPlayerSummaries_ByClass() {
 
@@ -27,7 +28,7 @@ namespace SteamSharp.TestFramework {
 
 			SteamClient client = new SteamClient();
 
-			Assert.Throws<AggregateException>( () => {
+			Assert.Throws<SteamRequestException>( () => {
 				SteamUser.GetPlayerSummaries( client, new string[] { "76561197960435530", "76561198067189899" } );
 			} );
 
@@ -75,6 +76,33 @@ namespace SteamSharp.TestFramework {
 			Assert.Equal( HttpStatusCode.Unauthorized, response.StatusCode );
 
 		}
+		#endregion
+
+		#region GetPlayerSummary
+		[Fact]
+		public void GET_GetPlayerSummary_ByClass() {
+
+			SteamClient client = new SteamClient();
+			client.Authenticator = SteamSharp.Authenticators.APIKeyAuthenticator.ForProtectedResource( ResourceConstants.AccessToken );
+
+			var response = SteamUser.GetPlayerSummary( client, "76561197960435530" );
+
+			Assert.NotNull( response );
+			Assert.IsType<SteamUser.Player>( response );
+
+		}
+
+		[Fact]
+		public void GET_GetPlayerSummary_ByClass_Unauthenticated() {
+
+			SteamClient client = new SteamClient();
+
+			Assert.Throws<SteamRequestException>( () => {
+				SteamUser.GetPlayerSummary( client, "76561197960435530" );
+			} );
+
+		}
+		#endregion
 
 	}
 
