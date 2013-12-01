@@ -42,7 +42,7 @@
     <Compile Include="Exceptions\SteamRequestException.cs" />
     <Compile Include="Http\ISteamRequest.cs" />
     <Compile Include="Http\ISteamResponse.cs" />
-    <Compile Include="Models\SteamNewsModel.cs" />
+    <Compile Include="Models\SteamNews.cs" />
     <Compile Include="SteamInterfaces\SteamInterfaceHelper.cs" />
     <Compile Include="SteamInterfaces\SteamNews.cs" />
     <Compile Include="Http\SteamRequestParameter.cs" />

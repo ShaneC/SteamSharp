@@ -47,10 +47,10 @@ namespace SteamSharp.TestFramework {
 
 			SteamClient client = new SteamClient();
 
-			var response = SteamNews.GetNewsForApp( client, 440, 2, 100 );
+			var response = client.GetNewsForApp( 440, 2, 100 );
 
 			Assert.NotNull( response );
-			Assert.IsType<SteamNewsModel.AppNews>( response );
+			Assert.IsType<SteamNews.AppNews>( response );
 
 		}
 
