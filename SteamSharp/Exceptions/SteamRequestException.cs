@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 
 namespace SteamSharp {
 
@@ -35,7 +36,12 @@ namespace SteamSharp {
 		/// <summary>
 		/// Object containing the processed HTTP response, as well as the initial <see cref="ISteamRequest"/> object and raw <see cref="HTTPResponseMessage"/>.
 		/// </summary>
-		public ISteamResponse Response { get; set; }
+		public ISteamResponse Response { get; private set; }
+
+		/// <summary>
+		/// HTTP Status Code of the transaction. If no HTTP request was made, this value will be null.
+		/// </summary>
+		public HttpStatusCode StatusCode { get; private set; }
 
 		public SteamRequestException( string message )
 			: base( message ) 
@@ -56,6 +62,7 @@ namespace SteamSharp {
 		private void ProcessResponse( ISteamResponse response ) {
 
 			Response = response;
+			StatusCode = response.StatusCode;
 
 			if( !response.IsSuccessful ) {
 

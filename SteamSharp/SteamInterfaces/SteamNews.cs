@@ -5,13 +5,14 @@ namespace SteamSharp {
 	/// <summary>
 	/// Class allowing for abstracted querying of the ISteamNews interface
 	/// </summary>
-	public static partial class SteamNews {
+	public partial class SteamNews : SteamInterface {
 
 		/// <summary>
 		/// Returns the latest of a game specified by its AppID.
 		/// Throws <see cref="SteamRequestException"/> on failure.
+		/// Documentation: <see href="https://developer.valvesoftware.com/wiki/Steam_Web_API#GetNewsForApp_.28v0002.29" />
 		/// </summary>
-		/// <param name="client">(optional) <see cref="SteamClient"/> instance to use.</param>
+		/// <param name="client"><see cref="SteamClient"/> instance to use.</param>
 		/// <param name="appID">AppID of the game you want the news of.</param>
 		/// <param name="count">How many news enties you want to get returned.</param>
 		/// <param name="maxLength">Maximum length of each news entry.</param>
@@ -21,10 +22,11 @@ namespace SteamSharp {
 		}
 
 		/// <summary>
-		/// Asynchronously returns the latest of a game specified by its AppID.
+		/// (Asynchronous) Returns the latest of a game specified by its AppID.
 		/// Throws <see cref="SteamRequestException"/> on failure.
+		/// Documentation: <see href="https://developer.valvesoftware.com/wiki/Steam_Web_API#GetNewsForApp_.28v0002.29" />
 		/// </summary>
-		/// <param name="client">(optional) <see cref="SteamClient"/> instance to use.</param>
+		/// <param name="client"><see cref="SteamClient"/> instance to use.</param>
 		/// <param name="appID">AppID of the game you want the news of.</param>
 		/// <param name="count">How many news enties you want to get returned.</param>
 		/// <param name="maxLength">Maximum length of each news entry.</param>
@@ -36,7 +38,7 @@ namespace SteamSharp {
 			request.AddParameter( "count", count );
 			request.AddParameter( "maxlength", maxLength );
 
-			return SteamInterfaceHelper.VerifyAndDeserialize<AppNewsResponse>( ( await client.ExecuteAsync( request ) ) ).appnews;
+			return VerifyAndDeserialize<AppNewsResponse>( ( await client.ExecuteAsync( request ) ) ).appnews;
 
 		}
 
