@@ -20,6 +20,7 @@ namespace SteamSharp.TestFramework {
 
 			Assert.NotNull( response );
 			Assert.IsType<List<SteamUser.Player>>( response );
+			Assert.Equal( 2, response.Count );
 
 		}
 
