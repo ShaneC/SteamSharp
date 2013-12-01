@@ -22,9 +22,7 @@ namespace SteamSharp.TestFramework {
 		public void GET_With_Leading_Slash() {
 
 			var request = new SteamRequest( "/resource" );
-			var client = new SteamClient {
-				BaseAPIEndpoint = "http://steamapiurl.com/"
-			};
+			var client = new SteamClient( "http://steamapiurl.com/" );
 
 			var expected = new Uri( "http://steamapiurl.com/resource" );
 			var output = client.BuildUri( request );
@@ -37,9 +35,7 @@ namespace SteamSharp.TestFramework {
 		public void GET_Without_Leading_Slash() {
 
 			var request = new SteamRequest( "resource" );
-			var client = new SteamClient {
-				BaseAPIEndpoint = "http://steamapiurl.com/"
-			};
+			var client = new SteamClient( "http://steamapiurl.com/" );
 
 			var expected = new Uri( "http://steamapiurl.com/resource" );
 			var output = client.BuildUri( request );
@@ -52,9 +48,7 @@ namespace SteamSharp.TestFramework {
 		public void GET_With_NoSlash_Base_And_Resource_Leading_Slash() {
 
 			var request = new SteamRequest( "/resource" );
-			var client = new SteamClient {
-				BaseAPIEndpoint = "http://iforgottoslash.com"
-			};
+			var client = new SteamClient( "http://iforgottoslash.com" );
 
 			var expected = new Uri( "http://iforgottoslash.com/resource" );
 			var output = client.BuildUri( request );
@@ -67,9 +61,7 @@ namespace SteamSharp.TestFramework {
 		public void GET_With_NoSlash_Base_And_No_Leading_Slash() {
 
 			var request = new SteamRequest( "resource" );
-			var client = new SteamClient {
-				BaseAPIEndpoint = "http://iforgottoslash.com"
-			};
+			var client = new SteamClient( "http://iforgottoslash.com" );
 
 			var expected = new Uri( "http://iforgottoslash.com/resource" );
 			var output = client.BuildUri( request );
@@ -84,9 +76,7 @@ namespace SteamSharp.TestFramework {
 
 			var request = new SteamRequest( "resource" );
 
-			var client = new SteamClient {
-				BaseAPIEndpoint = "Definitely isn't a URI... How sad :("
-			};
+			var client = new SteamClient(  "Definitely isn't a URI... How sad :(" );
 
 			Assert.Throws<FormatException>( () => { client.BuildUri( request ); } );
 
@@ -114,9 +104,7 @@ namespace SteamSharp.TestFramework {
 			var request = new SteamRequest( "resource/{foo}" );
 			request.AddUrlSegment( "foo", "bar" );
 
-			var client = new SteamClient {
-				BaseAPIEndpoint = "http://steamapiurl.com/"
-			};
+			var client = new SteamClient( "http://steamapiurl.com/" );
 
 			var expected = new Uri( "http://steamapiurl.com/resource/bar" );
 			var output = client.BuildUri( request );
@@ -131,9 +119,7 @@ namespace SteamSharp.TestFramework {
 			var request = new SteamRequest( "resource/{foo}", HttpMethod.Post );
 			request.AddUrlSegment( "foo", "bar" );
 
-			var client = new SteamClient {
-				BaseAPIEndpoint = "http://steamapiurl.com/"
-			};
+			var client = new SteamClient( "http://steamapiurl.com/" );
 
 			var expected = new Uri( "http://steamapiurl.com/resource/bar" );
 			var output = client.BuildUri( request );

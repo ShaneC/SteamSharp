@@ -2,7 +2,7 @@
 
 namespace SteamSharp {
 
-	public partial class SteamNews {
+	public class SteamNewsModel {
 
 		#region AppNews
 		public class AppNewsResponse {

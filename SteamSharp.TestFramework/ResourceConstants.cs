@@ -13,6 +13,12 @@ namespace SteamSharp.TestFramework {
 		/// </summary>
 		public const string AccessToken = "8675309";
 
+		/// <summary>
+		/// Address of the simulated web server for handling response call tests.
+		/// Only time likely to need a change is if there is an active service on the same port.
+		/// </summary>
+		public const string SimulatedServerUrl = "http://localhost:8080/";
+
 	}
 
 }

@@ -3,9 +3,9 @@ using System;
 
 namespace SteamSharp {
 
-	public abstract class SteamInterface {
+	public static class SteamInterfaceHelper {
 
-		protected static T VerifyAndDeserialize<T>( ISteamResponse response ) {
+		public static T VerifyAndDeserialize<T>( ISteamResponse response ) {
 
 			if( !response.IsSuccessful )
 				throw new SteamRequestException( "The HTTP request to Steam was not successful.", response );

@@ -5,7 +5,7 @@ namespace SteamSharp {
 	/// <summary>
 	/// Class allowing for abstracted querying of the ISteamNews interface
 	/// </summary>
-	public partial class SteamNews : SteamInterface {
+	public static class SteamNews {
 
 		/// <summary>
 		/// Returns the latest of a game specified by its AppID.
@@ -16,7 +16,7 @@ namespace SteamSharp {
 		/// <param name="count">How many news enties you want to get returned.</param>
 		/// <param name="maxLength">Maximum length of each news entry.</param>
 		/// <returns>An <see cref="AppNews"/> object.</returns>
-		public static AppNews GetNewsForApp( SteamClient client, int appID, int count, int maxLength ) {
+		public static SteamNewsModel.AppNews GetNewsForApp( this SteamClient client, int appID, int count, int maxLength ) {
 			return GetNewsForAppAsync( client, appID, count, maxLength ).Result;
 		}
 
@@ -29,16 +29,18 @@ namespace SteamSharp {
 		/// <param name="count">How many news enties you want to get returned.</param>
 		/// <param name="maxLength">Maximum length of each news entry.</param>
 		/// <returns>An <see cref="AppNews"/> object.</returns>
-		public async static Task<AppNews> GetNewsForAppAsync( SteamClient client, int appID, int count, int maxLength ) {
+		public async static Task<SteamNewsModel.AppNews> GetNewsForAppAsync( this SteamClient client, int appID, int count, int maxLength ) {
 
 			SteamRequest request = new SteamRequest( SteamAPIInterface.ISteamNews, "GetNewsForApp", SteamMethodVersion.v0002 );
 			request.AddParameter( "appid", appID );
 			request.AddParameter( "count", count );
 			request.AddParameter( "maxlength", maxLength );
 
-			return VerifyAndDeserialize<AppNewsResponse>( ( await client.ExecuteAsync( request ) ) ).appnews;
+			return SteamInterfaceHelper.VerifyAndDeserialize<SteamNewsModel.AppNewsResponse>( ( await client.ExecuteAsync( request ) ) ).appnews;
 
 		}
+
+		
 
 	}
 

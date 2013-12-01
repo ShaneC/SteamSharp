@@ -12,9 +12,7 @@ namespace SteamSharp.TestFramework {
 		[Fact]
 		public void NonExistant_Base_Returns_Error() {
 
-			SteamClient client = new SteamClient {
-				BaseAPIEndpoint = "http://hopefullyth-is-domain-nev-rexists.com"
-			};
+			SteamClient client = new SteamClient( "http://hopefullyth-is-domain-nev-rexists.com" );
 
 			SteamRequest request = new SteamRequest( "/resource" );
 			var response = client.Execute( request );
@@ -26,9 +24,7 @@ namespace SteamSharp.TestFramework {
 		[Fact]
 		public void ClientContext_Request_Correctly_Times_Out() {
 
-			SteamClient client = new SteamClient {
-				BaseAPIEndpoint = "http://bing.com"
-			};
+			SteamClient client = new SteamClient( "http://bing.com" );
 
 			client.Timeout = 1;
 			SteamRequest request = new SteamRequest( "/resource" );
@@ -41,9 +37,7 @@ namespace SteamSharp.TestFramework {
 		[Fact]
 		public void RequestContext_Request_Correctly_Times_Out() {
 
-			SteamClient client = new SteamClient {
-				BaseAPIEndpoint = "http://bing.com"
-			};
+			SteamClient client = new SteamClient( "http://bing.com" );
 
 			SteamRequest request = new SteamRequest( "/resource" );
 			request.Timeout = 1;

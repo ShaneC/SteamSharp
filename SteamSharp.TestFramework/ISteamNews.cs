@@ -50,7 +50,7 @@ namespace SteamSharp.TestFramework {
 			var response = SteamNews.GetNewsForApp( client, 440, 2, 100 );
 
 			Assert.NotNull( response );
-			Assert.IsType<SteamNews.AppNews>( response );
+			Assert.IsType<SteamNewsModel.AppNews>( response );
 
 		}
 

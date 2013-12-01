@@ -11,15 +11,15 @@ using System.Threading.Tasks;
 
 namespace SteamSharp {
 
-    public partial class SteamClient {
+	public partial class SteamClient {
 
 		/// <summary>
 		/// Steam API endpoint. This could be subject to change and thus needs to be overrideable.
 		/// </summary>
-		private static string _apiEndpoint = "https://api.steampowered.com";
+		private string _apiEndpoint = "https://api.steampowered.com";
 		public string BaseAPIEndpoint {
 			get { return _apiEndpoint; }
-			set { _apiEndpoint = value; }
+			private set { _apiEndpoint = value; }
 		}
 
 		/// <summary>
@@ -59,6 +59,12 @@ namespace SteamSharp {
 				new SteamRequestParameter { Name = "format", Value = "json", Type = ParameterType.GetOrPost }
 			};
 
+		}
+
+		public SteamClient( string customApiEndpoint )
+			: this()
+		{
+			BaseAPIEndpoint = customApiEndpoint;
 		}
 
 		/// <summary>

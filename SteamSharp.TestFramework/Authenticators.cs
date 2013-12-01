@@ -1,8 +1,11 @@
-﻿using System;
+﻿using SteamSharp.TestFramework.Helpers;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 using Xunit;
 
 namespace SteamSharp.TestFramework {
@@ -16,18 +19,33 @@ namespace SteamSharp.TestFramework {
 			Assert.NotNull( ResourceConstants.AccessToken );
 			Assert.NotEqual( ResourceConstants.AccessToken, "" );
 
-			SteamClient client = new SteamClient {
-				BaseAPIEndpoint = "http://hopefullyth-is-domain-nev-rexists.com"
-			};
+			using( SimulatedServer.Create( ResourceConstants.SimulatedServerUrl, ApiKeyEchoHandler ) ) {
 
-			client.Authenticator = SteamSharp.Authenticators.APIKeyAuthenticator.ForProtectedResource( ResourceConstants.AccessToken );
+				var client = new SteamClient( ResourceConstants.SimulatedServerUrl );
 
-			SteamRequest request = new SteamRequest( "/resource" );
-			var response = client.Execute( request );
+				client.Authenticator = SteamSharp.Authenticators.APIKeyAuthenticator.ForProtectedResource( ResourceConstants.AccessToken );
 
-			Assert.Equal( ResponseStatus.Error, response.ResponseStatus );
+				SteamRequest request = new SteamRequest( "/resource" );
+				var response = client.Execute( request );
 
-			//Assert.True( response.Request.Parameters.Any( p => p.Name == "key" && ((long)p.Value) == ResourceConstants.AccessToken && p.Type == ParameterType.QueryString ) );
+				Assert.Equal( "key|" + ResourceConstants.AccessToken, response.Content );
+
+			}
+
+		}
+
+		private static void ApiKeyEchoHandler( HttpListenerContext context ) {
+
+			var data = context.Request;
+
+			Uri requestUri = context.Request.Url;
+			var queryParams = HttpUtility.ParseQueryString( requestUri.Query );
+
+			string output = "";
+			if( queryParams["key"] != null )
+				output = "key|" + queryParams["key"];
+
+			context.Response.OutputStream.WriteStringUTF8( output );
 
 		}
 
