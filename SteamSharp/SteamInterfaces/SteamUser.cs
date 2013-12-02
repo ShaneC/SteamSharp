@@ -151,16 +151,6 @@ namespace SteamSharp {
 		}
 		#endregion
 
-		#region Interface Specific Enums
-		/// <summary>
-		/// Relationship filter for profile/friend's list filtering. Possible values: All, Friend
-		/// </summary>
-		public enum PlayerRelationshipType {
-			All,
-			Friend
-		}
-		#endregion
-
 	}
 
 }

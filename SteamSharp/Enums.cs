@@ -60,4 +60,29 @@ namespace SteamSharp {
 		Json
 	}
 
+	#region Interface Specific Enums
+	/// <summary>
+	/// Relationship filter for profile/friend's list filtering. Possible values: All, Friend
+	/// </summary>
+	public enum PlayerRelationshipType {
+		All,
+		Friend
+	}
+
+	/// <summary>
+	/// Certain Steam APIs allow a language to be provided. In those instances, use this enum in order to specify the return language.
+	/// The languages the Steam API supports are limited.
+	/// </summary>
+	public enum RequestedLangage {
+		English,
+		Spanish,
+		Swedish,
+		Russian,
+		Portuguese,
+		German,
+		Dutch,
+		Japanese
+	}
+	#endregion
+
 }

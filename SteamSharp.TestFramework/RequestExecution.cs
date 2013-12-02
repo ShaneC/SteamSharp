@@ -1,10 +1,8 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using SteamSharp.TestFramework.Helpers;
-using System;
 using System.Net;
 using System.Net.Http;
-using System.Web;
 using Xunit;
 
 namespace SteamSharp.TestFramework {
