@@ -50,4 +50,14 @@ namespace SteamSharp {
 		QueryString
 	}
 
+	/// <summary>
+	/// Data format for SteamRequests.
+	/// Raw will be sent without Content-Type and without serialization.
+	/// Json will be serialized and sent via Content-Type application/json.
+	/// </summary>
+	public enum PostDataFormat {
+		Raw,
+		Json
+	}
+
 }

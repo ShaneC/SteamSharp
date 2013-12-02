@@ -36,7 +36,7 @@
   <ItemGroup>
     <Compile Include="Authenticators\APIKeyAuthenticator.cs" />
     <Compile Include="Authenticators\ISteamAuthenticator.cs" />
-    <Compile Include="Constants.cs" />
+    <Compile Include="Enums.cs" />
     <Compile Include="Exceptions\SteamAuthenticationException.cs" />
     <Compile Include="Exceptions\SteamRequestException.cs" />
     <Compile Include="Http\ISteamRequest.cs" />

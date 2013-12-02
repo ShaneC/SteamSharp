@@ -17,10 +17,19 @@ namespace SteamSharp {
 		/// Indicates the standard HTTP method that should be used for this request.
 		/// This value defaults to GET.
 		/// </summary>
-		private HttpMethod _method;
+		private HttpMethod _method = HttpMethod.Get;
 		public HttpMethod Method {
 			get { return _method; }
 			set { _method = value; }
+		}
+
+		/// <summary>
+		/// Data Format to use for POST Requests.
+		/// </summary>
+		private PostDataFormat _dataFormat = PostDataFormat.Json;
+		public PostDataFormat DataFormat {
+			get { return _dataFormat; }
+			set { _dataFormat = value; }
 		}
 
 		/// <summary>
@@ -132,7 +141,7 @@ namespace SteamSharp {
 		/// <param name="obj">Object to be serialized and used as the Body of the HTTP request.</param>
 		/// <returns>This request</returns>
 		public ISteamRequest AddBody( object obj ) {
-			return AddParameter( "RequestBody", JsonConvert.SerializeObject( obj ), ParameterType.RequestBody );
+			return AddParameter( "application/json", obj, ParameterType.RequestBody );
 		}
 
 		/// <summary>

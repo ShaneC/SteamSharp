@@ -18,6 +18,11 @@ namespace SteamSharp {
 		HttpMethod Method { get; set; }
 
 		/// <summary>
+		/// Data Format to use for POST Requests.
+		/// </summary>
+		PostDataFormat DataFormat { get; set; }
+
+		/// <summary>
 		/// The URI the request will be made against.
 		/// </summary>
 		string Resource { get; set; }

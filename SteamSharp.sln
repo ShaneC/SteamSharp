@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SteamSharp.TestFramework", 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NuGet", "NuGet", "{6002B414-25FE-4774-B8D8-6EFAA8413EE3}"
 	ProjectSection(SolutionItems) = preProject
-		NuGet\SteamSharp.nuspec = NuGet\SteamSharp.nuspec
+		SteamSharp\SteamSharp.nuspec = SteamSharp\SteamSharp.nuspec
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{EFEB3BEC-C181-4A80-B114-2C41B4DD3F4D}"

@@ -1,4 +1,5 @@
-﻿using SteamSharp.Authenticators;
+﻿using Newtonsoft.Json;
+using SteamSharp.Authenticators;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -60,7 +61,7 @@ namespace SteamSharp {
 		public SteamClient() {
 
 			DefaultParameters = new List<SteamRequestParameter> {
-				new SteamRequestParameter { Name = "format", Value = "json", Type = ParameterType.GetOrPost }
+				new SteamRequestParameter { Name = "format", Value = "json", Type = ParameterType.QueryString }
 			};
 
 		}
@@ -109,8 +110,8 @@ namespace SteamSharp {
 				destination = BaseAPIEndpoint;
 
 			IEnumerable<SteamRequestParameter> parameters = null;
-			if( request.Method == HttpMethod.Post || request.Method == HttpMethod.Put ) {
-				// This conforms to a POST-style request
+			if( request.DataFormat != PostDataFormat.Raw && ( request.Method == HttpMethod.Post || request.Method == HttpMethod.Put ) ) {
+				// This conforms to a POST-style request and the output will be serialized (i.e. not Raw)
 				parameters = request.Parameters.Where( p => p.Type == ParameterType.QueryString );
 			} else {
 				// This conforms to a GET-style request
@@ -162,9 +163,20 @@ namespace SteamSharp {
 
 			var body = request.Parameters.FirstOrDefault( p => p.Type == ParameterType.RequestBody );
 			if( body != null ) {
-				HttpContent content = new StringContent( body.ToString() );
-				content.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse( "application/json" );
+
+				HttpContent content;
+				switch( request.DataFormat ) {
+					case PostDataFormat.Json :
+						content = new StringContent( SerializeBodyWithParameters( request, body ) );
+						content.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse( "application/json" );
+						break;
+					default :
+						content = new StringContent( body.Value.ToString() );
+						break;
+				}
+				
 				httpRequest.Content = content;
+
 			} 
 
 			return httpRequest;
@@ -226,6 +238,25 @@ namespace SteamSharp {
 			steamResponse.Content = stream.ReadToEnd();
 
 			return steamResponse;
+
+		}
+
+		// For POST requests, we must produce an object array such that it can be serialized (non-Raw POST style requests).
+		private string SerializeBodyWithParameters( ISteamRequest request, SteamRequestParameter body ) {
+			
+			Dictionary<string, object> output = new Dictionary<string, object>();
+			
+			IEnumerable<SteamRequestParameter> parameters = request.Parameters.Where( p => p.Type == ParameterType.GetOrPost );
+			foreach( var p in parameters ) {
+				output.Add( p.Name, p.Value );
+			}
+
+			if( output.Count < 1 )
+				return JsonConvert.SerializeObject( body.Value );
+			else {
+				output.Add( body.Name, body.Value );
+				return JsonConvert.SerializeObject( output );
+			}
 
 		}
 

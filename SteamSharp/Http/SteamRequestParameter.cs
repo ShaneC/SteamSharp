@@ -1,4 +1,5 @@
-﻿
+﻿using System;
+
 namespace SteamSharp {
 
 	public class SteamRequestParameter {
@@ -23,7 +24,7 @@ namespace SteamSharp {
 		/// </summary>
 		/// <returns>String</returns>
 		public override string ToString() {
-			return string.Format( "{0}={1}", Name, Value );
+			return String.Format( "{0}={1}", Name, Value );
 		}
 
 	}

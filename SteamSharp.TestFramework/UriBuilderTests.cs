@@ -1,6 +1,11 @@
-﻿using System;
+﻿using SteamSharp.TestFramework.Helpers;
+using System;
+using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
+using System.Web;
 using Xunit;
 
 namespace SteamSharp.TestFramework {
@@ -123,6 +128,125 @@ namespace SteamSharp.TestFramework {
 
 			Assert.Equal( expected, output );
 
+		}
+
+		[Fact]
+		public void GET_Add_QueryString_Params() {
+
+			using( SimulatedServer.Create( ResourceConstants.SimulatedServerUrl, QueryString_Echo ) ) {
+
+				// All Params added, GetOrPost & QueryString, should be present in the result set
+				SteamClient client = new SteamClient( ResourceConstants.SimulatedServerUrl );
+				var request = new SteamRequest( "/resource" );
+
+				request.AddParameter( "param1", "1234", ParameterType.GetOrPost );
+				request.AddParameter( "param2", "5678", ParameterType.QueryString );
+
+				var response = client.Execute( request );
+
+				Assert.NotNull( response.Content );
+
+				string[] temp = response.Content.Split( '|' );
+
+				NameValueCollection coll = new NameValueCollection();
+				foreach( string s in temp ) {
+					var split = s.Split( '=' );
+					coll.Add( split[0], split[1] );
+				}
+
+				Assert.NotNull( coll["param1"] );
+				Assert.Equal( "1234", coll["param1"] );
+
+				Assert.NotNull( coll["param2"] );
+				Assert.Equal( "5678", coll["param2"] );
+
+			}
+
+		}
+
+		[Fact]
+		public void POST_Add_QueryString_Params_Raw() {
+
+			using( SimulatedServer.Create( ResourceConstants.SimulatedServerUrl, QueryString_Echo ) ) {
+
+				// All Params added, GetOrPost & QueryString, should be present in the result set
+				SteamClient client = new SteamClient( ResourceConstants.SimulatedServerUrl );
+				var request = new SteamRequest( "/resource", HttpMethod.Post );
+				request.DataFormat = PostDataFormat.Raw;
+
+				request.AddParameter( "param1", "1234", ParameterType.GetOrPost );
+				request.AddParameter( "param2", "5678", ParameterType.QueryString );
+
+				var response = client.Execute( request );
+
+				Assert.NotNull( response.Content );
+
+				string[] temp = response.Content.Split( '|' );
+
+				NameValueCollection coll = new NameValueCollection();
+				foreach( string s in temp ) {
+					var split = s.Split( '=' );
+					coll.Add( split[0], split[1] );
+				}
+
+				Assert.NotNull( coll["param1"] );
+				Assert.Equal( "1234", coll["param1"] );
+
+				Assert.NotNull( coll["param2"] );
+				Assert.Equal( "5678", coll["param2"] );
+
+			}
+
+		}
+
+		[Fact]
+		public void POST_Add_QueryString_Params_Json() {
+
+			using( SimulatedServer.Create( ResourceConstants.SimulatedServerUrl, QueryString_Echo ) ) {
+
+				// Query String params should be in the URI, GetOrPost should not
+				SteamClient client = new SteamClient( ResourceConstants.SimulatedServerUrl );
+				var request = new SteamRequest( "/resource", HttpMethod.Post );
+				request.DataFormat = PostDataFormat.Json;
+
+				request.AddParameter( "param1", "1234", ParameterType.GetOrPost );
+				request.AddParameter( "param2", "5678", ParameterType.QueryString );
+
+				var response = client.Execute( request );
+
+				Assert.NotNull( response.Content );
+
+				string[] temp = response.Content.Split( '|' );
+
+				NameValueCollection coll = new NameValueCollection();
+				foreach( string s in temp ) {
+					var split = s.Split( '=' );
+					coll.Add( split[0], split[1] );
+				}
+
+				Assert.Null( coll["param1"] );
+
+				Assert.NotNull( coll["param2"] );
+				Assert.Equal( "5678", coll["param2"] );
+
+			}
+
+		}
+
+		private void QueryString_Echo( HttpListenerContext context ) {
+
+			var data = context.Request;
+
+			Uri requestUri = context.Request.Url;
+			var queryParams = HttpUtility.ParseQueryString( requestUri.Query );
+
+			List<string> temp = new List<string>();
+			foreach( string key in queryParams.AllKeys ) {
+				temp.Add( String.Format( "{0}={1}", key, queryParams[key] ) );
+			}
+
+			context.Response.OutputStream.WriteStringUTF8( String.Join( "|", temp ) );
+			
 		}
 
 	}

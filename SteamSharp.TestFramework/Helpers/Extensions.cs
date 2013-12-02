@@ -12,6 +12,13 @@ namespace SteamSharp.TestFramework.Helpers {
 
 		}
 
+		public static string StreamToString( this Stream target ) {
+
+			var streamReader = new StreamReader( target );
+			return streamReader.ReadToEnd();
+
+		}
+
 	}
 
 }

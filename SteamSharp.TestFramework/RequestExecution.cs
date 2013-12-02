@@ -1,5 +1,10 @@
-﻿using SteamSharp.TestFramework.Helpers;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using SteamSharp.TestFramework.Helpers;
+using System;
 using System.Net;
+using System.Net.Http;
+using System.Web;
 using Xunit;
 
 namespace SteamSharp.TestFramework {
@@ -52,8 +57,115 @@ namespace SteamSharp.TestFramework {
 
 		}
 
-		private static void Timeout_Simulator( HttpListenerContext context ) {
+		[Fact]
+		public void POST_Can_Add_Body_NoParams_Raw() {
+
+			using( SimulatedServer.Create( ResourceConstants.SimulatedServerUrl, Post_Body_Echo ) ) {
+
+				SteamClient client = new SteamClient( ResourceConstants.SimulatedServerUrl );
+				var request = new SteamRequest( "/resource", HttpMethod.Post );
+				request.DataFormat = PostDataFormat.Raw;
+
+				string payload = "myContent 123 abc's fun!";
+				
+				request.AddBody( payload );
+
+				var response = client.Execute( request );
+
+				Assert.NotNull( response );
+				Assert.NotNull( response.Content );
+				Assert.Equal( payload, response.Content );
+
+			}
+
+		}
+
+		[Fact]
+		public void POST_Can_Add_Body_WithParams_Raw() {
+
+			using( SimulatedServer.Create( ResourceConstants.SimulatedServerUrl, Post_Body_Echo ) ) {
+
+				SteamClient client = new SteamClient( ResourceConstants.SimulatedServerUrl );
+				var request = new SteamRequest( "/resource", HttpMethod.Post );
+				request.DataFormat = PostDataFormat.Raw;
+
+				string payload = "myContent 123 abc's fun!";
+				request.AddBody( payload );
+
+				request.AddParameter( "howdy", "doody" );
+				request.AddParameter( "foo", "bar" );
+
+				var response = client.Execute( request );
+
+				Assert.NotNull( response );
+				Assert.NotNull( response.Content );
+				Assert.Equal( payload, response.Content );
+
+			}
+
+		}
+
+		[Fact]
+		public void POST_Can_Add_Body_NoParams_Json() {
+
+			using( SimulatedServer.Create( ResourceConstants.SimulatedServerUrl, Post_Body_Echo ) ) {
+
+				SteamClient client = new SteamClient( ResourceConstants.SimulatedServerUrl );
+				var request = new SteamRequest( "/resource", HttpMethod.Post );
+
+				// Verify request defaults to JSON
+				Assert.Equal( PostDataFormat.Json, request.DataFormat );
+
+				string payload = "myContent 123 abc's fun!";
+
+				request.AddBody( payload );
+
+				var response = client.Execute( request );
+
+				Assert.NotNull( response );
+				Assert.NotNull( response.Content );
+				Assert.Equal( JsonConvert.SerializeObject( payload ), response.Content );
+
+			}
+
+		}
+
+		[Fact]
+		public void POST_Can_Add_Body_WithParams_Json() {
+
+			using( SimulatedServer.Create( ResourceConstants.SimulatedServerUrl, Post_Body_Echo ) ) {
+
+				SteamClient client = new SteamClient( ResourceConstants.SimulatedServerUrl );
+				var request = new SteamRequest( "/resource", HttpMethod.Post );
+				request.DataFormat = PostDataFormat.Json;
+
+				request.AddBody( "myContent 123 abc's fun!" );
+
+				request.AddParameter( "howdy", "doody" );
+				request.AddParameter( "foo", "bar" );
+
+				var response = client.Execute( request );
+
+				Assert.NotNull( response );
+				Assert.NotNull( response.Content );
+
+				JObject obj = JObject.Parse( response.Content );
+
+				Assert.Equal( "doody", obj["howdy"] );
+				Assert.Equal( "bar", obj["foo"] );
+				Assert.Equal( "myContent 123 abc's fun!", obj["application/json"] );
+
+			}
+
+		}
+
+		private void Timeout_Simulator( HttpListenerContext context ) {
 			System.Threading.Thread.Sleep( 5000 );
+		}
+
+		private void Post_Body_Echo( HttpListenerContext context ) {
+			var request = context.Request;
+			context.Response.OutputStream.WriteStringUTF8( request.InputStream.StreamToString() );
 		}
 
 	}
