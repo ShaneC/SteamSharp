@@ -10,7 +10,7 @@ namespace SteamSharp {
 		/// <summary>
 		/// Object for executing the GetNewsForApp API call.
 		/// </summary>
-		public class GetNewsForAppResponse {
+		private class GetNewsForAppResponse {
 
 			/// <summary>
 			/// Containing object for the data of the GetNewsForApp API call.

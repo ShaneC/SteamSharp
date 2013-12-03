@@ -94,6 +94,60 @@ namespace SteamSharp {
 		}
 		#endregion
 
+		#region IsPlayingSharedGame
+		/// <summary>
+		/// Returns the original owner's SteamID if a borrowing account is currently playing the specified game. Null if not borrowed, or the borrower isn't currently playing the game.
+		/// Throws <see cref="SteamRequestException"/> on failure.
+		/// <a href="https://developer.valvesoftware.com/wiki/Steam_Web_API#IsPlayingSharedGame_.28v0001.29">See official documentation.</a>
+		/// </summary>
+		/// <param name="client"><see cref="SteamClient"/> instance to use.</param>
+		/// <param name="steamID">SteamID to return friend's list for.</param>
+		/// <param name="gameID">GameID (AppID) of the game you're interested in querying.</param>
+		/// <returns></returns>
+		public static SharedGameData IsPlayingSharedGame( SteamClient client, string steamID, int gameID ) {
+			try {
+				return IsPlayingSharedGameAsync( client, steamID, gameID ).Result;
+			} catch( AggregateException e ) {
+				if( e.InnerException != null )
+					throw e.InnerException;
+				throw e;
+			}
+		}
+
+		/// <summary>
+		/// (Async) Returns the original owner's SteamID if a borrowing account is currently playing the specified game. Null if not borrowed, or the borrower isn't currently playing the game.
+		/// Throws <see cref="SteamRequestException"/> on failure.
+		/// <a href="https://developer.valvesoftware.com/wiki/Steam_Web_API#IsPlayingSharedGame_.28v0001.29">See official documentation.</a>
+		/// </summary>
+		/// <param name="client"><see cref="SteamClient"/> instance to use.</param>
+		/// <param name="steamID">SteamID to return friend's list for.</param>
+		/// <param name="gameID">GameID (AppID) of the game you're interested in querying.</param>
+		/// <returns></returns>
+		public async static Task<SharedGameData> IsPlayingSharedGameAsync( SteamClient client, string steamID, int gameID ) {
+
+			SteamRequest request = new SteamRequest( SteamAPIInterface.IPlayerService, "IsPlayingSharedGame", SteamMethodVersion.v0001 );
+			request.AddParameter( "steamid", steamID, ParameterType.QueryString );
+			request.AddParameter( "appid_playing", gameID, ParameterType.QueryString );
+
+			IsPlayingSharedGameObject obj = VerifyAndDeserialize<IsPlayingSharedGameResponse>( ( await client.ExecuteAsync( request ) ) ).IsPlayingSharedGame;
+
+			if( String.IsNullOrEmpty( obj.LenderSteamID ) || obj.LenderSteamID == "0" ) {
+				return new SharedGameData {
+					IsUserPlayingSharedGame = false,
+					GameOwnerSteamID = null,
+					GameBorrowerSteamID = null
+				};
+			} else {
+				return new SharedGameData {
+					IsUserPlayingSharedGame = true,
+					GameOwnerSteamID = obj.LenderSteamID,
+					GameBorrowerSteamID = steamID
+				};
+			}
+
+		}
+		#endregion
+
 	}
 
 }

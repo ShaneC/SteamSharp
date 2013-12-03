@@ -10,7 +10,7 @@ namespace SteamSharp {
 		/// <summary>
 		/// Object for executing the GetPlayerSummaries API call.
 		/// </summary>
-		public class GetPlayerSummariesResponse {
+		private class GetPlayerSummariesResponse {
 
 			/// <summary>
 			/// Containing object for the data of the GetPlayerSummaries API call.
@@ -22,7 +22,7 @@ namespace SteamSharp {
 		/// <summary>
 		/// Containing object for the data of the GetPlayerSummaries API call.
 		/// </summary>
-		public class GetPlayerSummariesContainer {
+		private class GetPlayerSummariesContainer {
 
 			/// <summary>
 			/// List containing the Player objects selected via the SteamIDs specified.
@@ -150,7 +150,7 @@ namespace SteamSharp {
 		/// <summary>
 		/// Response object for the data of the GetFriendsList API call.
 		/// </summary>
-		public class GetFriendsListResponse {
+		private class GetFriendsListResponse {
 
 			/// <summary>
 			/// Container for the FriendsList object response.
@@ -162,7 +162,7 @@ namespace SteamSharp {
 		/// <summary>
 		/// Containing object for the data of the GetFriendsList API call.
 		/// </summary>
-		public class FriendsList {
+		private class FriendsList {
 
 			/// <summary>
 			/// List of Friends for specified user.

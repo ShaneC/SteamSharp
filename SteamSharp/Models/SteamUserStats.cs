@@ -9,7 +9,7 @@ namespace SteamSharp {
 		/// <summary>
 		/// Object for executing the GetGlobalAchievementPercentagesForApp API call.
 		/// </summary>
-		public class GetGlobalAchievementPercentagesForAppResponse {
+		private class GetGlobalAchievementPercentagesForAppResponse {
 
 			/// <summary>
 			/// Containing object for the response of the GetGlobalAchievementPercentagesForApp API call.
@@ -21,7 +21,7 @@ namespace SteamSharp {
 		/// <summary>
 		/// Containing object for the response of the GetGlobalAchievementPercentagesForApp API call.
 		/// </summary>
-		public class AchievementPercentages {
+		private class AchievementPercentages {
 
 			/// <summary>
 			/// List of global achievements for the specified GameID.
@@ -53,7 +53,7 @@ namespace SteamSharp {
 		/// <summary>
 		/// Object for executing the GetPlayerAchievements API call.
 		/// </summary>
-		public class GetPlayerAchievementsResponse {
+		private class GetPlayerAchievementsResponse {
 
 			/// <summary>
 			/// Achievement status of player's 
@@ -118,7 +118,7 @@ namespace SteamSharp {
 		/// <summary>
 		/// Object for executing the GetPlayerAchievements API call.
 		/// </summary>
-		public class GetUserStatsForGameResponse {
+		private class GetUserStatsForGameResponse {
 
 			/// <summary>
 			/// Achievement status of player's 

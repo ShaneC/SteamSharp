@@ -68,6 +68,31 @@ namespace SteamSharp.TestFramework {
 		}
 		#endregion
 
+		#region IsPlayingSharedGame
+		[Fact]
+		public void GET_IsPlayingSharedGame_ByClass() {
+
+			SteamClient client = new SteamClient();
+			client.Authenticator = SteamSharp.Authenticators.APIKeyAuthenticator.ForProtectedResource( ResourceConstants.AccessToken );
+
+			var response = PlayerService.IsPlayingSharedGame( client, "76561197960434622", 440 );
+
+			Assert.NotNull( response );
+			Assert.IsType<PlayerService.SharedGameData>( response );
+
+			if( response.IsUserPlayingSharedGame ) {
+				Assert.NotNull( response.GameBorrowerSteamID );
+				Assert.NotNull( response.GameOwnerSteamID );
+				Assert.Equal( "76561197960434622", response.GameBorrowerSteamID );
+				Assert.NotEqual( "0", response.GameOwnerSteamID );
+			} else {
+				Assert.Null( response.GameBorrowerSteamID );
+				Assert.Null( response.GameOwnerSteamID );
+			}
+
+		}
+		#endregion
+
 	}
 
 }

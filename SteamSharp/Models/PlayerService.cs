@@ -10,7 +10,7 @@ namespace SteamSharp {
 		/// <summary>
 		/// Object for executing the GetOwnedGames API call.
 		/// </summary>
-		public class GetOwnedGamesResponse {
+		private class GetOwnedGamesResponse {
 
 			/// <summary>
 			/// Information about the specified Steam user's games library.
@@ -43,7 +43,7 @@ namespace SteamSharp {
 		/// <summary>
 		/// Object for executing the GetOwnedGames API call.
 		/// </summary>
-		public class GetRecentlyPlayedGamesResponse {
+		private class GetRecentlyPlayedGamesResponse {
 
 			/// <summary>
 			/// Information about the games the specified Steam user has played recently.
@@ -68,6 +68,58 @@ namespace SteamSharp {
 			/// List of <see cref="Game"/>s that have been recently played by the user.
 			/// </summary>
 			public List<Game> Games { get; set; }
+
+		}
+		#endregion
+
+		#region IsPlayingSharedGame
+		/// <summary>
+		/// Object for executing the IsPlayingSharedGame API call.
+		/// </summary>
+		private class IsPlayingSharedGameResponse {
+
+			/// <summary>
+			/// Containing object for the data of the IsPlayingSharedGame API call.
+			/// </summary>
+			[JsonProperty( "response" )]
+			public IsPlayingSharedGameObject IsPlayingSharedGame { get; set; }
+
+		}
+
+		/// <summary>
+		/// Containing object for the data of the IsPlayingSharedGame API call.
+		/// </summary>
+		private class IsPlayingSharedGameObject {
+
+			/// <summary>
+			/// The SteamID of the original owner if the given account currently plays this game and it's borrowed. In all other cases the result is 0.
+			/// </summary>
+			public string LenderSteamID { get; set; }
+
+		}
+
+		/// <summary>
+		/// Object containing a flag indicating if the requested game is currently being played by the requested user, and the IDs of both parties.
+		/// </summary>
+		public class SharedGameData {
+
+			/// <summary>
+			/// Flag indicating if the user specified is in fact currently playing the game specified.
+			/// </summary>
+			public bool IsUserPlayingSharedGame { get; set; }
+
+			/// <summary>
+			/// SteamID of the user who's borrowing the game.
+			/// If the game is being borrowed, this will always be the value of the SteamID specified in the query.
+			/// If IsUserPlayingSharedGame is false, this will be null.
+			/// </summary>
+			public string GameBorrowerSteamID { get; set; }
+
+			/// <summary>
+			/// SteamID of the original owner of the game being borrowed.
+			/// If IsUserPlayingSharedGame is false, this will be null. 
+			/// </summary>
+			public string GameOwnerSteamID { get; set; }
 
 		}
 		#endregion
