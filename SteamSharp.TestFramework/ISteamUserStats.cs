@@ -42,7 +42,7 @@ namespace SteamSharp.TestFramework {
 			var response = SteamUserStats.GetPlayerAchievements( client, "76561197972495328", 440 );
 
 			Assert.NotNull( response );
-			Assert.IsType<SteamUserStats.PlayerStats>( response );
+			Assert.IsType<SteamUserStats.PlayerAchievements>( response );
 
 		}
 
@@ -55,7 +55,7 @@ namespace SteamSharp.TestFramework {
 			var response = SteamUserStats.GetPlayerAchievements( client, "76561197972495328", 440, RequestedLangage.English );
 
 			Assert.NotNull( response );
-			Assert.IsType<SteamUserStats.PlayerStats>( response );
+			Assert.IsType<SteamUserStats.PlayerAchievements>( response );
 
 		}
 
@@ -68,7 +68,7 @@ namespace SteamSharp.TestFramework {
 			var response = SteamUserStats.GetPlayerAchievements( client, "76561197972495328", 440, RequestedLangage.Japanese );
 
 			Assert.NotNull( response );
-			Assert.IsType<SteamUserStats.PlayerStats>( response );
+			Assert.IsType<SteamUserStats.PlayerAchievements>( response );
 
 		}
 
@@ -81,7 +81,33 @@ namespace SteamSharp.TestFramework {
 			var response = SteamUserStats.GetPlayerAchievements( client, "76561197972495328", 440, RequestedLangage.Russian );
 
 			Assert.NotNull( response );
+			Assert.IsType<SteamUserStats.PlayerAchievements>( response );
+
+		}
+		#endregion
+
+		#region GetUserStatsForGame
+		[Fact]
+		public void GET_GetUserStatsForGame_ByClass() {
+
+			SteamClient client = new SteamClient();
+			client.Authenticator = SteamSharp.Authenticators.APIKeyAuthenticator.ForProtectedResource( ResourceConstants.AccessToken );
+
+			var response = SteamUserStats.GetUserStatsForGame( client, "76561197972495328", 440 );
+
+			Assert.NotNull( response );
 			Assert.IsType<SteamUserStats.PlayerStats>( response );
+
+			Assert.NotNull( response.GameName );
+			Assert.NotNull( response.Stats );
+			Assert.NotNull( response.SteamID );
+
+			Assert.True( ( response.Stats.Count > 0 ) );
+
+			Assert.NotNull( response.Stats[0] );
+
+			Assert.NotNull( response.Stats[0].APIName );
+			Assert.NotNull( response.Stats[0].Value );
 
 		}
 		#endregion

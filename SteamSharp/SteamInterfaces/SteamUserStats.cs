@@ -52,8 +52,8 @@ namespace SteamSharp {
 		/// <param name="client"><see cref="SteamClient"/> instance to use.</param>
 		/// <param name="steamID">SteamID to return friend's list for.</param>
 		/// <param name="gameID">AppID of the game you want the news of.</param>
-		/// <returns><see cref="PlayerStats"/> object containing game name and list of <see cref="Achivement"/> objects.</returns>
-		public static PlayerStats GetPlayerAchievements( SteamClient client, string steamID, int gameID ) {
+		/// <returns><see cref="PlayerAchievements"/> object containing game name and list of <see cref="Achivement"/> objects.</returns>
+		public static PlayerAchievements GetPlayerAchievements( SteamClient client, string steamID, int gameID ) {
 			return GetPlayerAchievements( client, steamID, gameID, RequestedLangage.English );
 		}
 
@@ -66,8 +66,8 @@ namespace SteamSharp {
 		/// <param name="steamID">SteamID to return friend's list for.</param>
 		/// <param name="gameID">AppID of the game you want the news of.</param>
 		/// <param name="returnLanguage">Desired language for the "name" and "description" properties of returned <see cref="Achievement"/> objects.</param>
-		/// <returns><see cref="PlayerStats"/> object containing game name and list of <see cref="Achivement"/> objects.</returns>
-		public static PlayerStats GetPlayerAchievements( SteamClient client, string steamID, int gameID, RequestedLangage returnLanguage ) {
+		/// <returns><see cref="PlayerAchievements"/> object containing game name and list of <see cref="Achivement"/> objects.</returns>
+		public static PlayerAchievements GetPlayerAchievements( SteamClient client, string steamID, int gameID, RequestedLangage returnLanguage ) {
 			try {
 				return GetPlayerAchievementsAsync( client, steamID, gameID, returnLanguage ).Result;
 			} catch( AggregateException e ) {
@@ -85,8 +85,8 @@ namespace SteamSharp {
 		/// <param name="client"><see cref="SteamClient"/> instance to use.</param>
 		/// <param name="steamID">SteamID to return friend's list for.</param>
 		/// <param name="gameID">AppID of the game you want the news of.</param>
-		/// <returns><see cref="PlayerStats"/> object containing game name and list of <see cref="Achivement"/> objects.</returns>
-		public async static Task<PlayerStats> GetPlayerAchievementsAsync( SteamClient client, string steamID, int gameID ) {
+		/// <returns><see cref="PlayerAchievements"/> object containing game name and list of <see cref="Achivement"/> objects.</returns>
+		public async static Task<PlayerAchievements> GetPlayerAchievementsAsync( SteamClient client, string steamID, int gameID ) {
 			return await GetPlayerAchievementsAsync( client, steamID, gameID, RequestedLangage.English );
 		}
 
@@ -99,8 +99,8 @@ namespace SteamSharp {
 		/// <param name="steamID">SteamID to return friend's list for.</param>
 		/// <param name="gameID">AppID of the game you want the news of.</param>
 		/// <param name="returnLanguage">Desired language for the "name" and "description" properties of returned <see cref="Achievement"/> objects.</param>
-		/// <returns><see cref="PlayerStats"/> object containing game name and list of <see cref="Achivement"/> objects.</returns>
-		public async static Task<PlayerStats> GetPlayerAchievementsAsync( SteamClient client, string steamID, int gameID, RequestedLangage returnLanguage ) {
+		/// <returns><see cref="PlayerAchievements"/> object containing game name and list of <see cref="Achivement"/> objects.</returns>
+		public async static Task<PlayerAchievements> GetPlayerAchievementsAsync( SteamClient client, string steamID, int gameID, RequestedLangage returnLanguage ) {
 
 			SteamRequest request = new SteamRequest( SteamAPIInterface.ISteamUserStats, "GetPlayerAchievements", SteamMethodVersion.v0001 );
 			request.AddParameter( "appid", gameID );
@@ -108,7 +108,41 @@ namespace SteamSharp {
 
 			request.AddParameter( "l", GetLanguageFromEnum( returnLanguage ) );
 
-			return VerifyAndDeserialize<GetPlayerAchievementsResponse>( ( await client.ExecuteAsync( request ) ) ).PlayerStats;
+			return VerifyAndDeserialize<GetPlayerAchievementsResponse>( ( await client.ExecuteAsync( request ) ) ).PlayerAchievements;
+
+		}
+		#endregion
+
+		#region GetUserStatsForGame
+		/// <summary>
+		/// Returns a list of stats for this user by GameID (App ID).
+		/// Throws <see cref="SteamRequestException"/> on failure.
+		/// <a href="https://developer.valvesoftware.com/wiki/Steam_Web_API#GetUserStatsForGame_.28v0002.29">See official documentation.</a>
+		/// </summary>
+		/// <param name="client"><see cref="SteamClient"/> instance to use.</param>
+		/// <param name="steamID">SteamID to return friend's list for.</param>
+		/// <param name="gameID">AppID of the game you want the news of.</param>
+		/// <returns><see cref="PlayerStats"/> object containing game name and list of <see cref="Stat"/> objects.</returns>
+		public  static PlayerStats GetUserStatsForGame( SteamClient client, string steamID, int gameID ) {
+			return GetUserStatsForGameAsync( client, steamID, gameID ).Result;
+		}
+		
+		/// <summary>
+		/// (Asynchronous) Returns a list of stats for this user by GameID (App ID).
+		/// Throws <see cref="SteamRequestException"/> on failure.
+		/// <a href="https://developer.valvesoftware.com/wiki/Steam_Web_API#GetUserStatsForGame_.28v0002.29">See official documentation.</a>
+		/// </summary>
+		/// <param name="client"><see cref="SteamClient"/> instance to use.</param>
+		/// <param name="steamID">SteamID to return friend's list for.</param>
+		/// <param name="gameID">AppID of the game you want the news of.</param>
+		/// <returns><see cref="PlayerStats"/> object containing game name and list of <see cref="Stat"/> objects.</returns>
+		public async static Task<PlayerStats> GetUserStatsForGameAsync( SteamClient client, string steamID, int gameID ) {
+
+			SteamRequest request = new SteamRequest( SteamAPIInterface.ISteamUserStats, "GetUserStatsForGame", SteamMethodVersion.v0002 );
+			request.AddParameter( "appid", gameID );
+			request.AddParameter( "steamid", steamID );
+
+			return VerifyAndDeserialize<GetUserStatsForGameResponse>( ( await client.ExecuteAsync( request ) ) ).PlayerStats;
 
 		}
 		#endregion

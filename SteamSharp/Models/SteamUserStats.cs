@@ -58,14 +58,15 @@ namespace SteamSharp {
 			/// <summary>
 			/// Achievement status of player's 
 			/// </summary>
-			public PlayerStats PlayerStats { get; set; }
+			[JsonProperty( "playerstats" )]
+			public PlayerAchievements PlayerAchievements { get; set; }
 
 		}
 
 		/// <summary>
 		/// Containing object for executing the GetPlayerAchievements API call.
 		/// </summary>
-		public class PlayerStats {
+		public class PlayerAchievements {
 
 			/// <summary>
 			/// 64bit SteamID of the user.
@@ -109,6 +110,61 @@ namespace SteamSharp {
 			/// Description of the achievement (in the language specified, defaults to English). In example, "Run 25 kilometers."
 			/// </summary>
 			public string Description { get; set; }
+
+		}
+		#endregion
+
+		#region GetUserStatsForGame
+		/// <summary>
+		/// Object for executing the GetPlayerAchievements API call.
+		/// </summary>
+		public class GetUserStatsForGameResponse {
+
+			/// <summary>
+			/// Achievement status of player's 
+			/// </summary>
+			public PlayerStats PlayerStats { get; set; }
+
+		}
+
+		/// <summary>
+		/// Containing object for executing the GetPlayerAchievements API call.
+		/// </summary>
+		public class PlayerStats {
+
+			/// <summary>
+			/// 64bit SteamID of the user.
+			/// </summary>
+			public string SteamID { get; set; }
+
+			/// <summary>
+			/// Friendly name of the game specified (i.e. "Team Fortress 2")
+			/// </summary>
+			public string GameName { get; set; }
+
+			/// <summary>
+			/// List of possible <see cref="Stat"/>s for the game specified. <see cref="Stat"/> contains data about the user's specific accomplishment.
+			/// </summary>
+			public List<Stat> Stats { get; set; }
+
+		}
+
+		/// <summary>
+		/// Information about a possible stat for the game specified, containing data about the specified user's progress.
+		/// </summary>
+		public class Stat {
+
+			/// <summary>
+			/// API name of the stat (i.e. Scout.accum.iBuildingsDestroyed, Soldier.accum.iDominations)
+			/// </summary>
+			[JsonProperty( "name" )]
+			public string APIName { get; set; }
+
+			/// <summary>
+			/// Value of the stat for the specified user.
+			/// </summary>
+			public double Value { get; set; }
+
 
 		}
 		#endregion
