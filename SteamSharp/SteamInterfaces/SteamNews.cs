@@ -8,6 +8,7 @@ namespace SteamSharp {
 	/// </summary>
 	public partial class SteamNews : SteamInterface {
 
+		#region GetNewsForApp
 		/// <summary>
 		/// Returns the latest of a game specified by its AppID.
 		/// Throws <see cref="SteamRequestException"/> on failure.
@@ -48,6 +49,7 @@ namespace SteamSharp {
 			return VerifyAndDeserialize<GetNewsForAppResponse>( ( await client.ExecuteAsync( request ) ) ).AppNews;
 
 		}
+		#endregion
 
 	}
 

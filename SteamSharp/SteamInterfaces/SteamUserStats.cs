@@ -124,7 +124,13 @@ namespace SteamSharp {
 		/// <param name="gameID">AppID of the game you want the news of.</param>
 		/// <returns><see cref="PlayerStats"/> object containing game name and list of <see cref="Stat"/> objects.</returns>
 		public  static PlayerStats GetUserStatsForGame( SteamClient client, string steamID, int gameID ) {
-			return GetUserStatsForGameAsync( client, steamID, gameID ).Result;
+			try {
+				return GetUserStatsForGameAsync( client, steamID, gameID ).Result;
+			} catch( AggregateException e ) {
+				if( e.InnerException != null )
+					throw e.InnerException;
+				throw e;
+			}
 		}
 		
 		/// <summary>

@@ -43,10 +43,12 @@
     <Compile Include="Exceptions\SteamRequestException.cs" />
     <Compile Include="Http\ISteamRequest.cs" />
     <Compile Include="Http\ISteamResponse.cs" />
+    <Compile Include="Models\PlayerService.cs" />
     <Compile Include="Models\SteamNews.cs" />
     <Compile Include="Models\SteamUserStats.cs" />
     <Compile Include="Models\SteamUser.cs" />
     <Compile Include="SteamInterfaces\SteamInterfaceHelpers.cs" />
+    <Compile Include="SteamInterfaces\PlayerService.cs" />
     <Compile Include="SteamInterfaces\SteamUser.cs" />
     <Compile Include="SteamInterfaces\SteamUserStats.cs" />
     <Compile Include="SteamInterfaces\SteamInterface.cs" />

@@ -157,13 +157,46 @@ namespace SteamSharp.TestFramework {
 
 		}
 
+		[Fact]
+		public void POST_Can_Add_DataStructure_Json() {
+
+			using( SimulatedServer.Create( ResourceConstants.SimulatedServerUrl, Post_Body_Echo ) ) {
+
+				SteamClient client = new SteamClient( ResourceConstants.SimulatedServerUrl );
+				var request = new SteamRequest( "/resource", HttpMethod.Post );
+				request.DataFormat = PostDataFormat.Json;
+
+				object payload = new {
+					appids_filter = new int[] { 10, 20, 30, 40, 50 }
+				};
+				
+				request.AddBody( payload );
+
+				var response = client.Execute( request );
+
+				Assert.NotNull( response );
+				Assert.NotNull( response.Content );
+
+				DataStructureResponseTest obj = JsonConvert.DeserializeObject<DataStructureResponseTest>( response.Content );
+
+				Assert.Equal( 5, obj.appids_filter.Length );
+
+			}
+
+		}
+
+		private class DataStructureResponseTest {
+			public int[] appids_filter { get; set; }
+		}
+
 		private void Timeout_Simulator( HttpListenerContext context ) {
 			System.Threading.Thread.Sleep( 5000 );
 		}
 
 		private void Post_Body_Echo( HttpListenerContext context ) {
 			var request = context.Request;
-			context.Response.OutputStream.WriteStringUTF8( request.InputStream.StreamToString() );
+			string fromRequest = request.InputStream.StreamToString();
+			context.Response.OutputStream.WriteStringUTF8( fromRequest );
 		}
 
 	}

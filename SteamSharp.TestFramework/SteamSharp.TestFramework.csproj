@@ -60,6 +60,7 @@
     <Compile Include="Authenticators.cs" />
     <Compile Include="Helpers\Extensions.cs" />
     <Compile Include="Helpers\SimulatedServer.cs" />
+    <Compile Include="IPlayerService.cs" />
     <Compile Include="ISteamUser.cs" />
     <Compile Include="ISteamUserStats.cs" />
     <Compile Include="ISteamNews.cs" />

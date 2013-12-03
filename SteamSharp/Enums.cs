@@ -8,7 +8,8 @@ namespace SteamSharp {
 		Unknown,
 		ISteamNews,
 		ISteamUserStats,
-		ISteamUser
+		ISteamUser,
+		IPlayerService
 	}
 
 	/// <summary>
