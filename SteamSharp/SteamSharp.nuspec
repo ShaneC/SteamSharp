@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<package >
+	<metadata>
+		<id>$id$</id>
+		<version>$version$</version>
+		<title>$title$</title>
+		<authors>Shane Chism</authors>
+		<owners>Shane Chism</owners>
+		<description>SteamSharp is a portable class library for use in .NET 4.5+ projects. Due to its portability, this library can be used in Windows Store (8 or higher) and Windows Phone (8 or higher) applications (among others).</description>
+		<language>en-US</language>
+		<licenseUrl>https://github.com/ShaneC/SteamSharp/blob/master/LICENSE.txt</licenseUrl>
+		<projectUrl>https://github.com/ShaneC/SteamSharp</projectUrl>
+		<requireLicenseAcceptance>false</requireLicenseAcceptance>
+		<iconUrl>http://serve.shanechism.com/images/steamsharplogo.png</iconUrl>
+		<tags>Steam Client Valve API HTTP Chat Authentication</tags>
+		<releaseNotes>
+			<![CDATA[
+			Full project release notes can be found at https://github.com/ShaneC/SteamSharp/blob/master/ReleaseNotes.md.
+			]]>
+		</releaseNotes>
+	</metadata>
+</package>
