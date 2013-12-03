@@ -38,7 +38,7 @@ namespace SteamSharp {
 			SteamRequest request = new SteamRequest( SteamAPIInterface.ISteamUserStats, "GetGlobalAchievementPercentagesForApp", SteamMethodVersion.v0002 );
 			request.AddParameter( "gameid", gameID );
 
-			return VerifyAndDeserialize<AchievementPercentagesResponse>( ( await client.ExecuteAsync( request ) ) ).achievementpercentages.achievements;
+			return VerifyAndDeserialize<GetGlobalAchievementPercentagesForAppResponse>( ( await client.ExecuteAsync( request ) ) ).AchievementPercentages.Achievements;
 
 		}
 		#endregion
@@ -108,7 +108,7 @@ namespace SteamSharp {
 
 			request.AddParameter( "l", GetLanguageFromEnum( returnLanguage ) );
 
-			return VerifyAndDeserialize<GetPlayerAchievementsResponse>( ( await client.ExecuteAsync( request ) ) ).playerstats;
+			return VerifyAndDeserialize<GetPlayerAchievementsResponse>( ( await client.ExecuteAsync( request ) ) ).PlayerStats;
 
 		}
 		#endregion

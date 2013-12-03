@@ -32,6 +32,8 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>
+    </DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Authenticators\APIKeyAuthenticator.cs" />
@@ -44,6 +46,7 @@
     <Compile Include="Models\SteamNews.cs" />
     <Compile Include="Models\SteamUserStats.cs" />
     <Compile Include="Models\SteamUser.cs" />
+    <Compile Include="SteamInterfaces\SteamInterfaceHelpers.cs" />
     <Compile Include="SteamInterfaces\SteamUser.cs" />
     <Compile Include="SteamInterfaces\SteamUserStats.cs" />
     <Compile Include="SteamInterfaces\SteamInterface.cs" />

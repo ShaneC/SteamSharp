@@ -60,6 +60,7 @@ namespace SteamSharp {
 		Json
 	}
 
+	/* Interface Specific Enums */
 	#region Interface Specific Enums
 	/// <summary>
 	/// Relationship filter for profile/friend's list filtering. Possible values: All, Friend
@@ -82,6 +83,28 @@ namespace SteamSharp {
 		German,
 		Dutch,
 		Japanese
+	}
+
+	/// <summary>
+	/// The user's current status.
+	/// If the player's profile is private, this will always be "Offline", except if the user has set their status to looking to trade or looking to play (due to a bug, not long term behavior!).
+	/// </summary>
+	public enum PersonaState {
+		Offline = 0,
+		Online = 1,
+		Busy = 2,
+		Away = 3,
+		Snooze = 4,
+		LookingToTrade = 5,
+		LookingToPlay = 6
+	}
+
+	/// <summary>
+	/// This represents whether the profile is visible or not, and if it is visible, why you are allowed to see it.
+	/// </summary>
+	public enum CommunityVisibilityState {
+		Private = 1,
+		Public = 3
 	}
 	#endregion
 

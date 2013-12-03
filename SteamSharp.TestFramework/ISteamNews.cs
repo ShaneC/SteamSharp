@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System;
+using System.Net;
 using Xunit;
 
 namespace SteamSharp.TestFramework {
@@ -48,6 +49,9 @@ namespace SteamSharp.TestFramework {
 
 			Assert.NotNull( response );
 			Assert.IsType<SteamNews.AppNews>( response );
+
+			Assert.NotNull( response.NewsItems[0].Date );
+			Assert.IsType<DateTime>( response.NewsItems[0].Date );
 
 		}
 

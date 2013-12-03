@@ -69,7 +69,7 @@ namespace SteamSharp {
 			SteamRequest request = new SteamRequest( SteamAPIInterface.ISteamUser, "GetPlayerSummaries", SteamMethodVersion.v0002 );
 			request.AddParameter( "steamids", steamID );
 
-			return VerifyAndDeserialize<GetPlayerSummariesResponse>( ( await client.ExecuteAsync( request ) ) ).response.players.FirstOrDefault();
+			return VerifyAndDeserialize<GetPlayerSummariesResponse>( ( await client.ExecuteAsync( request ) ) ).Response.Players.FirstOrDefault();
 
 		}
 
@@ -93,7 +93,7 @@ namespace SteamSharp {
 			SteamRequest request = new SteamRequest( SteamAPIInterface.ISteamUser, "GetPlayerSummaries", SteamMethodVersion.v0002 );
 			request.AddParameter( "steamids", String.Join( ",", steamIDs ) );
 
-			return VerifyAndDeserialize<GetPlayerSummariesResponse>( ( await client.ExecuteAsync( request ) ) ).response.players;
+			return VerifyAndDeserialize<GetPlayerSummariesResponse>( ( await client.ExecuteAsync( request ) ) ).Response.Players;
 
 		}
 		#endregion
@@ -146,7 +146,7 @@ namespace SteamSharp {
 			request.AddParameter( "steamid", steamID );
 			request.AddParameter( "relationship", relationshipType );
 
-			return VerifyAndDeserialize<GetFriendsListResponse>( ( await client.ExecuteAsync( request ) ) ).friendslist.friends;
+			return VerifyAndDeserialize<GetFriendsListResponse>( ( await client.ExecuteAsync( request ) ) ).FriendsList.Friends;
 
 		}
 		#endregion

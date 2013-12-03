@@ -45,7 +45,7 @@ namespace SteamSharp {
 			request.AddParameter( "count", count );
 			request.AddParameter( "maxlength", maxLength );
 
-			return VerifyAndDeserialize<AppNewsResponse>( ( await client.ExecuteAsync( request ) ) ).appnews;
+			return VerifyAndDeserialize<GetNewsForAppResponse>( ( await client.ExecuteAsync( request ) ) ).AppNews;
 
 		}
 
