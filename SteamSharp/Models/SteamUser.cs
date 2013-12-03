@@ -119,7 +119,7 @@ namespace SteamSharp {
 			public string PersonaStateFlags { get; set; }
 
 			/// <summary>
-			/// If the user is currently in-game, this will be the name of the game they are playing. This may be the name of a non-Steam game shortcut.
+			/// If the user is currently in-game, this will be the name of the game they are playing. If no game is being played this value is null.
 			/// </summary>
 			public string GameExtraInfo { get; set; }
 
