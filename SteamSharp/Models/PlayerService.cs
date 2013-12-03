@@ -13,14 +13,15 @@ namespace SteamSharp {
 		public class GetOwnedGamesResponse {
 
 			/// <summary>
-			/// Containing object for the data of the GetOwnedGames API call.
+			/// Information about the specified Steam user's games library.
 			/// </summary>
-			public OwnedGames Response { get; set; }
+			[JsonProperty( "response" )]
+			public OwnedGames OwnedGames { get; set; }
 
 		}
 
 		/// <summary>
-		/// Information about the specified Steam's user games library.
+		/// Information about the specified Steam user's games library.
 		/// </summary>
 		public class OwnedGames {
 
@@ -36,7 +37,42 @@ namespace SteamSharp {
 			public List<Game> Games { get; set; }
 
 		}
+		#endregion
 
+		#region GetRecentlyPlayedGames
+		/// <summary>
+		/// Object for executing the GetOwnedGames API call.
+		/// </summary>
+		public class GetRecentlyPlayedGamesResponse {
+
+			/// <summary>
+			/// Information about the games the specified Steam user has played recently.
+			/// </summary>
+			[JsonProperty( "response" )]
+			public PlayedGames PlayedGames { get; set; }
+		}
+
+		/// <summary>
+		/// Information about the games the specified Steam user has played recently.
+		/// </summary>
+		public class PlayedGames {
+
+			/// <summary>
+			/// The total number of unique games the user has played in the last two weeks.
+			/// This is mostly significant if you opted to return a limited number of games with the count input parameter.
+			/// </summary>
+			[JsonProperty( "total_count" )]
+			public int TotalCount { get; set; }
+
+			/// <summary>
+			/// List of <see cref="Game"/>s that have been recently played by the user.
+			/// </summary>
+			public List<Game> Games { get; set; }
+
+		}
+		#endregion
+
+		#region Shared Models
 		/// <summary>
 		/// News information for the specified GameID/AppID.
 		/// </summary>
@@ -78,6 +114,7 @@ namespace SteamSharp {
 			public string ImgLogoURL { get; set; }
 
 			/// <summary>
+			/// (Set on GetOwnedGames calls only)
 			/// Indicates there is a stats page with achievements or other game stats available for this game.
 			/// </summary>
 			[JsonProperty( "has_community_visible_stats" )]
