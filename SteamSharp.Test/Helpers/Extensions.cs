@@ -1,7 +1,7 @@
-﻿using System.IO;
-using System.Text;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using System.IO;
+using System.Text;
 
 namespace SteamSharp.Test.Helpers {
 
