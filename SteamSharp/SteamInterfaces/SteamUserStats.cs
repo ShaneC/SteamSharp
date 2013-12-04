@@ -3,7 +3,10 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace SteamSharp {
-	
+
+	/// <summary>
+	/// Class allowing for abstracted querying of the ISteamUserStats interface
+	/// </summary>
 	public partial class SteamUserStats : SteamInterface {
 
 		#region GetGlobalAchievementPercentagesForApp
@@ -52,7 +55,7 @@ namespace SteamSharp {
 		/// <param name="client"><see cref="SteamClient"/> instance to use.</param>
 		/// <param name="steamID">SteamID to return friend's list for.</param>
 		/// <param name="gameID">AppID of the game you want the news of.</param>
-		/// <returns><see cref="PlayerAchievements"/> object containing game name and list of <see cref="Achivement"/> objects.</returns>
+		/// <returns><see cref="PlayerAchievements"/> object containing game name and list of <see cref="Achievement"/> objects.</returns>
 		public static PlayerAchievements GetPlayerAchievements( SteamClient client, string steamID, int gameID ) {
 			return GetPlayerAchievements( client, steamID, gameID, RequestedLangage.English );
 		}
@@ -66,7 +69,7 @@ namespace SteamSharp {
 		/// <param name="steamID">SteamID to return friend's list for.</param>
 		/// <param name="gameID">AppID of the game you want the news of.</param>
 		/// <param name="returnLanguage">Desired language for the "name" and "description" properties of returned <see cref="Achievement"/> objects.</param>
-		/// <returns><see cref="PlayerAchievements"/> object containing game name and list of <see cref="Achivement"/> objects.</returns>
+		/// <returns><see cref="PlayerAchievements"/> object containing game name and list of <see cref="Achievement"/> objects.</returns>
 		public static PlayerAchievements GetPlayerAchievements( SteamClient client, string steamID, int gameID, RequestedLangage returnLanguage ) {
 			try {
 				return GetPlayerAchievementsAsync( client, steamID, gameID, returnLanguage ).Result;
@@ -85,7 +88,7 @@ namespace SteamSharp {
 		/// <param name="client"><see cref="SteamClient"/> instance to use.</param>
 		/// <param name="steamID">SteamID to return friend's list for.</param>
 		/// <param name="gameID">AppID of the game you want the news of.</param>
-		/// <returns><see cref="PlayerAchievements"/> object containing game name and list of <see cref="Achivement"/> objects.</returns>
+		/// <returns><see cref="PlayerAchievements"/> object containing game name and list of <see cref="Achievement"/> objects.</returns>
 		public async static Task<PlayerAchievements> GetPlayerAchievementsAsync( SteamClient client, string steamID, int gameID ) {
 			return await GetPlayerAchievementsAsync( client, steamID, gameID, RequestedLangage.English );
 		}
@@ -99,7 +102,7 @@ namespace SteamSharp {
 		/// <param name="steamID">SteamID to return friend's list for.</param>
 		/// <param name="gameID">AppID of the game you want the news of.</param>
 		/// <param name="returnLanguage">Desired language for the "name" and "description" properties of returned <see cref="Achievement"/> objects.</param>
-		/// <returns><see cref="PlayerAchievements"/> object containing game name and list of <see cref="Achivement"/> objects.</returns>
+		/// <returns><see cref="PlayerAchievements"/> object containing game name and list of <see cref="Achievement"/> objects.</returns>
 		public async static Task<PlayerAchievements> GetPlayerAchievementsAsync( SteamClient client, string steamID, int gameID, RequestedLangage returnLanguage ) {
 
 			SteamRequest request = new SteamRequest( SteamAPIInterface.ISteamUserStats, "GetPlayerAchievements", SteamMethodVersion.v0001 );

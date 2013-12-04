@@ -4,8 +4,17 @@ using System.Net;
 
 namespace SteamSharp {
 
-	public class SteamInterface {
+	/// <summary>
+	/// Base class for abstraction classes of Steam API interfaces.
+	/// </summary>
+	public abstract class SteamInterface {
 
+		/// <summary>
+		/// Utility class to validate the Steam Response for common issues and, if none are found, attempt to deserialize the response's content.
+		/// </summary>
+		/// <typeparam name="T">Object type for the <see cref="ISteamResponse"/> to be deserialized into.</typeparam>
+		/// <param name="response">Response object provided by the SteamClient's execution method.</param>
+		/// <returns>Deserialized representation of <see cref="ISteamResponse"/>'s server-recevied content.</returns>
 		protected static T VerifyAndDeserialize<T>( ISteamResponse response ) {
 
 			if( !response.IsSuccessful ) {
@@ -45,6 +54,11 @@ namespace SteamSharp {
 
 		}
 
+		/// <summary>
+		/// Utility method providing translation of valid language possibilities for certain Steam APIs.
+		/// </summary>
+		/// <param name="language">Target language</param>
+		/// <returns>Steam-understandable string representation of the target language.</returns>
 		protected static string GetLanguageFromEnum( RequestedLangage language ) {
 
 			switch( Enum.GetName( typeof( RequestedLangage ), language ) ) {

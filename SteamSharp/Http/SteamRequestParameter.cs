@@ -2,6 +2,9 @@
 
 namespace SteamSharp {
 
+	/// <summary>
+	/// Containing object for data intended to be sent as request parameters.
+	/// </summary>
 	public class SteamRequestParameter {
 
 		/// <summary>

@@ -4,8 +4,14 @@ using System;
 
 namespace SteamSharp {
 
+	/// <summary>
+	/// Utility class used in the Steam Interface classes.
+	/// </summary>
 	public static class SteamInterfaceHelpers {
 
+		/// <summary>
+		/// Json.Net converter class for reading/writing Unix Time from/to JSON.
+		/// </summary>
 		public class UnixDateTimeConverter : DateTimeConverterBase {
 
 			/// <summary>

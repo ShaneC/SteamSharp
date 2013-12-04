@@ -49,12 +49,13 @@ namespace SteamSharp {
 			/// <summary>
 			/// Indicates if the user has set their public profile. Maps to the "profilestate" API property.
 			/// </summary>
-			private bool _profileState = false;
 			[JsonProperty( "profilestate" )]
 			public bool IsProfileSet {
 				get { return _profileState; }
 				set { _profileState = value; }
 			}
+
+			private bool _profileState = false;
 
 			/// <summary>
 			/// The player's persona name (display name).

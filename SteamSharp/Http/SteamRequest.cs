@@ -4,6 +4,9 @@ using System.Net.Http;
 
 namespace SteamSharp {
 
+	/// <summary>
+	/// Container for data used to make Steam API requests.
+	/// </summary>
 	public class SteamRequest : ISteamRequest {
 
 		/// <summary>
@@ -16,20 +19,22 @@ namespace SteamSharp {
 		/// Indicates the standard HTTP method that should be used for this request.
 		/// This value defaults to GET.
 		/// </summary>
-		private HttpMethod _method = HttpMethod.Get;
 		public HttpMethod Method {
 			get { return _method; }
 			set { _method = value; }
 		}
 
+		private HttpMethod _method = HttpMethod.Get;
+
 		/// <summary>
 		/// Data Format to use for POST Requests.
 		/// </summary>
-		private PostDataFormat _dataFormat = PostDataFormat.Json;
 		public PostDataFormat DataFormat {
 			get { return _dataFormat; }
 			set { _dataFormat = value; }
 		}
+
+		private PostDataFormat _dataFormat = PostDataFormat.Json;
 
 		/// <summary>
 		/// The URI the request will be made against.
@@ -45,29 +50,32 @@ namespace SteamSharp {
 		/// <summary>
 		/// Steam API Interface to access (i.e. ISteamNews)
 		/// </summary>
-		private SteamAPIInterface _steamInterface = SteamAPIInterface.Unknown;
 		public SteamAPIInterface SteamInterface { 
 			get { return _steamInterface; }
 			private set { _steamInterface = value; }
 		}
 
+		private SteamAPIInterface _steamInterface = SteamAPIInterface.Unknown;
+
 		/// <summary>
 		/// Method within the Steam API to use (i.e. GetNewsForApp)
 		/// </summary>
-		private string _steamApiMethod = null;
 		public string SteamApiMethod {
 			get { return _steamApiMethod; }
 			private set { _steamApiMethod = value; }
 		}
 
+		private string _steamApiMethod = null;
+
 		/// <summary>
 		/// Version of the API being requested (i.e. v0001)
 		/// </summary>
-		private SteamMethodVersion _steamMethodVersion = SteamMethodVersion.Unknown;
 		public SteamMethodVersion SteamMethodVersion {
 			get { return _steamMethodVersion; }
 			private set { _steamMethodVersion = value; }
 		}
+
+		private SteamMethodVersion _steamMethodVersion = SteamMethodVersion.Unknown;
 
 		/// <summary>
 		/// Initializes SteamRequest with the targeted resource URL and the HTTP Method for the request.
@@ -213,10 +221,11 @@ namespace SteamSharp {
 		/// <summary>
 		/// Provides the number of times this particular request has been attempted (regardless of success).
 		/// </summary>
-		private int _attempts;
 		public int Attempts {
 			get { return _attempts; }
 		}
+
+		private int _attempts;
 
 		/// <summary>
 		/// Method that allows the request's attempt count to be incremented.

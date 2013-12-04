@@ -3,6 +3,9 @@ using System.Net.Http;
 
 namespace SteamSharp {
 
+	/// <summary>
+	/// (Interface) Container for data used to make Steam API requests.
+	/// </summary>
 	public interface ISteamRequest {
 
 		/// <summary>

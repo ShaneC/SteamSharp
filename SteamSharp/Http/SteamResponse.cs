@@ -3,7 +3,10 @@ using System.Net;
 using System.Net.Http;
 
 namespace SteamSharp {
-	
+
+	/// <summary>
+	/// (Interface) Container for data received from Steam API requests.
+	/// </summary>
 	public class SteamResponse : ISteamResponse {
 
 		/// <summary>
@@ -29,11 +32,12 @@ namespace SteamSharp {
 		/// <summary>
 		/// Contains the state of the response. See <see cref="ResponseStatus" /> for possible values.
 		/// </summary>
-		private ResponseStatus _responseStatus = ResponseStatus.None;
 		public ResponseStatus ResponseStatus {
 			get { return _responseStatus; }
 			set { _responseStatus = value; }
 		}
+
+		private ResponseStatus _responseStatus = ResponseStatus.None;
 
 		/// <summary>
 		/// HTTP response status code

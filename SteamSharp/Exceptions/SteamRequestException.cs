@@ -3,6 +3,9 @@ using System.Net;
 
 namespace SteamSharp {
 
+	/// <summary>
+	/// Exception thrown when Steam encounters an error while attempting to execute a request.
+	/// </summary>
 	public class SteamRequestException : Exception {
 
 		/// <summary>
@@ -13,20 +16,22 @@ namespace SteamSharp {
 		/// <summary>
 		/// Indicates whether or not this exception was caused from the inability to deserialize the Steam API response.
 		/// </summary>
-		private bool _isDeserializationIssue = false;
 		public bool IsDeserializationIssue {
 			get { return _isDeserializationIssue; }
 			set { _isDeserializationIssue = value; }
 		}
+		
+		private bool _isDeserializationIssue = false;
 
 		/// <summary>
 		/// Indiciates whether or not this exception was caused from an invalid HTTP request.
 		/// </summary>
-		private bool _isRequestIssue = false;
 		public bool IsRequestIssue {
 			get { return _isRequestIssue; }
 			set { _isRequestIssue = value; }
 		}
+
+		private bool _isRequestIssue = false;
 
 		/// <summary>
 		/// The feedback from a bad HTTP Request. If none, this value will be null.
@@ -34,7 +39,7 @@ namespace SteamSharp {
 		public string RequestErrorMessage { get; set; }
 
 		/// <summary>
-		/// Object containing the processed HTTP response, as well as the initial <see cref="ISteamRequest"/> object and raw <see cref="HTTPResponseMessage"/>.
+		/// Object containing the processed HTTP response, as well as the initial <see cref="ISteamRequest"/> object and raw HTTPResponseMessage.
 		/// </summary>
 		public ISteamResponse Response { get; private set; }
 
@@ -43,16 +48,30 @@ namespace SteamSharp {
 		/// </summary>
 		public HttpStatusCode StatusCode { get; private set; }
 
+		/// <summary>
+		/// Exception thrown when Steam encounters an error while attempting to execute a request.
+		/// </summary>
+		/// <param name="message">Exception message</param>
 		public SteamRequestException( string message )
 			: base( message ) 
 		{
 		}
 
+		/// <summary>
+		/// Exception thrown when Steam encounters an error while attempting to execute a request.
+		/// </summary>
+		/// <param name="message">Exception message</param>
+		/// <param name="exception">Exception which identifies the error.</param>
 		public SteamRequestException( string message, Exception exception )
 			: base( message, exception )
 		{
 		}
 
+		/// <summary>
+		/// Exception thrown when Steam encounters an error while attempting to execute a request.
+		/// </summary>
+		/// <param name="message">Exception message</param>
+		/// <param name="response">Response received from Steam which is either in an error state or delivered data which is in error.</param>
 		public SteamRequestException( string message, ISteamResponse response )
 			: base( message )
 		{

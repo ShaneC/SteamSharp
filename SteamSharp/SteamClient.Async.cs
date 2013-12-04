@@ -11,7 +11,7 @@ namespace SteamSharp {
 		/// Executes the provided request asynchronously, returning the response object.
 		/// </summary>
 		/// <param name="request"><see cref="ISteamRequest"/> object for execution.</param>
-		/// <returns><see cref="ISteamResponse object"/> containing the result of the request.</returns>
+		/// <returns><see cref="ISteamResponse"/> object containing the result of the request.</returns>
 		public async Task<ISteamResponse> ExecuteAsync( ISteamRequest request ) {
 
 			AuthenticateClient( this, request );

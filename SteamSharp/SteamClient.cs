@@ -12,25 +12,31 @@ using System.Threading.Tasks;
 
 namespace SteamSharp {
 
+	/// <summary>
+	/// Main transport class for all requests and responses to and from the Steam API.
+	/// This class is used to execute all requests, as well as provide authentication and transaction control.
+	/// </summary>
 	public partial class SteamClient {
 
 		/// <summary>
 		/// Steam API endpoint. This could be subject to change and thus needs to be overrideable.
 		/// </summary>
-		private string _apiEndpoint = "https://api.steampowered.com";
 		public string BaseAPIEndpoint {
 			get { return _apiEndpoint; }
 			private set { _apiEndpoint = value; }
 		}
 
+		private string _apiEndpoint = "https://api.steampowered.com";
+
 		/// <summary>
-		/// Timeout, in milliseconds, for requests executed by this client instance.
+		/// Timeout, in milliseconds, for requests executed by this client instance. Defaults to 10 seconds.
 		/// </summary>
-		private int _timeout = 10000;
 		public int Timeout {
 			get { return _timeout; }
 			set { _timeout = value; }
 		}
+
+		private int _timeout = 10000;
 
 		/// <summary>
 		/// Parameters that should be included with every request executed via this instance
@@ -81,7 +87,7 @@ namespace SteamSharp {
 		/// Helper method which creates the final Uri used in the HTTP request.
 		/// </summary>
 		/// <param name="request">Request for execution.</param>
-		/// <returns>Well formed Uri for use in an <see cref="HTTPWebRequest"/>.</returns>
+		/// <returns>Well formed Uri for use in an <see cref="System.Net.Http.HttpRequestMessage"/>.</returns>
 		public Uri BuildUri( ISteamRequest request ) {
 
 			string destination = request.Resource;
@@ -241,7 +247,12 @@ namespace SteamSharp {
 
 		}
 
-		// For POST requests, we must produce an object array such that it can be serialized (non-Raw POST style requests).
+		/// <summary>
+		/// Utility method for POST requests. We must produce an object array such that it can be serialized (non-Raw POST style requests).
+		/// </summary>
+		/// <param name="request">Request to be evaluated.</param>
+		/// <param name="body">Current parameter intended for addition to the body of the request.</param>
+		/// <returns>Content which can be sent over the HTTP Request, including all parameters (both body and GetOrPost).</returns>
 		private string SerializeBodyWithParameters( ISteamRequest request, SteamRequestParameter body ) {
 			
 			Dictionary<string, object> output = new Dictionary<string, object>();
@@ -267,6 +278,9 @@ namespace SteamSharp {
 		//private static readonly Version _version = new AssemblyName( typeof( SteamClient ).GetTypeInfo().Assembly.FullName ).Version;
 		private static readonly Version _version = new AssemblyName( typeof( SteamClient ).GetTypeInfo().Assembly.FullName ).Version;
 
+		/// <summary>
+		/// Version of the SteamSharp library currently being run.
+		/// </summary>
 		public Version AssemblyVersion {
 			get { return _version; }
 		}

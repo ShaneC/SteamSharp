@@ -4,7 +4,10 @@ using System.Linq;
 using System.Threading.Tasks;
 
 namespace SteamSharp {
-	
+
+	/// <summary>
+	/// Class allowing for abstracted querying of the ISteamUser interface
+	/// </summary>
 	public partial class SteamUser : SteamInterface {
 
 		#region GetPlayerSummaries (and overload GetPlayerSummary)
@@ -15,7 +18,7 @@ namespace SteamSharp {
 		/// <a href="https://developer.valvesoftware.com/wiki/Steam_Web_API#GetPlayerSummaries_.28v0002.29">See official documentation.</a>
 		/// </summary>
 		/// <param name="client"><see cref="SteamClient"/> instance to use.</param>
-		/// <param name="steamIDs">SteamID to return profile information for.</param>
+		/// <param name="steamID">SteamID to return profile information for.</param>
 		/// <returns>
 		///	Returns profile data for the requested user in the form of a <see cref="Player"/> object. 
 		/// Some data associated with a Steam account may be hidden if the user has their profile visibility set to "Friends Only" or "Private". In that case, only public data will be returned.
@@ -59,7 +62,7 @@ namespace SteamSharp {
 		/// <a href="https://developer.valvesoftware.com/wiki/Steam_Web_API#GetPlayerSummaries_.28v0002.29">See official documentation.</a>
 		/// </summary>
 		/// <param name="client"><see cref="SteamClient"/> instance to use.</param>
-		/// <param name="steamIDs">SteamID to return profile information for.</param>
+		/// <param name="steamID">SteamID to return profile information for.</param>
 		/// <returns>
 		///	Returns profile data for the requested user in the form of a <see cref="Player"/> object. 
 		/// Some data associated with a Steam account may be hidden if the user has their profile visibility set to "Friends Only" or "Private". In that case, only public data will be returned.
