@@ -3,7 +3,7 @@ using System;
 using System.IO;
 using System.Text;
 
-namespace SteamSharp.Test.Helpers {
+namespace SteamSharp.Test.TestHelpers {
 
 	public static class Extensions {
 

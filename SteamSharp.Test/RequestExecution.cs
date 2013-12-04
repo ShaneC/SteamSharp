@@ -1,7 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using SteamSharp.Test.Helpers;
+using SteamSharp.Test.TestHelpers;
 using System.Net;
 using System.Net.Http;
 

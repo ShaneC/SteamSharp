@@ -1,5 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using SteamSharp.Test.Helpers;
+using SteamSharp.Test.TestHelpers;
 using System.Collections.Generic;
 using System.Net;
 

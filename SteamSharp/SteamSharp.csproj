@@ -36,11 +36,15 @@
     <DocumentationFile>bin\Release\SteamSharp.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Authenticators\UserAuthenticator.cs" />
     <Compile Include="Authenticators\APIKeyAuthenticator.cs" />
     <Compile Include="Authenticators\ISteamAuthenticator.cs" />
     <Compile Include="Enums.cs" />
     <Compile Include="Exceptions\SteamAuthenticationException.cs" />
     <Compile Include="Exceptions\SteamRequestException.cs" />
+    <Compile Include="Helpers\BigInteger.cs" />
+    <Compile Include="Helpers\Extensions.cs" />
+    <Compile Include="Helpers\RSAHelper.cs" />
     <Compile Include="Http\ISteamRequest.cs" />
     <Compile Include="Http\ISteamResponse.cs" />
     <Compile Include="Models\PlayerService.cs" />
@@ -78,7 +82,6 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <Import Project="..\packages\Microsoft.Bcl.Build.1.0.13\tools\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.13\tools\Microsoft.Bcl.Build.targets')" />
   <Target Name="EnsureBclBuildImported" BeforeTargets="BeforeBuild" Condition="'$(BclBuildImported)' == ''">

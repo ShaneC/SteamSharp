@@ -63,8 +63,9 @@
   </Choose>
   <ItemGroup>
     <Compile Include="Authenticators.cs" />
-    <Compile Include="Helpers\Extensions.cs" />
-    <Compile Include="Helpers\SimulatedServer.cs" />
+    <Compile Include="Helpers.cs" />
+    <Compile Include="TestHelpers\Extensions.cs" />
+    <Compile Include="TestHelpers\SimulatedServer.cs" />
     <Compile Include="IPlayerService.cs" />
     <Compile Include="ISteamNews.cs" />
     <Compile Include="ISteamUser.cs" />
