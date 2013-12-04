@@ -2,7 +2,7 @@
 using System.Net;
 using System.Threading;
 
-namespace SteamSharp.TestFramework.Helpers {
+namespace SteamSharp.Test.Helpers {
 
 	public class SimulatedServer : IDisposable {
 

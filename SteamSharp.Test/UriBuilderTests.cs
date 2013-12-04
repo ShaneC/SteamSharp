@@ -1,4 +1,5 @@
-﻿using SteamSharp.TestFramework.Helpers;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using SteamSharp.Test.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
@@ -6,21 +7,21 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web;
-using Xunit;
 
-namespace SteamSharp.TestFramework {
+namespace SteamSharp.Test {
 
+	[TestClass]
 	public class UriBuilderTests {
 
-		[Fact]
+		[TestMethod]
 		public void GET_As_Default() {
 
 			var request = new SteamRequest( "/resource" );
-			//Assert.Equal( request.Method, HttpMethod.Get );
+			//Assert.AreEqual( request.Method, HttpMethod.Get );
 
 		}
 
-		[Fact]
+		[TestMethod]
 		public void GET_With_Leading_Slash() {
 
 			var request = new SteamRequest( "/resource" );
@@ -29,11 +30,11 @@ namespace SteamSharp.TestFramework {
 			var expected = new Uri( "http://steamapiurl.com/resource" );
 			var output = client.BuildUri( request );
 
-			Assert.Equal( expected, output );
+			Assert.AreEqual( expected, output );
 
 		}
 
-		[Fact]
+		[TestMethod]
 		public void GET_Without_Leading_Slash() {
 
 			var request = new SteamRequest( "resource" );
@@ -42,11 +43,11 @@ namespace SteamSharp.TestFramework {
 			var expected = new Uri( "http://steamapiurl.com/resource" );
 			var output = client.BuildUri( request );
 
-			Assert.Equal( expected, output );
+			Assert.AreEqual( expected, output );
 
 		}
 
-		[Fact]
+		[TestMethod]
 		public void GET_With_NoSlash_Base_And_Resource_Leading_Slash() {
 
 			var request = new SteamRequest( "/resource" );
@@ -55,11 +56,11 @@ namespace SteamSharp.TestFramework {
 			var expected = new Uri( "http://iforgottoslash.com/resource" );
 			var output = client.BuildUri( request );
 
-			Assert.Equal( expected, output );
+			Assert.AreEqual( expected, output );
 
 		}
 
-		[Fact]
+		[TestMethod]
 		public void GET_With_NoSlash_Base_And_No_Leading_Slash() {
 
 			var request = new SteamRequest( "resource" );
@@ -68,7 +69,7 @@ namespace SteamSharp.TestFramework {
 			var expected = new Uri( "http://iforgottoslash.com/resource" );
 			var output = client.BuildUri( request );
 
-			Assert.Equal( expected, output );
+			Assert.AreEqual( expected, output );
 
 		}
 
@@ -80,7 +81,7 @@ namespace SteamSharp.TestFramework {
 
 			var client = new SteamClient(  "Definitely isn't a URI... How sad :(" );
 
-			Assert.Throws<FormatException>( () => { client.BuildUri( request ); } );
+			AssertException.Throws<FormatException>( () => { client.BuildUri( request ); } );
 
 		}
 
@@ -88,19 +89,19 @@ namespace SteamSharp.TestFramework {
 		/// Scenario: User adds two parameters with the same name and type
 		/// Expected: The most recently added parameter is honored
 		/// </summary>
-		[Fact]
+		[TestMethod]
 		public void Add_Two_Of_Same_Parameter() {
 
 			var request = new SteamRequest( "/resource" );
 			request.AddParameter( "MyFancyParam", 1234, ParameterType.GetOrPost );
 			request.AddParameter( "MyFancyParam", 5678, ParameterType.GetOrPost );
 
-			Assert.Equal( request.Parameters.Count( p => p.Name == "MyFancyParam" ), 1 );
-			Assert.Equal( request.Parameters.FirstOrDefault( p => p.Name == "MyFancyParam" ).Value, 5678 );
+			Assert.AreEqual( request.Parameters.Count( p => p.Name == "MyFancyParam" ), 1 );
+			Assert.AreEqual( request.Parameters.FirstOrDefault( p => p.Name == "MyFancyParam" ).Value, 5678 );
 
 		}
 
-		[Fact]
+		[TestMethod]
 		public void GET_With_Resource_Containing_Tokens() {
 
 			var request = new SteamRequest( "resource/{foo}" );
@@ -111,11 +112,11 @@ namespace SteamSharp.TestFramework {
 			var expected = new Uri( "http://steamapiurl.com/resource/bar" );
 			var output = client.BuildUri( request );
 
-			Assert.Equal( expected, output );
+			Assert.AreEqual( expected, output );
 
 		}
 
-		[Fact]
+		[TestMethod]
 		public void POST_With_Resource_Containing_Tokens() {
 			
 			var request = new SteamRequest( "resource/{foo}", HttpMethod.Post );
@@ -126,11 +127,11 @@ namespace SteamSharp.TestFramework {
 			var expected = new Uri( "http://steamapiurl.com/resource/bar" );
 			var output = client.BuildUri( request );
 
-			Assert.Equal( expected, output );
+			Assert.AreEqual( expected, output );
 
 		}
 
-		[Fact]
+		[TestMethod]
 		public void GET_Add_QueryString_Params() {
 
 			using( SimulatedServer.Create( ResourceConstants.SimulatedServerUrl, QueryString_Echo ) ) {
@@ -144,7 +145,7 @@ namespace SteamSharp.TestFramework {
 
 				var response = client.Execute( request );
 
-				Assert.NotNull( response.Content );
+				Assert.IsNotNull( response.Content );
 
 				string[] temp = response.Content.Split( '|' );
 
@@ -154,17 +155,17 @@ namespace SteamSharp.TestFramework {
 					coll.Add( split[0], split[1] );
 				}
 
-				Assert.NotNull( coll["param1"] );
-				Assert.Equal( "1234", coll["param1"] );
+				Assert.IsNotNull( coll["param1"] );
+				Assert.AreEqual( "1234", coll["param1"] );
 
-				Assert.NotNull( coll["param2"] );
-				Assert.Equal( "5678", coll["param2"] );
+				Assert.IsNotNull( coll["param2"] );
+				Assert.AreEqual( "5678", coll["param2"] );
 
 			}
 
 		}
 
-		[Fact]
+		[TestMethod]
 		public void POST_Add_QueryString_Params_Raw() {
 
 			using( SimulatedServer.Create( ResourceConstants.SimulatedServerUrl, QueryString_Echo ) ) {
@@ -179,7 +180,7 @@ namespace SteamSharp.TestFramework {
 
 				var response = client.Execute( request );
 
-				Assert.NotNull( response.Content );
+				Assert.IsNotNull( response.Content );
 
 				string[] temp = response.Content.Split( '|' );
 
@@ -189,17 +190,17 @@ namespace SteamSharp.TestFramework {
 					coll.Add( split[0], split[1] );
 				}
 
-				Assert.NotNull( coll["param1"] );
-				Assert.Equal( "1234", coll["param1"] );
+				Assert.IsNotNull( coll["param1"] );
+				Assert.AreEqual( "1234", coll["param1"] );
 
-				Assert.NotNull( coll["param2"] );
-				Assert.Equal( "5678", coll["param2"] );
+				Assert.IsNotNull( coll["param2"] );
+				Assert.AreEqual( "5678", coll["param2"] );
 
 			}
 
 		}
 
-		[Fact]
+		[TestMethod]
 		public void POST_Add_QueryString_Params_Json() {
 
 			using( SimulatedServer.Create( ResourceConstants.SimulatedServerUrl, QueryString_Echo ) ) {
@@ -214,7 +215,7 @@ namespace SteamSharp.TestFramework {
 
 				var response = client.Execute( request );
 
-				Assert.NotNull( response.Content );
+				Assert.IsNotNull( response.Content );
 
 				string[] temp = response.Content.Split( '|' );
 
@@ -224,10 +225,10 @@ namespace SteamSharp.TestFramework {
 					coll.Add( split[0], split[1] );
 				}
 
-				Assert.Null( coll["param1"] );
+				Assert.IsNull( coll["param1"] );
 
-				Assert.NotNull( coll["param2"] );
-				Assert.Equal( "5678", coll["param2"] );
+				Assert.IsNotNull( coll["param2"] );
+				Assert.AreEqual( "5678", coll["param2"] );
 
 			}
 

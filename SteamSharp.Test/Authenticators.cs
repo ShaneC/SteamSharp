@@ -1,19 +1,20 @@
-﻿using SteamSharp.TestFramework.Helpers;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using SteamSharp.Test.Helpers;
 using System;
 using System.Net;
 using System.Web;
-using Xunit;
 
-namespace SteamSharp.TestFramework {
+namespace SteamSharp.Test {
 	
+	[TestClass]
 	public class Authenticators {
-	
-		[Fact]
+
+		[TestMethod]
 		public void Verify_APIKey_Added() {
 
 			// Did you remember to add your API Token?
-			Assert.NotNull( ResourceConstants.AccessToken );
-			Assert.NotEqual( ResourceConstants.AccessToken, "" );
+			Assert.IsNotNull( ResourceConstants.AccessToken );
+			Assert.AreNotEqual( ResourceConstants.AccessToken, "" );
 
 			using( SimulatedServer.Create( ResourceConstants.SimulatedServerUrl, ApiKeyEchoHandler ) ) {
 
@@ -24,7 +25,7 @@ namespace SteamSharp.TestFramework {
 				SteamRequest request = new SteamRequest( "/resource" );
 				var response = client.Execute( request );
 
-				Assert.Equal( "key|" + ResourceConstants.AccessToken, response.Content );
+				Assert.AreEqual( "key|" + ResourceConstants.AccessToken, response.Content );
 
 			}
 

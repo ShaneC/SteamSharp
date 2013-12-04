@@ -1,12 +1,14 @@
-﻿using System;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.Net;
-using Xunit;
 
-namespace SteamSharp.TestFramework {
+namespace SteamSharp.Test {
 
+	[TestClass]
 	public class ISteamNews {
 
-		[Fact]
+		#region GetNewsForApp
+		[TestMethod]
 		public void GET_GetNewsForApp_ByUri() {
 
 			SteamClient client = new SteamClient();
@@ -18,12 +20,12 @@ namespace SteamSharp.TestFramework {
 
 			var response = client.Execute( request );
 
-			Assert.Equal( HttpStatusCode.OK, response.StatusCode );
-			Assert.NotNull( response.Content );
+			Assert.AreEqual( HttpStatusCode.OK, response.StatusCode );
+			Assert.IsNotNull( response.Content );
 
 		}
 
-		[Fact]
+		[TestMethod]
 		public void GET_GetNewsForApp_ByEnums() {
 
 			SteamClient client = new SteamClient();
@@ -35,27 +37,27 @@ namespace SteamSharp.TestFramework {
 
 			var response = client.Execute( request );
 
-			Assert.Equal( HttpStatusCode.OK, response.StatusCode );
-			Assert.NotNull( response.Content );
+			Assert.AreEqual( HttpStatusCode.OK, response.StatusCode );
+			Assert.IsNotNull( response.Content );
 
 		}
 
-		[Fact]
+		[TestMethod]
 		public void GET_GetNewsForApp_ByClass() {
 
 			SteamClient client = new SteamClient();
 
 			var response = SteamNews.GetNewsForApp( client, 440, 2, 100 );
 
-			Assert.NotNull( response );
-			Assert.IsType<SteamNews.AppNews>( response );
+			Assert.IsNotNull( response );
+			Assert.IsInstanceOfType( response, typeof( SteamNews.AppNews ) );
 
-			Assert.NotNull( response.NewsItems[0].Date );
-			Assert.IsType<DateTime>( response.NewsItems[0].Date );
+			Assert.IsNotNull( response.NewsItems[0].Date );
+			Assert.IsInstanceOfType( response.NewsItems[0].Date, typeof( DateTime ) );
 
 		}
 
-		[Fact]
+		[TestMethod]
 		public void GET_GetNewsForApp_NoValues() {
 
 			SteamClient client = new SteamClient();
@@ -63,9 +65,10 @@ namespace SteamSharp.TestFramework {
 
 			var response = client.Execute( request );
 
-			Assert.Equal( HttpStatusCode.BadRequest, response.StatusCode );
+			Assert.AreEqual( HttpStatusCode.BadRequest, response.StatusCode );
 
 		}
+		#endregion
 
 	}
 

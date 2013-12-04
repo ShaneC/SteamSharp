@@ -1,5 +1,5 @@
 ﻿
-namespace SteamSharp.TestFramework {
+namespace SteamSharp.Test {
 
 	public class ResourceConstants {
 

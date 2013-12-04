@@ -1,25 +1,26 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Collections.Generic;
 using System.Net;
-using Xunit;
 
-namespace SteamSharp.TestFramework {
+namespace SteamSharp.Test {
 
+	[TestClass]
 	public class ISteamUserStats {
 
 		#region GetGlobalAchievementPercentagesForApp
-		[Fact]
+		[TestMethod]
 		public void GET_GetGlobalAchievementPercentagesForApp_ByClass() {
 
 			SteamClient client = new SteamClient();
 
 			var response = SteamUserStats.GetGlobalAchievementPercentagesForApp( client, 440 );
 
-			Assert.NotNull( response );
-			Assert.IsType<List<SteamUserStats.GlobalAchievement>>( response );
+			Assert.IsNotNull( response );
+			Assert.IsInstanceOfType( response, typeof( List<SteamUserStats.GlobalAchievement> ) );
 
 		}
 
-		[Fact]
+		[TestMethod]
 		public void GET_GetGlobalAchievementPercentagesForApp_NoValues() {
 
 			SteamClient client = new SteamClient();
@@ -27,13 +28,13 @@ namespace SteamSharp.TestFramework {
 
 			var response = client.Execute( request );
 
-			Assert.Equal( HttpStatusCode.BadRequest, response.StatusCode );
+			Assert.AreEqual( HttpStatusCode.BadRequest, response.StatusCode );
 
 		}
 		#endregion
 
 		#region GetPlayerAchievements 
-		[Fact]
+		[TestMethod]
 		public void GET_GetPlayerAchievements_ByClass_NoLanguage() {
 
 			SteamClient client = new SteamClient();
@@ -41,12 +42,12 @@ namespace SteamSharp.TestFramework {
 
 			var response = SteamUserStats.GetPlayerAchievements( client, "76561197972495328", 440 );
 
-			Assert.NotNull( response );
-			Assert.IsType<SteamUserStats.PlayerAchievements>( response );
+			Assert.IsNotNull( response );
+			Assert.IsInstanceOfType( response, typeof( SteamUserStats.PlayerAchievements ) );
 
 		}
 
-		[Fact]
+		[TestMethod]
 		public void GET_GetPlayerAchievements_ByClass_EnglishLanguage() {
 
 			SteamClient client = new SteamClient();
@@ -54,12 +55,12 @@ namespace SteamSharp.TestFramework {
 
 			var response = SteamUserStats.GetPlayerAchievements( client, "76561197972495328", 440, RequestedLangage.English );
 
-			Assert.NotNull( response );
-			Assert.IsType<SteamUserStats.PlayerAchievements>( response );
+			Assert.IsNotNull( response );
+			Assert.IsInstanceOfType( response, typeof( SteamUserStats.PlayerAchievements ) );
 
 		}
 
-		[Fact]
+		[TestMethod]
 		public void GET_GetPlayerAchievements_ByClass_JapaneseLanguage() {
 
 			SteamClient client = new SteamClient();
@@ -67,12 +68,12 @@ namespace SteamSharp.TestFramework {
 
 			var response = SteamUserStats.GetPlayerAchievements( client, "76561197972495328", 440, RequestedLangage.Japanese );
 
-			Assert.NotNull( response );
-			Assert.IsType<SteamUserStats.PlayerAchievements>( response );
+			Assert.IsNotNull( response );
+			Assert.IsInstanceOfType( response, typeof( SteamUserStats.PlayerAchievements ) );
 
 		}
 
-		[Fact]
+		[TestMethod]
 		public void GET_GetPlayerAchievements_ByClass_RussianLanguage() {
 
 			SteamClient client = new SteamClient();
@@ -80,14 +81,14 @@ namespace SteamSharp.TestFramework {
 
 			var response = SteamUserStats.GetPlayerAchievements( client, "76561197972495328", 440, RequestedLangage.Russian );
 
-			Assert.NotNull( response );
-			Assert.IsType<SteamUserStats.PlayerAchievements>( response );
+			Assert.IsNotNull( response );
+			Assert.IsInstanceOfType( response, typeof( SteamUserStats.PlayerAchievements ) );
 
 		}
 		#endregion
 
 		#region GetUserStatsForGame
-		[Fact]
+		[TestMethod]
 		public void GET_GetUserStatsForGame_ByClass() {
 
 			SteamClient client = new SteamClient();
@@ -95,19 +96,19 @@ namespace SteamSharp.TestFramework {
 
 			var response = SteamUserStats.GetUserStatsForGame( client, "76561197972495328", 440 );
 
-			Assert.NotNull( response );
-			Assert.IsType<SteamUserStats.PlayerStats>( response );
+			Assert.IsNotNull( response );
+			Assert.IsInstanceOfType( response, typeof( SteamUserStats.PlayerStats ) );
 
-			Assert.NotNull( response.GameName );
-			Assert.NotNull( response.Stats );
-			Assert.NotNull( response.SteamID );
+			Assert.IsNotNull( response.GameName );
+			Assert.IsNotNull( response.Stats );
+			Assert.IsNotNull( response.SteamID );
 
-			Assert.True( ( response.Stats.Count > 0 ) );
+			Assert.IsTrue( ( response.Stats.Count > 0 ) );
 
-			Assert.NotNull( response.Stats[0] );
+			Assert.IsNotNull( response.Stats[0] );
 
-			Assert.NotNull( response.Stats[0].APIName );
-			Assert.NotNull( response.Stats[0].Value );
+			Assert.IsNotNull( response.Stats[0].APIName );
+			Assert.IsNotNull( response.Stats[0].Value );
 
 		}
 		#endregion

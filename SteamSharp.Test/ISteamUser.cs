@@ -1,13 +1,15 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using SteamSharp.Test.Helpers;
+using System.Collections.Generic;
 using System.Net;
-using Xunit;
 
-namespace SteamSharp.TestFramework {
+namespace SteamSharp.Test {
 
+	[TestClass]
 	public class ISteamUser {
 
 		#region GetPlayerSummaries
-		[Fact]
+		[TestMethod]
 		public void GET_GetPlayerSummaries_ByClass() {
 
 			SteamClient client = new SteamClient();
@@ -15,24 +17,25 @@ namespace SteamSharp.TestFramework {
 
 			var response = SteamUser.GetPlayerSummaries( client, new string[] { "76561197960435530", "76561198067189899" } );
 
-			Assert.NotNull( response );
-			Assert.IsType<List<SteamUser.Player>>( response );
-			Assert.Equal( 2, response.Count );
+			Assert.IsNotNull( response );
+			Assert.IsInstanceOfType( response, typeof( List<SteamUser.Player> ) );
+			
+			Assert.AreEqual( 2, response.Count );
 
 		}
 
-		[Fact]
+		[TestMethod]
 		public void GET_GetPlayerSummaries_ByClass_Unauthenticated() {
 
 			SteamClient client = new SteamClient();
 
-			Assert.Throws<SteamRequestException>( () => {
+			AssertException.Throws<SteamRequestException>( () => {
 				SteamUser.GetPlayerSummaries( client, new string[] { "76561197960435530", "76561198067189899" } );
 			} );
 
 		}
 
-		[Fact]
+		[TestMethod]
 		public void GET_GetPlayerSummaries_NoValues() {
 
 			SteamClient client = new SteamClient();
@@ -42,11 +45,11 @@ namespace SteamSharp.TestFramework {
 
 			var response = client.Execute( request );
 
-			Assert.Equal( HttpStatusCode.BadRequest, response.StatusCode );
+			Assert.AreEqual( HttpStatusCode.BadRequest, response.StatusCode );
 
 		}
 
-		[Fact]
+		[TestMethod]
 		public void GET_GetPlayerSummaries_Unauthenticated() {
 
 			SteamClient client = new SteamClient();
@@ -56,11 +59,11 @@ namespace SteamSharp.TestFramework {
 			
 			var response = client.Execute( request );
 
-			Assert.Equal( HttpStatusCode.BadRequest, response.StatusCode );
+			Assert.AreEqual( HttpStatusCode.BadRequest, response.StatusCode );
 
 		}
 
-		[Fact]
+		[TestMethod]
 		public void GET_GetPlayerSummaries_BadAuth() {
 
 			SteamClient client = new SteamClient();
@@ -71,13 +74,13 @@ namespace SteamSharp.TestFramework {
 
 			var response = client.Execute( request );
 
-			Assert.Equal( HttpStatusCode.Unauthorized, response.StatusCode );
+			Assert.AreEqual( HttpStatusCode.Unauthorized, response.StatusCode );
 
 		}
 		#endregion
 
 		#region GetPlayerSummary
-		[Fact]
+		[TestMethod]
 		public void GET_GetPlayerSummary_ByClass() {
 
 			SteamClient client = new SteamClient();
@@ -85,17 +88,17 @@ namespace SteamSharp.TestFramework {
 
 			var response = SteamUser.GetPlayerSummary( client, "76561197960435530" );
 
-			Assert.NotNull( response );
-			Assert.IsType<SteamUser.Player>( response );
+			Assert.IsNotNull( response );
+			Assert.IsInstanceOfType( response, typeof( SteamUser.Player ) );
 
 		}
 
-		[Fact]
+		[TestMethod]
 		public void GET_GetPlayerSummary_ByClass_Unauthenticated() {
 
 			SteamClient client = new SteamClient();
 
-			Assert.Throws<SteamRequestException>( () => {
+			AssertException.Throws<SteamRequestException>( () => {
 				SteamUser.GetPlayerSummary( client, "76561197960435530" );
 			} );
 
@@ -103,7 +106,7 @@ namespace SteamSharp.TestFramework {
 		#endregion
 
 		#region GetFriendList
-		[Fact]
+		[TestMethod]
 		public void GET_GetFriendList_ByClass_AllRelationships() {
 
 			SteamClient client = new SteamClient();
@@ -111,12 +114,12 @@ namespace SteamSharp.TestFramework {
 
 			var response = SteamUser.GetFriendList( client, "76561197960435530", PlayerRelationshipType.All );
 
-			Assert.NotNull( response );
-			Assert.IsType<List<SteamUser.Friend>>( response );
+			Assert.IsNotNull( response );
+			Assert.IsInstanceOfType( response, typeof( List<SteamUser.Friend> ) );
 
 		}
 
-		[Fact]
+		[TestMethod]
 		public void GET_GetFriendList_ByClass_FriendRelationships() {
 
 			SteamClient client = new SteamClient();
@@ -124,17 +127,17 @@ namespace SteamSharp.TestFramework {
 
 			var response = SteamUser.GetFriendList( client, "76561197960435530", PlayerRelationshipType.Friend );
 
-			Assert.NotNull( response );
-			Assert.IsType<List<SteamUser.Friend>>( response );
+			Assert.IsNotNull( response );
+			Assert.IsInstanceOfType( response, typeof( List<SteamUser.Friend> ) );
 
 		}
 
-		[Fact]
+		[TestMethod]
 		public void GET_GetFriendList_ByClass_Unauthenticated() {
 
 			SteamClient client = new SteamClient();
 
-			Assert.Throws<SteamRequestException>( () => {
+			AssertException.Throws<SteamRequestException>( () => {
 				SteamUser.GetFriendList( client, "76561197960435530", PlayerRelationshipType.All );
 			} );
 

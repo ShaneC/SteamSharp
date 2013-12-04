@@ -1,15 +1,16 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using SteamSharp.TestFramework.Helpers;
+using SteamSharp.Test.Helpers;
 using System.Net;
 using System.Net.Http;
-using Xunit;
 
-namespace SteamSharp.TestFramework {
+namespace SteamSharp.Test {
 
+	[TestClass]
 	public class RequestExecution {
 
-		[Fact]
+		[TestMethod]
 		public void NonExistant_Base_Returns_Error() {
 
 			SteamClient client = new SteamClient( "http://hopefullyth-is-domain-nev-rexists.com" );
@@ -17,11 +18,11 @@ namespace SteamSharp.TestFramework {
 			SteamRequest request = new SteamRequest( "/resource" );
 			var response = client.Execute( request );
 
-			Assert.Equal( ResponseStatus.Error, response.ResponseStatus );
+			Assert.AreEqual( ResponseStatus.Error, response.ResponseStatus );
 
 		}
 
-		[Fact]
+		[TestMethod]
 		public void ClientContext_Request_Correctly_Times_Out() {
 
 			using( SimulatedServer.Create( ResourceConstants.SimulatedServerUrl, Timeout_Simulator ) ) {
@@ -32,13 +33,13 @@ namespace SteamSharp.TestFramework {
 				SteamRequest request = new SteamRequest( "/404" );
 				var response = client.Execute( request );
 
-				Assert.Equal( ResponseStatus.TimedOut, response.ResponseStatus );
+				Assert.AreEqual( ResponseStatus.TimedOut, response.ResponseStatus );
 
 			}
 
 		}
 
-		[Fact]
+		[TestMethod]
 		public void RequestContext_Request_Correctly_Times_Out() {
 
 			using( SimulatedServer.Create( ResourceConstants.SimulatedServerUrl, Timeout_Simulator ) ) {
@@ -49,13 +50,13 @@ namespace SteamSharp.TestFramework {
 				request.Timeout = 1000;
 				var response = client.Execute( request );
 
-				Assert.Equal( ResponseStatus.TimedOut, response.ResponseStatus );
+				Assert.AreEqual( ResponseStatus.TimedOut, response.ResponseStatus );
 
 			}
 
 		}
 
-		[Fact]
+		[TestMethod]
 		public void POST_Can_Add_Body_NoParams_Raw() {
 
 			using( SimulatedServer.Create( ResourceConstants.SimulatedServerUrl, Post_Body_Echo ) ) {
@@ -70,15 +71,15 @@ namespace SteamSharp.TestFramework {
 
 				var response = client.Execute( request );
 
-				Assert.NotNull( response );
-				Assert.NotNull( response.Content );
-				Assert.Equal( payload, response.Content );
+				Assert.IsNotNull( response );
+				Assert.IsNotNull( response.Content );
+				Assert.AreEqual( payload, response.Content );
 
 			}
 
 		}
 
-		[Fact]
+		[TestMethod]
 		public void POST_Can_Add_Body_WithParams_Raw() {
 
 			using( SimulatedServer.Create( ResourceConstants.SimulatedServerUrl, Post_Body_Echo ) ) {
@@ -95,15 +96,15 @@ namespace SteamSharp.TestFramework {
 
 				var response = client.Execute( request );
 
-				Assert.NotNull( response );
-				Assert.NotNull( response.Content );
-				Assert.Equal( payload, response.Content );
+				Assert.IsNotNull( response );
+				Assert.IsNotNull( response.Content );
+				Assert.AreEqual( payload, response.Content );
 
 			}
 
 		}
 
-		[Fact]
+		[TestMethod]
 		public void POST_Can_Add_Body_NoParams_Json() {
 
 			using( SimulatedServer.Create( ResourceConstants.SimulatedServerUrl, Post_Body_Echo ) ) {
@@ -112,7 +113,7 @@ namespace SteamSharp.TestFramework {
 				var request = new SteamRequest( "/resource", HttpMethod.Post );
 
 				// Verify request defaults to JSON
-				Assert.Equal( PostDataFormat.Json, request.DataFormat );
+				Assert.AreEqual( PostDataFormat.Json, request.DataFormat );
 
 				string payload = "myContent 123 abc's fun!";
 
@@ -120,15 +121,15 @@ namespace SteamSharp.TestFramework {
 
 				var response = client.Execute( request );
 
-				Assert.NotNull( response );
-				Assert.NotNull( response.Content );
-				Assert.Equal( JsonConvert.SerializeObject( payload ), response.Content );
+				Assert.IsNotNull( response );
+				Assert.IsNotNull( response.Content );
+				Assert.AreEqual( JsonConvert.SerializeObject( payload ), response.Content );
 
 			}
 
 		}
 
-		[Fact]
+		[TestMethod]
 		public void POST_Can_Add_Body_WithParams_Json() {
 
 			using( SimulatedServer.Create( ResourceConstants.SimulatedServerUrl, Post_Body_Echo ) ) {
@@ -144,20 +145,20 @@ namespace SteamSharp.TestFramework {
 
 				var response = client.Execute( request );
 
-				Assert.NotNull( response );
-				Assert.NotNull( response.Content );
+				Assert.IsNotNull( response );
+				Assert.IsNotNull( response.Content );
 
 				JObject obj = JObject.Parse( response.Content );
 
-				Assert.Equal( "doody", obj["howdy"] );
-				Assert.Equal( "bar", obj["foo"] );
-				Assert.Equal( "myContent 123 abc's fun!", obj["application/json"] );
+				Assert.AreEqual( "doody", obj["howdy"] );
+				Assert.AreEqual( "bar", obj["foo"] );
+				Assert.AreEqual( "myContent 123 abc's fun!", obj["application/json"] );
 
 			}
 
 		}
 
-		[Fact]
+		[TestMethod]
 		public void POST_Can_Add_DataStructure_Json() {
 
 			using( SimulatedServer.Create( ResourceConstants.SimulatedServerUrl, Post_Body_Echo ) ) {
@@ -174,12 +175,12 @@ namespace SteamSharp.TestFramework {
 
 				var response = client.Execute( request );
 
-				Assert.NotNull( response );
-				Assert.NotNull( response.Content );
+				Assert.IsNotNull( response );
+				Assert.IsNotNull( response.Content );
 
 				DataStructureResponseTest obj = JsonConvert.DeserializeObject<DataStructureResponseTest>( response.Content );
 
-				Assert.Equal( 5, obj.appids_filter.Length );
+				Assert.AreEqual( 5, obj.appids_filter.Length );
 
 			}
 
