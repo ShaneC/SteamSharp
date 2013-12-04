@@ -9,10 +9,10 @@ namespace SteamSharp.Authenticators {
 		internal string ApiKey { get; set; }
 
 		/// <summary>
-		/// Invoke method to initialize the authenticator and add it to an active SteamClient.
+		/// Invoke method to initialize the authenticator (which should then be added to the Authenticator property of a <see cref="SteamClient"/> instance).
 		/// </summary>
 		/// <param name="apiKey">Steam API Key (available at http://steamcommunity.com/dev/apikey).</param>
-		/// <returns><see cref="APIKeyAuthenticator"/> object for addition to a <see cref="SteamClient"/> instance.</returns>
+		/// <returns><see cref="APIKeyAuthenticator"/> object for authentication of a <see cref="SteamClient"/> instance.</returns>
 		public static APIKeyAuthenticator ForProtectedResource( string apiKey ) {
 
 			return new APIKeyAuthenticator {
