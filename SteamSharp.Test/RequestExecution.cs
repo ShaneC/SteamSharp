@@ -11,6 +11,7 @@ namespace SteamSharp.Test {
 	public class RequestExecution {
 
 		[TestMethod]
+		[TestCategory( "Network Behavior" )]
 		public void NonExistant_Base_Returns_Error() {
 
 			SteamClient client = new SteamClient( "http://hopefullyth-is-domain-nev-rexists.com" );
@@ -23,6 +24,7 @@ namespace SteamSharp.Test {
 		}
 
 		[TestMethod]
+		[TestCategory( "Network Behavior" )]
 		public void ClientContext_Request_Correctly_Times_Out() {
 
 			using( SimulatedServer.Create( ResourceConstants.SimulatedServerUrl, Timeout_Simulator ) ) {
@@ -40,6 +42,7 @@ namespace SteamSharp.Test {
 		}
 
 		[TestMethod]
+		[TestCategory( "Network Behavior" )]
 		public void RequestContext_Request_Correctly_Times_Out() {
 
 			using( SimulatedServer.Create( ResourceConstants.SimulatedServerUrl, Timeout_Simulator ) ) {
@@ -57,6 +60,7 @@ namespace SteamSharp.Test {
 		}
 
 		[TestMethod]
+		[TestCategory( "POST Submission" )]
 		public void POST_Can_Add_Body_NoParams_Raw() {
 
 			using( SimulatedServer.Create( ResourceConstants.SimulatedServerUrl, Post_Body_Echo ) ) {
@@ -80,6 +84,7 @@ namespace SteamSharp.Test {
 		}
 
 		[TestMethod]
+		[TestCategory( "POST Submission" )]
 		public void POST_Can_Add_Body_WithParams_Raw() {
 
 			using( SimulatedServer.Create( ResourceConstants.SimulatedServerUrl, Post_Body_Echo ) ) {
@@ -105,6 +110,7 @@ namespace SteamSharp.Test {
 		}
 
 		[TestMethod]
+		[TestCategory( "POST Submission" )]
 		public void POST_Can_Add_Body_NoParams_Json() {
 
 			using( SimulatedServer.Create( ResourceConstants.SimulatedServerUrl, Post_Body_Echo ) ) {
@@ -130,6 +136,7 @@ namespace SteamSharp.Test {
 		}
 
 		[TestMethod]
+		[TestCategory( "POST Submission" )]
 		public void POST_Can_Add_Body_WithParams_Json() {
 
 			using( SimulatedServer.Create( ResourceConstants.SimulatedServerUrl, Post_Body_Echo ) ) {
@@ -159,6 +166,7 @@ namespace SteamSharp.Test {
 		}
 
 		[TestMethod]
+		[TestCategory( "POST Submission" )]
 		public void POST_Can_Add_DataStructure_Json() {
 
 			using( SimulatedServer.Create( ResourceConstants.SimulatedServerUrl, Post_Body_Echo ) ) {

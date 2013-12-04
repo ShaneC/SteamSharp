@@ -9,6 +9,7 @@ namespace SteamSharp.Test {
 
 		#region GetGlobalAchievementPercentagesForApp
 		[TestMethod]
+		[TestCategory( "ISteamUserStats" )]
 		public void GET_GetGlobalAchievementPercentagesForApp_ByClass() {
 
 			SteamClient client = new SteamClient();
@@ -21,6 +22,7 @@ namespace SteamSharp.Test {
 		}
 
 		[TestMethod]
+		[TestCategory( "ISteamUserStats" )]
 		public void GET_GetGlobalAchievementPercentagesForApp_NoValues() {
 
 			SteamClient client = new SteamClient();
@@ -35,6 +37,7 @@ namespace SteamSharp.Test {
 
 		#region GetPlayerAchievements 
 		[TestMethod]
+		[TestCategory( "ISteamUserStats" )]
 		public void GET_GetPlayerAchievements_ByClass_NoLanguage() {
 
 			SteamClient client = new SteamClient();
@@ -48,6 +51,7 @@ namespace SteamSharp.Test {
 		}
 
 		[TestMethod]
+		[TestCategory( "ISteamUserStats" )]
 		public void GET_GetPlayerAchievements_ByClass_EnglishLanguage() {
 
 			SteamClient client = new SteamClient();
@@ -61,6 +65,7 @@ namespace SteamSharp.Test {
 		}
 
 		[TestMethod]
+		[TestCategory( "ISteamUserStats" )]
 		public void GET_GetPlayerAchievements_ByClass_JapaneseLanguage() {
 
 			SteamClient client = new SteamClient();
@@ -74,6 +79,7 @@ namespace SteamSharp.Test {
 		}
 
 		[TestMethod]
+		[TestCategory( "ISteamUserStats" )]
 		public void GET_GetPlayerAchievements_ByClass_RussianLanguage() {
 
 			SteamClient client = new SteamClient();
@@ -89,6 +95,7 @@ namespace SteamSharp.Test {
 
 		#region GetUserStatsForGame
 		[TestMethod]
+		[TestCategory( "ISteamUserStats" )]
 		public void GET_GetUserStatsForGame_ByClass() {
 
 			SteamClient client = new SteamClient();

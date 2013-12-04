@@ -10,6 +10,7 @@ namespace SteamSharp.Test {
 	public class Authenticators {
 
 		[TestMethod]
+		[TestCategory( "Authenticators" )]
 		public void Verify_APIKey_Added() {
 
 			// Did you remember to add your API Token?

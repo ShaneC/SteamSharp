@@ -10,6 +10,7 @@ namespace SteamSharp.Test {
 
 		#region GetPlayerSummaries
 		[TestMethod]
+		[TestCategory( "ISteamUser" )]
 		public void GET_GetPlayerSummaries_ByClass() {
 
 			SteamClient client = new SteamClient();
@@ -25,6 +26,7 @@ namespace SteamSharp.Test {
 		}
 
 		[TestMethod]
+		[TestCategory( "ISteamUser" )]
 		public void GET_GetPlayerSummaries_ByClass_Unauthenticated() {
 
 			SteamClient client = new SteamClient();
@@ -36,6 +38,7 @@ namespace SteamSharp.Test {
 		}
 
 		[TestMethod]
+		[TestCategory( "ISteamUser" )]
 		public void GET_GetPlayerSummaries_NoValues() {
 
 			SteamClient client = new SteamClient();
@@ -50,6 +53,7 @@ namespace SteamSharp.Test {
 		}
 
 		[TestMethod]
+		[TestCategory( "ISteamUser" )]
 		public void GET_GetPlayerSummaries_Unauthenticated() {
 
 			SteamClient client = new SteamClient();
@@ -64,6 +68,7 @@ namespace SteamSharp.Test {
 		}
 
 		[TestMethod]
+		[TestCategory( "ISteamUser" )]
 		public void GET_GetPlayerSummaries_BadAuth() {
 
 			SteamClient client = new SteamClient();
@@ -81,6 +86,7 @@ namespace SteamSharp.Test {
 
 		#region GetPlayerSummary
 		[TestMethod]
+		[TestCategory( "ISteamUser" )]
 		public void GET_GetPlayerSummary_ByClass() {
 
 			SteamClient client = new SteamClient();
@@ -94,6 +100,7 @@ namespace SteamSharp.Test {
 		}
 
 		[TestMethod]
+		[TestCategory( "ISteamUser" )]
 		public void GET_GetPlayerSummary_ByClass_Unauthenticated() {
 
 			SteamClient client = new SteamClient();
@@ -107,6 +114,7 @@ namespace SteamSharp.Test {
 
 		#region GetFriendList
 		[TestMethod]
+		[TestCategory( "ISteamUser" )]
 		public void GET_GetFriendList_ByClass_AllRelationships() {
 
 			SteamClient client = new SteamClient();
@@ -120,6 +128,7 @@ namespace SteamSharp.Test {
 		}
 
 		[TestMethod]
+		[TestCategory( "ISteamUser" )]
 		public void GET_GetFriendList_ByClass_FriendRelationships() {
 
 			SteamClient client = new SteamClient();
@@ -133,6 +142,7 @@ namespace SteamSharp.Test {
 		}
 
 		[TestMethod]
+		[TestCategory( "ISteamUser" )]
 		public void GET_GetFriendList_ByClass_Unauthenticated() {
 
 			SteamClient client = new SteamClient();

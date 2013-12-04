@@ -14,14 +14,16 @@ namespace SteamSharp.Test {
 	public class UriBuilderTests {
 
 		[TestMethod]
+		[TestCategory( "URI" )]
 		public void GET_As_Default() {
 
 			var request = new SteamRequest( "/resource" );
-			//Assert.AreEqual( request.Method, HttpMethod.Get );
+			Assert.AreEqual( request.Method, HttpMethod.Get );
 
 		}
 
 		[TestMethod]
+		[TestCategory( "URI" )]
 		public void GET_With_Leading_Slash() {
 
 			var request = new SteamRequest( "/resource" );
@@ -35,6 +37,7 @@ namespace SteamSharp.Test {
 		}
 
 		[TestMethod]
+		[TestCategory( "URI" )]
 		public void GET_Without_Leading_Slash() {
 
 			var request = new SteamRequest( "resource" );
@@ -48,6 +51,7 @@ namespace SteamSharp.Test {
 		}
 
 		[TestMethod]
+		[TestCategory( "URI" )]
 		public void GET_With_NoSlash_Base_And_Resource_Leading_Slash() {
 
 			var request = new SteamRequest( "/resource" );
@@ -61,6 +65,7 @@ namespace SteamSharp.Test {
 		}
 
 		[TestMethod]
+		[TestCategory( "URI" )]
 		public void GET_With_NoSlash_Base_And_No_Leading_Slash() {
 
 			var request = new SteamRequest( "resource" );
@@ -73,8 +78,8 @@ namespace SteamSharp.Test {
 
 		}
 
-		// Valid test, I just don't like seeing yellow warning symbols in an otherwise glorious field of green :)
-		//[Fact(Skip="This will throw an exception and thus a breaking point in debugger.")]
+		[TestMethod]
+		[TestCategory( "URI" )]
 		public void Detect_Malformed_BaseApi() {
 
 			var request = new SteamRequest( "resource" );
@@ -90,6 +95,7 @@ namespace SteamSharp.Test {
 		/// Expected: The most recently added parameter is honored
 		/// </summary>
 		[TestMethod]
+		[TestCategory( "URI Parameters" )]
 		public void Add_Two_Of_Same_Parameter() {
 
 			var request = new SteamRequest( "/resource" );
@@ -102,6 +108,7 @@ namespace SteamSharp.Test {
 		}
 
 		[TestMethod]
+		[TestCategory( "URI Parameters" )]
 		public void GET_With_Resource_Containing_Tokens() {
 
 			var request = new SteamRequest( "resource/{foo}" );
@@ -117,6 +124,7 @@ namespace SteamSharp.Test {
 		}
 
 		[TestMethod]
+		[TestCategory( "URI Parameters" )]
 		public void POST_With_Resource_Containing_Tokens() {
 			
 			var request = new SteamRequest( "resource/{foo}", HttpMethod.Post );
@@ -132,6 +140,7 @@ namespace SteamSharp.Test {
 		}
 
 		[TestMethod]
+		[TestCategory( "URI Parameters" )]
 		public void GET_Add_QueryString_Params() {
 
 			using( SimulatedServer.Create( ResourceConstants.SimulatedServerUrl, QueryString_Echo ) ) {
@@ -166,6 +175,7 @@ namespace SteamSharp.Test {
 		}
 
 		[TestMethod]
+		[TestCategory( "URI Parameters" )]
 		public void POST_Add_QueryString_Params_Raw() {
 
 			using( SimulatedServer.Create( ResourceConstants.SimulatedServerUrl, QueryString_Echo ) ) {
@@ -201,6 +211,7 @@ namespace SteamSharp.Test {
 		}
 
 		[TestMethod]
+		[TestCategory( "URI Parameters" )]
 		public void POST_Add_QueryString_Params_Json() {
 
 			using( SimulatedServer.Create( ResourceConstants.SimulatedServerUrl, QueryString_Echo ) ) {

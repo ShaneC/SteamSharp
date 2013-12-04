@@ -9,6 +9,7 @@ namespace SteamSharp.Test {
 
 		#region GetNewsForApp
 		[TestMethod]
+		[TestCategory( "ISteamNews" )]
 		public void GET_GetNewsForApp_ByUri() {
 
 			SteamClient client = new SteamClient();
@@ -26,6 +27,7 @@ namespace SteamSharp.Test {
 		}
 
 		[TestMethod]
+		[TestCategory( "ISteamNews" )]
 		public void GET_GetNewsForApp_ByEnums() {
 
 			SteamClient client = new SteamClient();
@@ -43,6 +45,7 @@ namespace SteamSharp.Test {
 		}
 
 		[TestMethod]
+		[TestCategory( "ISteamNews" )]
 		public void GET_GetNewsForApp_ByClass() {
 
 			SteamClient client = new SteamClient();
@@ -58,6 +61,7 @@ namespace SteamSharp.Test {
 		}
 
 		[TestMethod]
+		[TestCategory( "ISteamNews" )]
 		public void GET_GetNewsForApp_NoValues() {
 
 			SteamClient client = new SteamClient();

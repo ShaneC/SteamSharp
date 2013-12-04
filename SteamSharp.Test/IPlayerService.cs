@@ -9,6 +9,7 @@ namespace SteamSharp.Test {
 
 		#region GetOwnedGames
 		[TestMethod]
+		[TestCategory( "IPlayerService" )]
 		public void GET_GetOwnedGames_ByClass() {
 
 			SteamClient client = new SteamClient();
@@ -40,6 +41,7 @@ namespace SteamSharp.Test {
 
 		#region GetRecentlyPlayedGames
 		[TestMethod]
+		[TestCategory( "IPlayerService" )]
 		public void GET_GetRecentlyPlayedGames_ByClass() {
 
 			SteamClient client = new SteamClient();
@@ -71,6 +73,7 @@ namespace SteamSharp.Test {
 
 		#region IsPlayingSharedGame
 		[TestMethod]
+		[TestCategory( "IPlayerService" )]
 		public void GET_IsPlayingSharedGame_ByClass() {
 
 			SteamClient client = new SteamClient();
