@@ -28,13 +28,26 @@ namespace SteamSharp.Authenticators {
 		}
 
 		/// <summary>
+		/// Invoke method to initialize the authenticator (which should then be added to the Authenticator property of a <see cref="SteamClient"/> instance).
+		/// </summary>
+		/// <param name="user">User to be authenticated. This user object must possess a non-null AccessToken property.</param>
+		/// <returns><see cref="UserAuthenticator"/> object for authentication of a <see cref="SteamClient"/> instance.</returns>
+		public static UserAuthenticator ForProtectedResource( SteamUser user ) {
+
+			return new UserAuthenticator {
+				AccessToken = user.AccessToken
+			};
+
+		}
+
+		/// <summary>
 		/// Queries Steam API with user credentials and returns a valid access token for use in API calls.
 		/// </summary>
 		/// <param name="username">Username of the user requesting authentication.</param>
 		/// <param name="password">Password for the user requesting authentication.</param>
 		/// <param name="steamGuardAnswer"></param>
 		/// <param name="captchaAnswer"></param>
-		/// <returns>Access token which can then be used with the <see cref="UserAuthenticator.ForProtectedResource"/> method.</returns>
+		/// <returns>Access token which can then be used with the UserAuthenticator.ForProtectedResource method.</returns>
 		public static SteamAccessRequestResult GetAccessTokenForUserAsync( string username, string password, SteamGuardAnswer steamGuardAnswer = null, CaptchaAnswer captchaAnswer = null ) {
 
 			RSAValues publicKey = GetRSAKeyValues( username );
@@ -94,9 +107,16 @@ namespace SteamSharp.Authenticators {
 				};
 			}
 
+			SteamUser user = new SteamUser {
+				SteamID = new SteamID( result.TransferParams.SteamID ),
+				AccessToken = result.TransferParams.AccessToken
+			};
+
 			return new SteamAccessRequestResult {
 				IsSuccessful = true,
-				AccessToken = result.Message
+				IsLoginComplete = result.IsLoginComplete,
+				TransferURL = result.TransferURL,
+				User = user
 			};
 
 		}
@@ -167,6 +187,9 @@ namespace SteamSharp.Authenticators {
 			[JsonProperty( "success" )]
 			public bool IsSuccessful { get; set; }
 
+			[JsonProperty( "login_complete" )]
+			public bool IsLoginComplete { get; set; }
+
 			public string Message { get; set; }
 
 			[JsonProperty( "captcha_needed" )]
@@ -179,6 +202,31 @@ namespace SteamSharp.Authenticators {
 			public bool IsEmailAuthNeeded { get; set; }
 
 			public string EmailSteamID { get; set; }
+
+			[JsonProperty( "transfer_url" )]
+			public string TransferURL { get; set; }
+
+			[JsonProperty( "transfer_parameters" )]
+			public TransferParameters TransferParams { get; set; }
+
+		}
+
+		/// <summary>
+		/// Result object, delivered in SteamTokenResult, which contains data about the access request.
+		/// </summary>
+		private class TransferParameters {
+
+			[JsonProperty( "steamid" )]
+			public string SteamID { get; set; }
+
+			[JsonProperty( "token" )]
+			public string AccessToken { get; set; }
+
+			[JsonProperty( "remember_login" )]
+			public bool RememberLogin { get; set; }
+
+			[JsonProperty( "webcookie" )]
+			public string WebCookie { get; set; }
 
 		}
 
@@ -225,10 +273,19 @@ namespace SteamSharp.Authenticators {
 			public bool IsSuccessful { get; set; }
 
 			/// <summary>
-			/// If the request was successful, this will contain the access_token used for validation.
-			/// If not successful, this will be null.
+			/// Flag indicating if the login was successful and the transaction has been completed.
 			/// </summary>
-			public string AccessToken { get; set; }
+			public bool IsLoginComplete { get; set; }
+
+			/// <summary>
+			/// URL for Steam Transfer.
+			/// </summary>
+			public string TransferURL { get; set; }
+
+			/// <summary>
+			/// Object represent the user, complete with metadata and access token.
+			/// </summary>
+			public SteamUser User { get; set; }
 
 		}
 

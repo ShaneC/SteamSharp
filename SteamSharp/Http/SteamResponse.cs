@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 
@@ -18,6 +19,11 @@ namespace SteamSharp {
 		/// Contains the raw <see cref="HttpResponseMessage" /> object returned by the web request.
 		/// </summary>
 		public HttpResponseMessage HttpResponse { get; set; }
+
+		/// <summary>
+		/// Cookie container for all cookies received back from the transaction call.
+		/// </summary>
+		public IEnumerable<Cookie> Cookies { get; set; }
 
 		/// <summary>
 		/// If an error was encountered, this records the exception text. Null otherwise.

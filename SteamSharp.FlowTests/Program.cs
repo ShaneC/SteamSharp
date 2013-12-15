@@ -46,6 +46,8 @@ namespace SteamSharp.FlowTests {
 				FatalError( String.Format( "Cannot find Invoke method on Test Class. Has ITestClass been modified to not inlude the Invoke method?", args[0] ) );
 			}
 
+			WriteConsole.Information( "Beginning test <" + args[0] + ">" );
+
 			if( testClass.Invoke() )
 				WriteConsole.Success( "TEST PASSED - " + args[0] );
 			else

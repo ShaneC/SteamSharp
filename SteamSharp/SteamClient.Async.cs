@@ -18,13 +18,17 @@ namespace SteamSharp {
 
 			HttpRequestMessage httpRequest = BuildHttpRequest( request );
 
-			using( var httpClient = new HttpClient() ){
+			CookieContainer cookieContainer = new CookieContainer();
+			HttpClientHandler httpHandler = new HttpClientHandler();
+			httpHandler.CookieContainer = cookieContainer;
+
+			using( var httpClient = new HttpClient( httpHandler ) ){
 
 				httpClient.Timeout = TimeSpan.FromMilliseconds( ( ( request.Timeout > 0 ) ? request.Timeout : this.Timeout ) );
 
 				try {
 					request.IncreaseNumAttempts();
-					return ConvertToResponse( request, await httpClient.SendAsync( httpRequest ) );
+					return ConvertToResponse( request, await httpClient.SendAsync( httpRequest ), cookieContainer );
 				}catch( Exception ex ) {
 					if( ex.InnerException != null && ex.InnerException is WebException )
 						return CreateErrorResponse( request, ex.InnerException );

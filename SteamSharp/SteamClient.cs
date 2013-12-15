@@ -227,11 +227,12 @@ namespace SteamSharp {
 
 		}
 
-		private SteamResponse ConvertToResponse( ISteamRequest request, HttpResponseMessage response ) {
+		private SteamResponse ConvertToResponse( ISteamRequest request, HttpResponseMessage response, CookieContainer cookies ) {
 
 			SteamResponse steamResponse = new SteamResponse {
 				HttpResponse = response,
 				Request = request,
+				Cookies = cookies.GetCookies( response.RequestMessage.RequestUri ).Cast<Cookie>(),
 				ResponseStatus = SteamSharp.ResponseStatus.Completed,
 				StatusCode = response.StatusCode,
 				StatusDescription = response.StatusCode.ToString(),

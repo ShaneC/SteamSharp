@@ -54,6 +54,7 @@
     <Compile Include="Models\SteamNews.cs" />
     <Compile Include="Models\SteamUserStats.cs" />
     <Compile Include="Models\SteamUserInterface.cs" />
+    <Compile Include="SteamID.cs" />
     <Compile Include="SteamInterfaces\SteamInterfaceHelpers.cs" />
     <Compile Include="SteamInterfaces\PlayerService.cs" />
     <Compile Include="SteamInterfaces\SteamUser.cs" />
@@ -67,6 +68,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Http\SteamRequest.cs" />
     <Compile Include="Http\SteamResponse.cs" />
+    <Compile Include="SteamUser.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="BouncyCastle.Crypto">
