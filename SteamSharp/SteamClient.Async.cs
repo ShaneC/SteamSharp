@@ -19,6 +19,12 @@ namespace SteamSharp {
 			HttpRequestMessage httpRequest = BuildHttpRequest( request );
 
 			CookieContainer cookieContainer = new CookieContainer();
+
+			if( request.Cookies == null || request.Cookies.Count > 0 ) {
+				foreach( Cookie cookie in request.Cookies )
+					cookieContainer.Add( httpRequest.RequestUri, cookie );
+			}
+
 			HttpClientHandler httpHandler = new HttpClientHandler();
 			httpHandler.CookieContainer = cookieContainer;
 

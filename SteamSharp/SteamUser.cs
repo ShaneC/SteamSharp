@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -21,6 +22,10 @@ namespace SteamSharp {
 		/// </summary>
 		public string AccessToken { get; set; }
 
+		/// <summary>
+		/// Cookie which contains the authentication token for the user.
+		/// </summary>
+		public Cookie AuthCookie { get; set; }
 
 	}
 

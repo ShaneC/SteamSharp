@@ -16,6 +16,11 @@ namespace SteamSharp {
 		public ISteamRequest Request { get; set; }
 
 		/// <summary>
+		/// URI of the HTTP request which returned this response.
+		/// </summary>
+		public Uri RequestUri { get; internal set; }
+
+		/// <summary>
 		/// Contains the raw <see cref="HttpResponseMessage" /> object returned by the web request.
 		/// </summary>
 		public HttpResponseMessage HttpResponse { get; set; }

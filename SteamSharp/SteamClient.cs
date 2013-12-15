@@ -154,11 +154,12 @@ namespace SteamSharp {
 
 			HttpRequestMessage httpRequest = new HttpRequestMessage( request.Method, BuildUri( request ) );
 
-			// Add UserAgent header, if it does not already exist in both the request and the standard request message (shouldn't overwrite valuable system/platform data)
+			// HEADERS
+			// -- Add UserAgent header, if it does not already exist in both the request and the standard request message (shouldn't overwrite valuable system/platform data)
 			if( !request.Parameters.Any( p => p.Name == "User-Agent" && p.Type == ParameterType.HttpHeader ) && !httpRequest.Headers.Any( h => h.Key == "User-Agent" ) )
 				request.Parameters.Add( new SteamRequestParameter { Name = "User-Agent", Value = "SteamSharp/" + AssemblyVersion, Type = ParameterType.HttpHeader } );
 
-			// Currently we only accept and deserialize JSON responses
+			// -- Currently we only accept and deserialize JSON responses
 			request.Parameters.Add( new SteamRequestParameter { Name = "Accept", Value = "application/json", Type = ParameterType.HttpHeader } );
 
 			IEnumerable<SteamRequestParameter> headers = request.Parameters.Where( p => p.Type == ParameterType.HttpHeader );
@@ -168,6 +169,7 @@ namespace SteamSharp {
 				httpRequest.Headers.Add( header.Name, header.Value.ToString() );
 			}
 
+			// BODY
 			var body = request.Parameters.FirstOrDefault( p => p.Type == ParameterType.RequestBody );
 			if( body != null ) {
 
@@ -232,6 +234,7 @@ namespace SteamSharp {
 			SteamResponse steamResponse = new SteamResponse {
 				HttpResponse = response,
 				Request = request,
+				RequestUri = response.RequestMessage.RequestUri,
 				Cookies = cookies.GetCookies( response.RequestMessage.RequestUri ).Cast<Cookie>(),
 				ResponseStatus = SteamSharp.ResponseStatus.Completed,
 				StatusCode = response.StatusCode,

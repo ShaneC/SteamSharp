@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace SteamSharp {
 
+	/// <summary>
+	/// Object representing a Steam ID.
+	/// </summary>
 	public class SteamID {
 
 		private string _steamID;

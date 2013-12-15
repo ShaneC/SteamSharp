@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Net;
 using System.Net.Http;
 
 namespace SteamSharp {
@@ -13,6 +14,11 @@ namespace SteamSharp {
 		/// See AddParameter() for adding additional parameters to the request.
 		/// </summary>
 		List<SteamRequestParameter> Parameters { get; }
+
+		/// <summary>
+		/// Container for cookies to be added to the HTTP request. To add cookies use AddCookie( Cookie ).
+		/// </summary>
+		List<Cookie> Cookies { get; }
 
 		/// <summary>
 		/// Indicates the standard HTTP method that should be used for this request.
@@ -96,6 +102,13 @@ namespace SteamSharp {
 		/// <param name="type">The type of the parameter</param>
 		/// <returns>This request</returns>
 		ISteamRequest AddParameter( string name, object value, ParameterType type );
+
+		/// <summary>
+		/// Adds a <see cref="Cookie"/> to the request.
+		/// </summary>
+		/// <param name="cookie"><see cref="Cookie"/> to be added to the request.</param>
+		/// <returns>This request</returns>
+		ISteamRequest AddCookie( Cookie cookie );
 
 		/// <summary>
 		/// Provides the number of times this particular request has been attempted (regardless of success).
