@@ -1,9 +1,6 @@
 ﻿using System;
-using Org.BouncyCastle.Crypto.Encodings;
-using Org.BouncyCastle.Crypto.Engines;
-using Org.BouncyCastle.Crypto.Digests;
 
-namespace SteamSharp.Helpers {
+namespace SteamSharp.Helpers.Cryptography {
 
 	/// <summary>
 	/// RSA Encryption/Decryption.
@@ -11,12 +8,12 @@ namespace SteamSharp.Helpers {
 	public class RSAHelper {
 
 		private RSAParameters m_RSAParams = new RSAParameters();
-		private PKCS1v1_5 paddingProvider = new PKCS1v1_5();
+		private PaddingProviders.IPaddingProvider paddingProvider;
 
 		/// <summary>
 		/// Initializes the RSA Helper class with the necessary keys for encryption and decryption.
 		/// </summary>
-		public RSAHelper()
+		public RSAHelper() : this( new PaddingProviders.PKCS1v1_5() )
 		{
 		}
 
@@ -24,8 +21,16 @@ namespace SteamSharp.Helpers {
 		/// Initializes the RSA Helper class with the necessary keys for encryption and decryption.
 		/// </summary>
 		/// <param name="useOAEP">Set to true if you wish to use OAEP as the padding provider for encryption/decryption.</param>
-		public RSAHelper( bool useOAEP ) {
+		public RSAHelper( bool useOAEP ) : this( new PaddingProviders.OAEP() )
+		{
+		}
 
+		/// <summary>
+		/// Initializes the RSA Helper class with the necessary keys for encryption and decryption.
+		/// </summary>
+		/// <param name="padding">Padding Provider to use for encoding and decoding of the message.</param>
+		public RSAHelper( PaddingProviders.IPaddingProvider padding ) {
+			paddingProvider = padding;
 		}
 
 		/// <summary>

@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using SteamSharp.Helpers;
+using SteamSharp.Helpers.Cryptography;
 using System;
 using System.Net.Http;
 using System.Text;

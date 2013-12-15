@@ -43,12 +43,11 @@
     <Compile Include="Exceptions\SteamAuthenticationException.cs" />
     <Compile Include="Exceptions\SteamRequestException.cs" />
     <Compile Include="Helpers\BigInteger.cs" />
-    <Compile Include="Helpers\CryptoMathematics.cs" />
+    <Compile Include="Helpers\Cryptography\CryptoMathematics.cs" />
     <Compile Include="Helpers\Extensions.cs" />
-    <Compile Include="Helpers\HashProviders.cs" />
-    <Compile Include="Helpers\OAEP.cs" />
-    <Compile Include="Helpers\PKCS1v1_5.cs" />
-    <Compile Include="Helpers\RSAHelper.cs" />
+    <Compile Include="Helpers\Cryptography\HashProviders.cs" />
+    <Compile Include="Helpers\Cryptography\PaddingProviders.cs" />
+    <Compile Include="Helpers\Cryptography\RSAHelper.cs" />
     <Compile Include="Http\ISteamRequest.cs" />
     <Compile Include="Http\ISteamResponse.cs" />
     <Compile Include="Models\PlayerService.cs" />

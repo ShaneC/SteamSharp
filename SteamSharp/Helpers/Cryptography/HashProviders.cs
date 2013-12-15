@@ -1,11 +1,6 @@
 ﻿using Org.BouncyCastle.Crypto.Digests;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace SteamSharp.Helpers {
+namespace SteamSharp.Helpers.Cryptography {
 
 	/// <summary>
 	/// HashProviders for use in the RSAHelper

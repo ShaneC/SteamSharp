@@ -1,7 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SteamSharp.Helpers;
+using SteamSharp.Helpers.Cryptography;
 using System;
-using System.Security.Cryptography;
 using System.Text;
 
 namespace SteamSharp.Test {
@@ -18,7 +18,7 @@ namespace SteamSharp.Test {
 
 			RSAHelper rsa = new RSAHelper();
 
-			rsa.ImportParameters( new SteamSharp.Helpers.RSAParameters {
+			rsa.ImportParameters( new RSAParameters {
 				E = exponent.HexToByteArray(),
 				N = modulus.HexToByteArray()
 			} );
@@ -40,7 +40,7 @@ namespace SteamSharp.Test {
 
 			RSAHelper rsa = new RSAHelper();
 
-			rsa.ImportParameters( new SteamSharp.Helpers.RSAParameters {
+			rsa.ImportParameters( new RSAParameters {
 				E = exponent.HexToByteArray(),
 				N = modulus.HexToByteArray(),
 				D = privateKey.HexToByteArray()
