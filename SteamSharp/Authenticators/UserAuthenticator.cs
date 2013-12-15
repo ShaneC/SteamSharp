@@ -58,7 +58,7 @@ namespace SteamSharp.Authenticators {
 		/// <returns><see cref="UserAuthenticator"/> object for authentication of a <see cref="SteamClient"/> instance.</returns>
 		public static UserAuthenticator ForProtectedResource( SteamUser user ) {
 			return new UserAuthenticator {
-				AccessToken = user.AccessToken
+				AccessToken = user.TransferToken
 			};
 		}
 
@@ -131,9 +131,12 @@ namespace SteamSharp.Authenticators {
 			}
 
 			SteamUser user = new SteamUser {
-				SteamID = new SteamID( result.TransferParams.SteamID ),
-				AccessToken = result.TransferParams.AccessToken
+				SteamID = new SteamID( result.TransferParams.SteamID )
 			};
+
+			user.TransferToken = result.TransferParams.Token;
+
+			user.AuthCookie = response.Cookies["steamLogin"];
 
 			return new SteamAccessRequestResult {
 				IsSuccessful = true,
@@ -234,8 +237,7 @@ namespace SteamSharp.Authenticators {
 			[JsonProperty( "steamid" )]
 			public string SteamID { get; set; }
 
-			[JsonProperty( "token" )]
-			public string AccessToken { get; set; }
+			public string Token { get; set; }
 
 			[JsonProperty( "remember_login" )]
 			public bool RememberLogin { get; set; }

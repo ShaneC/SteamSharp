@@ -35,7 +35,7 @@ namespace SteamSharp.FlowTests.Tests {
 					WriteConsole.Information( "SteamGuard has been required by the transaction." );
 					steamGuard = new UserAuthenticator.SteamGuardAnswer {
 						ID = result.SteamGuardID,
-						SolutionText = WriteConsole.Prompt( "Please enter SteamGuard solution from your e-mail:" )
+						SolutionText = WriteConsole.Prompt( "Please enter SteamGuard solution from your @" + result.SteamGuardEmailDomain + " e-mail:" )
 					};
 				} else
 					steamGuard = null;

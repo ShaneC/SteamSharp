@@ -28,7 +28,7 @@ namespace SteamSharp {
 		/// <summary>
 		/// Cookie container for all cookies received back from the transaction call.
 		/// </summary>
-		public IEnumerable<Cookie> Cookies { get; set; }
+		public Dictionary<string,Cookie> Cookies { get; set; }
 
 		/// <summary>
 		/// If an error was encountered, this records the exception text. Null otherwise.

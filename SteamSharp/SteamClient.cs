@@ -231,11 +231,16 @@ namespace SteamSharp {
 
 		private SteamResponse ConvertToResponse( ISteamRequest request, HttpResponseMessage response, CookieContainer cookies ) {
 
+			var cookieJar = new Dictionary<string,Cookie>();
+			foreach( Cookie cookie in cookies.GetCookies( response.RequestMessage.RequestUri ).Cast<Cookie>() ){
+				cookieJar.Add( cookie.Name, cookie );
+			}
+
 			SteamResponse steamResponse = new SteamResponse {
 				HttpResponse = response,
 				Request = request,
 				RequestUri = response.RequestMessage.RequestUri,
-				Cookies = cookies.GetCookies( response.RequestMessage.RequestUri ).Cast<Cookie>(),
+				Cookies = cookieJar,
 				ResponseStatus = SteamSharp.ResponseStatus.Completed,
 				StatusCode = response.StatusCode,
 				StatusDescription = response.StatusCode.ToString(),

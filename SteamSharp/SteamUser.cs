@@ -20,7 +20,7 @@ namespace SteamSharp {
 		/// <summary>
 		/// Access Token to be passed on the Steam API for requests requiring first part authentication.
 		/// </summary>
-		public string AccessToken { get; set; }
+		public string TransferToken { get; set; }
 
 		/// <summary>
 		/// Cookie which contains the authentication token for the user.
