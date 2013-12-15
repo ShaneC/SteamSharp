@@ -63,7 +63,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="Authenticators.cs" />
-    <Compile Include="Helpers.cs" />
+    <Compile Include="Cryptography.cs" />
     <Compile Include="TestHelpers\Extensions.cs" />
     <Compile Include="TestHelpers\SimulatedServer.cs" />
     <Compile Include="IPlayerService.cs" />

@@ -129,13 +129,14 @@ namespace SteamSharp {
 				foreach( SteamRequestParameter p in parameters ) {
 					if( queryString.Length > 1 )
 						queryString.Append( "&" );
-					queryString.AppendFormat( "{0}={1}", p.Name, p.Value.ToString() );
+					queryString.AppendFormat( "{0}={1}", Uri.EscapeDataString( p.Name ), Uri.EscapeDataString( p.Value.ToString() ) );
 				}
 
 				destination = destination + "?" + queryString;
 			}
 
-			return new Uri( Uri.EscapeUriString( destination ) );
+			return new Uri( destination );
+			//return new Uri( Uri.EscapeUriString( destination ) );
 
 		}
 

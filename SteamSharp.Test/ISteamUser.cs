@@ -16,10 +16,10 @@ namespace SteamSharp.Test {
 			SteamClient client = new SteamClient();
 			client.Authenticator = SteamSharp.Authenticators.APIKeyAuthenticator.ForProtectedResource( ResourceConstants.AccessToken );
 
-			var response = SteamUser.GetPlayerSummaries( client, new string[] { "76561197960435530", "76561198067189899" } );
+			var response = SteamUserInterface.GetPlayerSummaries( client, new string[] { "76561197960435530", "76561198067189899" } );
 
 			Assert.IsNotNull( response );
-			Assert.IsInstanceOfType( response, typeof( List<SteamUser.Player> ) );
+			Assert.IsInstanceOfType( response, typeof( List<SteamUserInterface.Player> ) );
 			
 			Assert.AreEqual( 2, response.Count );
 
@@ -32,7 +32,7 @@ namespace SteamSharp.Test {
 			SteamClient client = new SteamClient();
 
 			AssertException.Throws<SteamRequestException>( () => {
-				SteamUser.GetPlayerSummaries( client, new string[] { "76561197960435530", "76561198067189899" } );
+				SteamUserInterface.GetPlayerSummaries( client, new string[] { "76561197960435530", "76561198067189899" } );
 			} );
 
 		}
@@ -92,10 +92,10 @@ namespace SteamSharp.Test {
 			SteamClient client = new SteamClient();
 			client.Authenticator = SteamSharp.Authenticators.APIKeyAuthenticator.ForProtectedResource( ResourceConstants.AccessToken );
 
-			var response = SteamUser.GetPlayerSummary( client, "76561197960435530" );
+			var response = SteamUserInterface.GetPlayerSummary( client, "76561197960435530" );
 
 			Assert.IsNotNull( response );
-			Assert.IsInstanceOfType( response, typeof( SteamUser.Player ) );
+			Assert.IsInstanceOfType( response, typeof( SteamUserInterface.Player ) );
 
 		}
 
@@ -106,7 +106,7 @@ namespace SteamSharp.Test {
 			SteamClient client = new SteamClient();
 
 			AssertException.Throws<SteamRequestException>( () => {
-				SteamUser.GetPlayerSummary( client, "76561197960435530" );
+				SteamUserInterface.GetPlayerSummary( client, "76561197960435530" );
 			} );
 
 		}
@@ -120,10 +120,10 @@ namespace SteamSharp.Test {
 			SteamClient client = new SteamClient();
 			client.Authenticator = SteamSharp.Authenticators.APIKeyAuthenticator.ForProtectedResource( ResourceConstants.AccessToken );
 
-			var response = SteamUser.GetFriendList( client, "76561197960435530", PlayerRelationshipType.All );
+			var response = SteamUserInterface.GetFriendList( client, "76561197960435530", PlayerRelationshipType.All );
 
 			Assert.IsNotNull( response );
-			Assert.IsInstanceOfType( response, typeof( List<SteamUser.Friend> ) );
+			Assert.IsInstanceOfType( response, typeof( List<SteamUserInterface.Friend> ) );
 
 		}
 
@@ -134,10 +134,10 @@ namespace SteamSharp.Test {
 			SteamClient client = new SteamClient();
 			client.Authenticator = SteamSharp.Authenticators.APIKeyAuthenticator.ForProtectedResource( ResourceConstants.AccessToken );
 
-			var response = SteamUser.GetFriendList( client, "76561197960435530", PlayerRelationshipType.Friend );
+			var response = SteamUserInterface.GetFriendList( client, "76561197960435530", PlayerRelationshipType.Friend );
 
 			Assert.IsNotNull( response );
-			Assert.IsInstanceOfType( response, typeof( List<SteamUser.Friend> ) );
+			Assert.IsInstanceOfType( response, typeof( List<SteamUserInterface.Friend> ) );
 
 		}
 
@@ -148,7 +148,7 @@ namespace SteamSharp.Test {
 			SteamClient client = new SteamClient();
 
 			AssertException.Throws<SteamRequestException>( () => {
-				SteamUser.GetFriendList( client, "76561197960435530", PlayerRelationshipType.All );
+				SteamUserInterface.GetFriendList( client, "76561197960435530", PlayerRelationshipType.All );
 			} );
 
 		}

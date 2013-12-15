@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace SteamSharp {
 
-	public partial class SteamUser {
+	public partial class SteamUserInterface {
 
 		#region GetPlayerSummaries
 		/// <summary>

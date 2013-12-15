@@ -43,14 +43,18 @@
     <Compile Include="Exceptions\SteamAuthenticationException.cs" />
     <Compile Include="Exceptions\SteamRequestException.cs" />
     <Compile Include="Helpers\BigInteger.cs" />
+    <Compile Include="Helpers\CryptoMathematics.cs" />
     <Compile Include="Helpers\Extensions.cs" />
+    <Compile Include="Helpers\HashProviders.cs" />
+    <Compile Include="Helpers\OAEP.cs" />
+    <Compile Include="Helpers\PKCS1v1_5.cs" />
     <Compile Include="Helpers\RSAHelper.cs" />
     <Compile Include="Http\ISteamRequest.cs" />
     <Compile Include="Http\ISteamResponse.cs" />
     <Compile Include="Models\PlayerService.cs" />
     <Compile Include="Models\SteamNews.cs" />
     <Compile Include="Models\SteamUserStats.cs" />
-    <Compile Include="Models\SteamUser.cs" />
+    <Compile Include="Models\SteamUserInterface.cs" />
     <Compile Include="SteamInterfaces\SteamInterfaceHelpers.cs" />
     <Compile Include="SteamInterfaces\PlayerService.cs" />
     <Compile Include="SteamInterfaces\SteamUser.cs" />
@@ -66,6 +70,9 @@
     <Compile Include="Http\SteamResponse.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="BouncyCastle.Crypto">
+      <HintPath>..\packages\BouncyCastle.Crypto.4.5.0.0\BouncyCastle.Crypto.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\packages\Newtonsoft.Json.5.0.8\lib\portable-net45+wp80+win8\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -80,6 +87,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />

@@ -3002,4 +3002,5 @@ namespace SteamSharp.Helpers {
 		}
 
 	}
+
 }

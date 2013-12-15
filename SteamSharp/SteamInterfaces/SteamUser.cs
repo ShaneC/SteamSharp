@@ -8,7 +8,7 @@ namespace SteamSharp {
 	/// <summary>
 	/// Class allowing for abstracted querying of the ISteamUser interface
 	/// </summary>
-	public partial class SteamUser : SteamInterface {
+	public partial class SteamUserInterface : SteamInterface {
 
 		#region GetPlayerSummaries (and overload GetPlayerSummary)
 		/// <summary>
