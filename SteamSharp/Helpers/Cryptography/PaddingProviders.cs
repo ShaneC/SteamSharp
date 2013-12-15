@@ -16,22 +16,22 @@ namespace SteamSharp.Helpers.Cryptography {
 			/// Adds padding to the input data and returns the padded data.
 			/// </summary>
 			/// <param name="dataBytes">Data to be padded prior to encryption</param>
-			/// <param name="params">RSA Parameters used for padding computation</param>
+			/// <param name="parameters">RSA Parameters used for padding computation</param>
 			/// <returns>Padded message</returns>
-			byte[] EncodeMessage( byte[] dataBytes, RSAParameters @params );
+			byte[] EncodeMessage( byte[] dataBytes, RSAParameters parameters );
 			/// <summary>
 			/// Removes padding that was added to the unencrypted data prior to encryption.
 			/// </summary>
 			/// <param name="dataBytes">Data to have padding removed</param>
-			/// <param name="params">RSA Parameters used for padding computation</param>
+			/// <param name="parameters">RSA Parameters used for padding computation</param>
 			/// <returns>Unpadded message</returns>
-			byte[] DecodeMessage( byte[] dataBytes, RSAParameters @params );
+			byte[] DecodeMessage( byte[] dataBytes, RSAParameters parameters );
 			/// <summary>
 			/// Gets the maximum message length for this padding provider.
 			/// </summary>
-			/// <param name="params">RSA Parameters used for padding computation</param>
+			/// <param name="parameters">RSA Parameters used for padding computation</param>
 			/// <returns>Max message length</returns>
-			int GetMaxMessageLength( RSAParameters @params );
+			int GetMaxMessageLength( RSAParameters parameters );
 
 		}
 
@@ -44,8 +44,8 @@ namespace SteamSharp.Helpers.Cryptography {
 			/// Adds padding to the input data and returns the padded data.
 			/// </summary>
 			/// <param name="dataBytes">Data to be padded prior to encryption</param>
-			/// <param name="params">RSA Parameters u
-			public byte[] EncodeMessage( byte[] dataBytes, RSAParameters @params ) {
+			/// <param name="parameters">RSA Parameters</param>
+			public byte[] EncodeMessage( byte[] dataBytes, RSAParameters parameters ) {
 				return dataBytes;
 			}
 
@@ -53,19 +53,19 @@ namespace SteamSharp.Helpers.Cryptography {
 			/// Removes padding that was added to the unencrypted data prior to encryption.
 			/// </summary>
 			/// <param name="dataBytes">Data to have padding removed</param>
-			/// <param name="params">RSA Parameters used for padding computation</param>
+			/// <param name="parameters">RSA Parameters used for padding computation</param>
 			/// <returns>Unpadded message</returns>
-			public byte[] DecodeMessage( byte[] dataBytes, RSAParameters @params ) {
+			public byte[] DecodeMessage( byte[] dataBytes, RSAParameters parameters ) {
 				return dataBytes;
 			}
 
 			/// <summary>
 			/// Gets the maximum message length for this padding provider.
 			/// </summary>
-			/// <param name="params">RSA Parameters used for padding computation</param>
+			/// <param name="parameters">RSA Parameters used for padding computation</param>
 			/// <returns>Max message length</returns>
-			public int GetMaxMessageLength( RSAParameters @params ) {
-				return @params.N.Length;
+			public int GetMaxMessageLength( RSAParameters parameters ) {
+				return parameters.N.Length;
 			}
 
 		}
@@ -104,9 +104,9 @@ namespace SteamSharp.Helpers.Cryptography {
 			/// Adds padding to the input data and returns the padded data.
 			/// </summary>
 			/// <param name="dataBytes">Data to be padded prior to encryption</param>
-			/// <param name="params">RSA Parameters used for padding computation</param>
+			/// <param name="parameters">RSA Parameters used for padding computation</param>
 			/// <returns>Padded message</returns>
-			public byte[] EncodeMessage( byte[] dataBytes, RSAParameters @params ) {
+			public byte[] EncodeMessage( byte[] dataBytes, RSAParameters parameters ) {
 				//Iterator
 				int i = 0;
 
@@ -114,9 +114,9 @@ namespace SteamSharp.Helpers.Cryptography {
 				m_mLen = dataBytes.Length;
 
 				//Get the size of the public modulus (will serve as max length for cipher text)
-				m_k = @params.N.Length;
+				m_k = parameters.N.Length;
 
-				if( m_mLen > GetMaxMessageLength( @params ) ) {
+				if( m_mLen > GetMaxMessageLength( parameters ) ) {
 					throw new Exception( "Bad Data." );
 				}
 
@@ -139,7 +139,7 @@ namespace SteamSharp.Helpers.Cryptography {
 
 				//Compute the length needed for PS (zero padding) and 
 				//fill a byte array to the computed length
-				int psLen = GetMaxMessageLength( @params ) - m_mLen;
+				int psLen = GetMaxMessageLength( parameters ) - m_mLen;
 
 				//Generate the SHA1 hash of an empty L (Label).  Label is not used for this 
 				//application of padding in the RSA specification.
@@ -186,7 +186,7 @@ namespace SteamSharp.Helpers.Cryptography {
 				byte[] maskedSeed = CryptoMathematics.BitwiseXOR( bytSeed, seedMask );
 
 				//Create the resulting cipher - starting with a 0 byte.
-				byte[] result = new byte[@params.N.Length];
+				byte[] result = new byte[parameters.N.Length];
 				result[0] = 0x00;
 
 				//Add the masked seed
@@ -202,11 +202,11 @@ namespace SteamSharp.Helpers.Cryptography {
 			/// Removes padding that was added to the unencrypted data prior to encryption.
 			/// </summary>
 			/// <param name="dataBytes">Data to have padding removed</param>
-			/// <param name="params">RSA Parameters used for padding computation</param>
+			/// <param name="parameters">RSA Parameters used for padding computation</param>
 			/// <returns>Unpadded message</returns>
-			public byte[] DecodeMessage( byte[] dataBytes, RSAParameters @params ) {
+			public byte[] DecodeMessage( byte[] dataBytes, RSAParameters parameters ) {
 
-				m_k = @params.D.Length;
+				m_k = parameters.D.Length;
 				if( !( m_k == dataBytes.Length ) ) {
 					throw new Exception( "Bad Data." );
 				}
@@ -282,10 +282,10 @@ namespace SteamSharp.Helpers.Cryptography {
 			/// <summary>
 			/// Gets the maximum message length for this padding provider.
 			/// </summary>
-			/// <param name="params">RSA Parameters used for padding computation</param>
+			/// <param name="parameters">RSA Parameters used for padding computation</param>
 			/// <returns>Max message length</returns>
-			public int GetMaxMessageLength( RSAParameters @params ) {
-				return @params.N.Length - ( 2 * m_hLen ) - 2;
+			public int GetMaxMessageLength( RSAParameters parameters ) {
+				return parameters.N.Length - ( 2 * m_hLen ) - 2;
 			}
 
 		}
@@ -304,16 +304,16 @@ namespace SteamSharp.Helpers.Cryptography {
 			/// Adds padding to the input data and returns the padded data.
 			/// </summary>
 			/// <param name="dataBytes">Data to be padded prior to encryption</param>
-			/// <param name="params">RSA Parameters used for padding computation</param>
+			/// <param name="parameters">RSA Parameters used for padding computation</param>
 			/// <returns>Padded message</returns>
-			public byte[] EncodeMessage( byte[] dataBytes, RSAParameters @params ) {
+			public byte[] EncodeMessage( byte[] dataBytes, RSAParameters parameters ) {
 
 				//Determine if we can add padding.
-				if( dataBytes.Length > GetMaxMessageLength( @params ) ) {
+				if( dataBytes.Length > GetMaxMessageLength( parameters ) ) {
 					throw new Exception( "Data length is too long. Increase your key size or consider encrypting less data." );
 				}
 
-				int padLength = @params.N.Length - dataBytes.Length - 3;
+				int padLength = parameters.N.Length - dataBytes.Length - 3;
 				BigInteger biRnd = new BigInteger();
 				biRnd.genRandomBits( padLength * 8, new Random( DateTime.Now.Millisecond ) );
 
@@ -329,7 +329,7 @@ namespace SteamSharp.Helpers.Cryptography {
 					}
 				}
 
-				byte[] result = new byte[@params.N.Length];
+				byte[] result = new byte[parameters.N.Length];
 
 
 				//Add the starting 0x00 byte
@@ -360,11 +360,11 @@ namespace SteamSharp.Helpers.Cryptography {
 			/// Removes padding that was added to the unencrypted data prior to encryption.
 			/// </summary>
 			/// <param name="dataBytes">Data to have padding removed</param>
-			/// <param name="params">RSA Parameters used for padding computation</param>
+			/// <param name="parameters">RSA Parameters used for padding computation</param>
 			/// <returns>Unpadded message</returns>
-			public byte[] DecodeMessage( byte[] dataBytes, RSAParameters @params ) {
+			public byte[] DecodeMessage( byte[] dataBytes, RSAParameters parameters ) {
 
-				byte[] bytDec = new byte[@params.N.Length];
+				byte[] bytDec = new byte[parameters.N.Length];
 
 				int lenDiff = 0;
 
@@ -405,10 +405,10 @@ namespace SteamSharp.Helpers.Cryptography {
 			/// <summary>
 			/// Gets the maximum message length for this padding provider.
 			/// </summary>
-			/// <param name="params">RSA Parameters used for padding computation</param>
+			/// <param name="parameters">RSA Parameters used for padding computation</param>
 			/// <returns>Max message length</returns>
-			public int GetMaxMessageLength( RSAParameters @params ) {
-				return @params.N.Length - 11;
+			public int GetMaxMessageLength( RSAParameters parameters ) {
+				return parameters.N.Length - 11;
 			}
 
 		}

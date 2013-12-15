@@ -7,7 +7,7 @@ namespace SteamSharp.Helpers.Cryptography {
 	/// </summary>
 	public class RSAHelper {
 
-		private RSAParameters m_RSAParams = new RSAParameters();
+		private RSAParameters RSAParams = new RSAParameters();
 		private PaddingProviders.IPaddingProvider paddingProvider;
 
 		/// <summary>
@@ -38,13 +38,13 @@ namespace SteamSharp.Helpers.Cryptography {
 		/// Do not set the P, Q, DP, DQ, IQ or D values.  If P, Q or D are set, the parameters 
 		/// will automatically be validated for existence of private key.
 		/// </summary>
-		/// <param name="params">RSAParameters object containing key data.</param>
-		public void ImportParameters( RSAParameters @params ) {
+		/// <param name="parameters">RSAParameters object containing key data.</param>
+		public void ImportParameters( RSAParameters parameters ) {
 
-			if( ValidateKeyData( @params ) ) {
-				m_RSAParams.D = @params.D;
-				m_RSAParams.N = @params.N;
-				m_RSAParams.E = @params.E;
+			if( ValidateKeyData( parameters ) ) {
+				RSAParams.D = parameters.D;
+				RSAParams.N = parameters.N;
+				RSAParams.E = parameters.E;
 			}
 
 		}
@@ -62,12 +62,12 @@ namespace SteamSharp.Helpers.Cryptography {
 			// Generate message's BigInteger representation
 			BigInteger biMessage = new BigInteger( message, message.Length );
 			// Perform RSA -- Cipher text is equal to ( message^exponent ) mod n.
-			BigInteger cipherText = biMessage.modPow( new BigInteger( m_RSAParams.E ), new BigInteger( m_RSAParams.N ) );
+			BigInteger cipherText = biMessage.modPow( new BigInteger( RSAParams.E ), new BigInteger( RSAParams.N ) );
 			return cipherText.getBytesRaw();
 		}
 
 		private byte[] AddEncryptionPadding( byte[] dataBytes ) {
-			return paddingProvider.EncodeMessage( dataBytes, m_RSAParams );
+			return paddingProvider.EncodeMessage( dataBytes, RSAParams );
 		}
 
 		/// <summary>
@@ -78,7 +78,7 @@ namespace SteamSharp.Helpers.Cryptography {
 		/// <returns>Byte array containing the plain text message.</returns>
 		/// 
 		public byte[] Decrypt( byte[] cipherText, byte[] privateKey ) {
-			if( @m_RSAParams.D == null )
+			if( RSAParams.D == null )
 				throw new ArgumentException( "Value for the Private Exponent (D) is missing or invalid." );
 			return DoDecrypt( RemoveEncryptionPadding( cipherText ), privateKey );
 		}
@@ -88,19 +88,19 @@ namespace SteamSharp.Helpers.Cryptography {
 			BigInteger biCipherText = new BigInteger( cipherText, cipherText.Length );
 			BigInteger biPK = new BigInteger( privateKey, privateKey.Length );
 			// Perform RSA -- Message text is equal to ( cipherText^privateKey ) mod n.
-			BigInteger message = biCipherText.modPow( biPK, new BigInteger( m_RSAParams.N ) );
+			BigInteger message = biCipherText.modPow( biPK, new BigInteger( RSAParams.N ) );
 			return message.getBytesRaw();
 		}
 
 		private byte[] RemoveEncryptionPadding( byte[] dataBytes ) {
-			return paddingProvider.DecodeMessage( dataBytes, m_RSAParams );
+			return paddingProvider.DecodeMessage( dataBytes, RSAParams );
 		}
 
-		private bool ValidateKeyData( RSAParameters @params ) {
+		private bool ValidateKeyData( RSAParameters parameters ) {
 
-			if( @params.N == null )
+			if( parameters.N == null )
 				throw new ArgumentException( "Value for Modulus (N) is missing or invalid." );
-			if( @params.E == null )
+			if( parameters.E == null )
 				throw new ArgumentException( "Value for Public Exponent (E) is missing or invalid." );
 
 			return true;
