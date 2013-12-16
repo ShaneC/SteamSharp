@@ -10,7 +10,7 @@ namespace SteamSharp {
 
 		#region GetOwnedGames
 		/// <summary>
-		/// Returns a list of games a player owns along with some playtime information, if the profile is publicly visible.
+		/// (Requires Authentication) Returns a list of games a player owns along with some playtime information, if the profile is publicly visible.
 		/// Throws <see cref="SteamRequestException"/> on failure.
 		/// <a href="https://developer.valvesoftware.com/wiki/Steam_Web_API#GetOwnedGames_.28v0001.29">See official documentation.</a>
 		/// </summary>
@@ -30,7 +30,7 @@ namespace SteamSharp {
 		}
 
 		/// <summary>
-		/// (Async) Returns a list of games a player owns along with some playtime information, if the profile is publicly visible.
+		/// (Requires Authentication) (Async) Returns a list of games a player owns along with some playtime information, if the profile is publicly visible.
 		/// Throws <see cref="SteamRequestException"/> on failure.
 		/// <a href="https://developer.valvesoftware.com/wiki/Steam_Web_API#GetOwnedGames_.28v0001.29">See official documentation.</a>
 		/// </summary>
@@ -53,7 +53,7 @@ namespace SteamSharp {
 
 		#region GetRecentlyPlayedGames
 		/// <summary>
-		/// Returns a list of games a player has played in the last two weeks.
+		/// (Requires Authentication) Returns a list of games a player has played in the last two weeks.
 		/// Throws <see cref="SteamRequestException"/> on failure.
 		/// <a href="https://developer.valvesoftware.com/wiki/Steam_Web_API#GetRecentlyPlayedGames_.28v0001.29">See official documentation.</a>
 		/// </summary>
@@ -72,7 +72,7 @@ namespace SteamSharp {
 		}
 
 		/// <summary>
-		/// (Async) Returns a list of games a player has played in the last two weeks.
+		/// (Requires Authentication) (Async) Returns a list of games a player has played in the last two weeks.
 		/// Throws <see cref="SteamRequestException"/> on failure.
 		/// <a href="https://developer.valvesoftware.com/wiki/Steam_Web_API#GetRecentlyPlayedGames_.28v0001.29">See official documentation.</a>
 		/// </summary>
@@ -95,7 +95,7 @@ namespace SteamSharp {
 
 		#region IsPlayingSharedGame
 		/// <summary>
-		/// Returns the original owner's SteamID if a borrowing account is currently playing the specified game. Null if not borrowed, or the borrower isn't currently playing the game.
+		/// (Requires Authentication) Returns the original owner's SteamID if a borrowing account is currently playing the specified game. Null if not borrowed, or the borrower isn't currently playing the game.
 		/// Throws <see cref="SteamRequestException"/> on failure.
 		/// <a href="https://developer.valvesoftware.com/wiki/Steam_Web_API#IsPlayingSharedGame_.28v0001.29">See official documentation.</a>
 		/// </summary>
@@ -114,7 +114,7 @@ namespace SteamSharp {
 		}
 
 		/// <summary>
-		/// (Async) Returns the original owner's SteamID if a borrowing account is currently playing the specified game. Null if not borrowed, or the borrower isn't currently playing the game.
+		/// (Requires Authentication) (Async) Returns the original owner's SteamID if a borrowing account is currently playing the specified game. Null if not borrowed, or the borrower isn't currently playing the game.
 		/// Throws <see cref="SteamRequestException"/> on failure.
 		/// <a href="https://developer.valvesoftware.com/wiki/Steam_Web_API#IsPlayingSharedGame_.28v0001.29">See official documentation.</a>
 		/// </summary>

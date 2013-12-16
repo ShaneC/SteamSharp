@@ -1,6 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SteamSharp.Helpers;
 using SteamSharp.Helpers.Cryptography;
+using SteamSharp.Test.TestHelpers;
 using System;
 using System.Text;
 
@@ -8,6 +9,17 @@ namespace SteamSharp.Test {
 
 	[TestClass]
 	public class Cryptography {
+
+		[TestMethod]
+		[TestCategory( "RSA" )]
+		public void RSA_Encrypt_NoKeys() {
+
+			RSAHelper rsa = new RSAHelper();
+			AssertException.Throws<ArgumentNullException>( () => {
+				byte[] encodedPassword = rsa.Encrypt( Encoding.UTF8.GetBytes( "Shouldn't work" ) );
+			} );
+
+		}
 
 		[TestMethod]
 		[TestCategory( "RSA" )]
@@ -30,7 +42,7 @@ namespace SteamSharp.Test {
 
 		}
 
-		[TestMethod]
+		//[TestMethod]
 		[TestCategory( "RSA" )]
 		public void RSA_EncryptDecrypt() {
 

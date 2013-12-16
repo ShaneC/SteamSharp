@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using SteamSharp.Test.TestHelpers;
 
 namespace SteamSharp.Test {
 
@@ -38,6 +39,31 @@ namespace SteamSharp.Test {
 		#endregion
 
 		#region GetRecentlyPlayedGames
+		[TestMethod]
+		[TestCategory( "IPlayerService" )]
+		public void GET_GetRecentlyPlayedGames_ByClass_NoAuth() {
+
+			SteamClient client = new SteamClient();
+
+			AssertException.Throws<SteamRequestException>( () => {
+				var response = PlayerService.GetRecentlyPlayedGames( client, "76561197960434622" );
+			});
+
+		}
+
+		[TestMethod]
+		[TestCategory( "IPlayerService" )]
+		public void GET_GetRecentlyPlayedGames_ByClass_BadSteamID() {
+
+			SteamClient client = new SteamClient();
+			client.Authenticator = SteamSharp.Authenticators.APIKeyAuthenticator.ForProtectedResource( ResourceConstants.AccessToken );
+
+			AssertException.Throws<SteamRequestException>( () => {
+				var response = PlayerService.GetRecentlyPlayedGames( client, "1234" );
+			} );
+			
+		}
+
 		[TestMethod]
 		[TestCategory( "IPlayerService" )]
 		public void GET_GetRecentlyPlayedGames_ByClass() {
