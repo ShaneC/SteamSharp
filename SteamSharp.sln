@@ -5,21 +5,24 @@ VisualStudioVersion = 12.0.21005.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SteamSharp", "SteamSharp\SteamSharp.csproj", "{4A4A16CE-92A7-4D2F-9B96-2D6F22A91518}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NuGet", "NuGet", "{6002B414-25FE-4774-B8D8-6EFAA8413EE3}"
-	ProjectSection(SolutionItems) = preProject
-		SteamSharp\SteamSharp.nuspec = SteamSharp\SteamSharp.nuspec
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{EFEB3BEC-C181-4A80-B114-2C41B4DD3F4D}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Metadata", "Metadata", "{EFEB3BEC-C181-4A80-B114-2C41B4DD3F4D}"
 	ProjectSection(SolutionItems) = preProject
 		LICENSE.txt = LICENSE.txt
 		README.md = README.md
 		ReleaseNotes.md = ReleaseNotes.md
+		SteamSharp\SteamSharp.nuspec = SteamSharp\SteamSharp.nuspec
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SteamSharp.Test", "SteamSharp.Test\SteamSharp.Test.csproj", "{61445ACE-F9E3-44E4-8EA8-9A7976051322}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SteamSharp.FlowTests", "SteamSharp.FlowTests\SteamSharp.FlowTests.csproj", "{F8B2C234-C72A-480D-B5C7-64369CDC1663}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{9922F213-8D1B-4746-942A-B0EFA7625D28}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\NuGet.Config = .nuget\NuGet.Config
+		.nuget\NuGet.exe = .nuget\NuGet.exe
+		.nuget\NuGet.targets = .nuget\NuGet.targets
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
