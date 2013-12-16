@@ -7,7 +7,7 @@ namespace SteamSharp.Helpers.Cryptography {
 	/// </summary>
 	public class RSAHelper {
 
-		private RSAParameters RSAParams = new RSAParameters();
+		private RSAParameters RSAParams = null;
 		private PaddingProviders.IPaddingProvider paddingProvider;
 
 		/// <summary>
@@ -55,6 +55,8 @@ namespace SteamSharp.Helpers.Cryptography {
 		/// <param name="message">Message to be encrypted.</param>
 		/// <returns>Byte array containing the cipher text</returns>
 		public byte[] Encrypt( byte[] message ) {
+			if( RSAParams == null )
+				throw new ArgumentNullException( "You must specify the RSA Parameters with ImportParameters() before performing encryption." );
 			return DoEncrypt( AddEncryptionPadding( message ) );
 		}
 
@@ -78,7 +80,9 @@ namespace SteamSharp.Helpers.Cryptography {
 		/// <returns>Byte array containing the plain text message.</returns>
 		/// 
 		public byte[] Decrypt( byte[] cipherText, byte[] privateKey ) {
-			if( RSAParams.D == null )
+			if( RSAParams == null )
+				throw new ArgumentNullException( "You must specify the RSA Parameters with ImportParameters() before performing decryption." );
+			if( RSAParams.D.Length < 1 )
 				throw new ArgumentException( "Value for the Private Exponent (D) is missing or invalid." );
 			return DoDecrypt( RemoveEncryptionPadding( cipherText ), privateKey );
 		}
@@ -98,9 +102,9 @@ namespace SteamSharp.Helpers.Cryptography {
 
 		private bool ValidateKeyData( RSAParameters parameters ) {
 
-			if( parameters.N == null )
+			if( parameters.N.Length < 1 )
 				throw new ArgumentException( "Value for Modulus (N) is missing or invalid." );
-			if( parameters.E == null )
+			if( parameters.E.Length < 1 )
 				throw new ArgumentException( "Value for Public Exponent (E) is missing or invalid." );
 
 			return true;
@@ -114,9 +118,9 @@ namespace SteamSharp.Helpers.Cryptography {
 	/// </summary>
 	public class RSAParameters {
 
-		private byte[] m_E;
-		private byte[] m_N;
-		private byte[] m_D;
+		private byte[] m_E = new byte[] { };
+		private byte[] m_N = new byte[] { };
+		private byte[] m_D = new byte[] { };
 
 		/// <summary>
 		/// Parameter value E
