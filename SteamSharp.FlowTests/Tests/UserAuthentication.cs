@@ -1,23 +1,21 @@
 ﻿using SteamSharp.Authenticators;
+using System;
 
 namespace SteamSharp.FlowTests.Tests {
 
 	public class UserAuthentication : ITestClass {
 
-		private string Username;
-		private string Password;
+		public static SteamUser Login() {
 
-		public bool Invoke() {
-
-			Username = WriteConsole.Prompt( "Please enter target username:" );
-			Password = WriteConsole.Prompt( "Please enter password for " + Username + ":" );
+			string Username = WriteConsole.Prompt( "Please enter target username:" );
+			string Password = WriteConsole.Prompt( "Please enter password for " + Username + ":" );
 
 			SteamClient client = new SteamClient();
-			var result = SteamSharp.Authenticators.UserAuthenticator.GetAccessTokenForUserAsync( Username, Password );
+			var result = SteamSharp.Authenticators.UserAuthenticator.GetAccessCookieForUser( Username, Password );
 
 			UserAuthenticator.CaptchaAnswer captcha = null;
 			UserAuthenticator.SteamGuardAnswer steamGuard = null;
-			
+
 			while( true ) {
 
 				if( result.IsCaptchaNeeded ) {
@@ -40,25 +38,40 @@ namespace SteamSharp.FlowTests.Tests {
 				} else
 					steamGuard = null;
 
-				result = SteamSharp.Authenticators.UserAuthenticator.GetAccessTokenForUserAsync( Username, Password, steamGuard, captcha );
+				result = SteamSharp.Authenticators.UserAuthenticator.GetAccessCookieForUser( Username, Password, steamGuard, captcha );
 
 				if( result.IsSuccessful ) {
 					WriteConsole.Success( "Yay, authentication was successful!" );
-					return true;
+					return result.User;
 				} else if( result.SteamResponseMessage == "Incorrect login" ) {
-					WriteConsole.Error( "Authentication failied, either due to bad password or a failure of the code." );
-					return false;
+					throw new Exception( "Authentication failied, either due to bad password or a failure of the code." );
 				} else if( result.IsCaptchaNeeded || result.IsSteamGuardNeeded ) {
 					WriteConsole.Information( "Additional information is needed, going through the loop again.\nSteam Message: " + result.SteamResponseMessage );
 					continue;
 				} else {
-					WriteConsole.Error( "Authentication failed, no additional data was needed.\nSteam Message: " + result.SteamResponseMessage );
-					break;
+					throw new Exception( "Authentication failed, no additional data was needed (so unknown reason for failure).\nSteam Message: " + result.SteamResponseMessage );
 				}
 
 			}
-			
-			return false;
+
+		}
+
+		public bool Invoke() {
+
+			try {
+
+				SteamUser user = Login();
+				if( user == null )
+					return false;
+
+				var result = UserAuthenticator.GetAccessTokenForUser( user );
+
+				return true;
+
+			} catch( Exception e ) {
+				WriteConsole.Error( e.Message + "\n" + e.ToString() );
+				return false;
+			}
 
 		}
 

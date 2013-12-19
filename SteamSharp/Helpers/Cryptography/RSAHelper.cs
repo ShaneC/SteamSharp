@@ -41,11 +41,8 @@ namespace SteamSharp.Helpers.Cryptography {
 		/// <param name="parameters">RSAParameters object containing key data.</param>
 		public void ImportParameters( RSAParameters parameters ) {
 
-			if( ValidateKeyData( parameters ) ) {
-				RSAParams.D = parameters.D;
-				RSAParams.N = parameters.N;
-				RSAParams.E = parameters.E;
-			}
+			if( ValidateKeyData( parameters ) )
+				RSAParams = parameters;
 
 		}
 
@@ -118,7 +115,7 @@ namespace SteamSharp.Helpers.Cryptography {
 	/// </summary>
 	public class RSAParameters {
 
-		private byte[] m_E = new byte[] { };
+		private byte[] m_E = new byte[] { 0x01, 0x00, 0x01 };
 		private byte[] m_N = new byte[] { };
 		private byte[] m_D = new byte[] { };
 

@@ -129,14 +129,14 @@ namespace SteamSharp {
 				foreach( SteamRequestParameter p in parameters ) {
 					if( queryString.Length > 1 )
 						queryString.Append( "&" );
-					queryString.AppendFormat( "{0}={1}", Uri.EscapeDataString( p.Name ), Uri.EscapeDataString( p.Value.ToString() ) );
+					string appendValue = ( p.IsUrlEncoded ) ? p.Value.ToString() : Uri.EscapeDataString( p.Value.ToString() );
+					queryString.AppendFormat( "{0}={1}", Uri.EscapeDataString( p.Name ), appendValue );
 				}
 
 				destination = destination + "?" + queryString;
 			}
 
 			return new Uri( destination );
-			//return new Uri( Uri.EscapeUriString( destination ) );
 
 		}
 
@@ -169,24 +169,28 @@ namespace SteamSharp {
 				httpRequest.Headers.Add( header.Name, header.Value.ToString() );
 			}
 
-			// BODY
-			var body = request.Parameters.FirstOrDefault( p => p.Type == ParameterType.RequestBody );
-			if( body != null ) {
+			// BODY -- Only evaluate if post
+			if( request.Method == HttpMethod.Post ) {
+				var body = request.Parameters.FirstOrDefault( p => p.Type == ParameterType.RequestBody );
 
 				HttpContent content;
+
 				switch( request.DataFormat ) {
-					case PostDataFormat.Json :
-						content = new StringContent( SerializeBodyWithParameters( request, body ) );
+					case PostDataFormat.Json:
+						content = new StringContent( SerializeBodyWithParameters( request, body, PostDataFormat.Json ) );
 						content.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse( "application/json" );
 						break;
-					default :
-						content = new StringContent( body.Value.ToString() );
+					case PostDataFormat.FormUrlEncoded:
+						content = new StringContent( SerializeBodyWithParameters( request, body, PostDataFormat.FormUrlEncoded ) );
+						content.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse( "application/x-www-form-urlencoded" );
+						break;
+					default:
+						content = new StringContent( ( ( body != null ) ? body.Value.ToString() : String.Empty ) );
 						break;
 				}
-				
-				httpRequest.Content = content;
 
-			} 
+				httpRequest.Content = content;
+			}
 
 			return httpRequest;
 
@@ -263,7 +267,7 @@ namespace SteamSharp {
 		/// <param name="request">Request to be evaluated.</param>
 		/// <param name="body">Current parameter intended for addition to the body of the request.</param>
 		/// <returns>Content which can be sent over the HTTP Request, including all parameters (both body and GetOrPost).</returns>
-		private string SerializeBodyWithParameters( ISteamRequest request, SteamRequestParameter body ) {
+		private string SerializeBodyWithParameters( ISteamRequest request, SteamRequestParameter body, PostDataFormat format ) {
 			
 			Dictionary<string, object> output = new Dictionary<string, object>();
 			
@@ -272,11 +276,32 @@ namespace SteamSharp {
 				output.Add( p.Name, p.Value );
 			}
 
-			if( output.Count < 1 )
-				return JsonConvert.SerializeObject( body.Value );
-			else {
-				output.Add( body.Name, body.Value );
-				return JsonConvert.SerializeObject( output );
+			if( format == PostDataFormat.Json ) {
+
+				if( body != null && output.Count < 1 )
+					return JsonConvert.SerializeObject( body.Value );
+				else if( body != null ) {
+					output.Add( body.Name, body.Value );
+					return JsonConvert.SerializeObject( output );
+				} else {
+					return JsonConvert.SerializeObject( output );
+				}
+
+			} else {
+
+				var payload = new StringBuilder();
+				foreach( SteamRequestParameter p in parameters ) {
+					if( payload.Length > 1 )
+						payload.Append( "&" );
+					string appendValue = ( p.IsUrlEncoded ) ? p.Value.ToString() : Uri.EscapeDataString( p.Value.ToString() );
+					payload.AppendFormat( "{0}={1}", Uri.EscapeDataString( p.Name ), appendValue );
+				}
+
+				if( body != null && body.Value != null )
+					payload.AppendFormat( "{0}={1}", body.Name, body.Value.ToString() );
+
+				return payload.ToString();
+
 			}
 
 		}

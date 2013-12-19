@@ -101,7 +101,7 @@ namespace SteamSharp {
 		/// <param name="value">Value of the parameter</param>
 		/// <param name="type">The type of the parameter</param>
 		/// <returns>This request</returns>
-		ISteamRequest AddParameter( string name, object value, ParameterType type );
+		ISteamRequest AddParameter( string name, object value, ParameterType type, bool isUrlEncoded = false );
 
 		/// <summary>
 		/// Adds a <see cref="Cookie"/> to the request.

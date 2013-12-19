@@ -45,11 +45,14 @@
     <Compile Include="Exceptions\SteamAuthenticationException.cs" />
     <Compile Include="Exceptions\SteamRequestException.cs" />
     <Compile Include="Helpers\BigInteger.cs" />
+    <Compile Include="Helpers\Cryptography\AESHelper.cs" />
     <Compile Include="Helpers\Cryptography\CryptoMathematics.cs" />
+    <Compile Include="Helpers\Cryptography\UniversePublicKeys.cs" />
     <Compile Include="Helpers\Extensions.cs" />
     <Compile Include="Helpers\Cryptography\HashProviders.cs" />
     <Compile Include="Helpers\Cryptography\PaddingProviders.cs" />
     <Compile Include="Helpers\Cryptography\RSAHelper.cs" />
+    <Compile Include="Helpers\StringFormat.cs" />
     <Compile Include="Http\ISteamRequest.cs" />
     <Compile Include="Http\ISteamResponse.cs" />
     <Compile Include="Models\PlayerService.cs" />
@@ -59,7 +62,7 @@
     <Compile Include="SteamID.cs" />
     <Compile Include="SteamInterfaces\SteamInterfaceHelpers.cs" />
     <Compile Include="SteamInterfaces\PlayerService.cs" />
-    <Compile Include="SteamInterfaces\SteamUser.cs" />
+    <Compile Include="SteamInterfaces\SteamUserInterface.cs" />
     <Compile Include="SteamInterfaces\SteamUserStats.cs" />
     <Compile Include="SteamInterfaces\SteamInterface.cs" />
     <Compile Include="SteamInterfaces\SteamNews.cs" />

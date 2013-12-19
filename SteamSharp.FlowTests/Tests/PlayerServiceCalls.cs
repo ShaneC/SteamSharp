@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SteamSharp.Authenticators;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,15 +11,18 @@ namespace SteamSharp.FlowTests.Tests {
 
 		public bool Invoke() {
 
-			try {
-				var response = PlayerService.GetRecentlyPlayedGames( new SteamClient(), "1234" );
-			} catch( SteamRequestException ) {
-				return true;
-			} catch( Exception e ) {
-				WriteConsole.Error( "Unexecpted Exception Encountered {" + e.GetType().ToString() + "}" );
-			}
+			SteamUser user = UserAuthentication.Login();
+			
+			SteamClient client = new SteamClient();
+			client.Authenticator = UserAuthenticator.ForProtectedResource( user );
 
-			return false;
+			//var response = PlayerService.GetRecentlyPlayedGames( client, user.SteamID.ToString() );
+			var response = SteamUserInterface.GetFriendList( client, user.SteamID.ToString(), PlayerRelationshipType.All );
+
+			if( response == null )
+				return false;
+
+			return true;
 
 		}
 

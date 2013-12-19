@@ -21,6 +21,10 @@ namespace SteamSharp {
 			_steamID = steamID;
 		}
 
+		public override string ToString() {
+			return _steamID;
+		}
+
 	}
 
 }

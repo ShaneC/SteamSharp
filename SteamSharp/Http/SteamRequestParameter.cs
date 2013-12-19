@@ -23,6 +23,16 @@ namespace SteamSharp {
 		public ParameterType Type { get; set; }
 
 		/// <summary>
+		/// Flag indicating whether or not the parameter has already been encoded into a URL safe format. If not, it will be encoded if appended to the query string.
+		/// </summary>
+		public bool IsUrlEncoded {
+			get { return _isUrlEncoded; }
+			set { _isUrlEncoded = value; }
+		}
+
+		private bool _isUrlEncoded = false;
+
+		/// <summary>
 		/// Return a query-string formatted representation of this parameter
 		/// </summary>
 		/// <returns>String</returns>

@@ -140,9 +140,43 @@ namespace SteamSharp {
 		/// </summary>
 		Raw,
 		/// <summary>
+		/// Content-Type: application/x-www-form-urlencoded
+		/// </summary>
+		FormUrlEncoded,
+		/// <summary>
 		/// Data added to the POST body will be serialized into JSON and the Content-Type of application/json will be added to the request.
 		/// </summary>
 		Json
+	}
+
+	/// <summary>
+	/// Steam Universe identifiers.
+	/// </summary>
+	public enum SteamUniverse {
+		/// <summary>
+		/// Unknown or invalid universe.
+		/// </summary>
+		Unknown,
+		/// <summary>
+		/// Public universe.
+		/// </summary>
+		Public,
+		/// <summary>
+		/// Beta universe.
+		/// </summary>
+		Beta,
+		/// <summary>
+		/// Internal universe.
+		/// </summary>
+		Internal,
+		/// <summary>
+		/// Dev universe.
+		/// </summary>
+		Dev,
+		/// <summary>
+		/// RC universe.
+		/// </summary>
+		RC
 	}
 
 	/* Interface Specific Enums */

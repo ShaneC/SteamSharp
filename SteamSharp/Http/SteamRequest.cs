@@ -199,15 +199,16 @@ namespace SteamSharp {
 		/// <param name="name">Name of the parameter</param>
 		/// <param name="value">Value of the parameter</param>
 		/// <param name="type">The type of the parameter</param>
+		/// <param name="isUrlEncoded">Flag indicating if the parameter is already URL safe. If false, param will be encoded if appened to the query string.</param>
 		/// <returns>This request</returns>
-		public ISteamRequest AddParameter( string name, object value, ParameterType type ) {
-			
+		public ISteamRequest AddParameter( string name, object value, ParameterType type, bool isUrlEncoded = false ) {
+
 			// If a parameter with this name and type already exists, delete it so we can add the newer version
 			// (There's a tradeoff here, going from O(1) to O(n), but it saves headaches when not getting expected behavior
 			// because the Steam endpoint is evaluating two of the same parameter)
 			Parameters.RemoveAll( p => p.Name == name && p.Type == type );
 
-			Parameters.Add( new SteamRequestParameter { Name = name, Value = value, Type = type } );
+			Parameters.Add( new SteamRequestParameter { Name = name, Value = value, Type = type, IsUrlEncoded = isUrlEncoded } );
 			return this;
 
 		}

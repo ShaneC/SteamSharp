@@ -27,6 +27,11 @@ namespace SteamSharp {
 		/// </summary>
 		public Cookie AuthCookie { get; set; }
 
+		/// <summary>
+		/// Login Key obtained from the Authentication Cookie
+		/// </summary>
+		public string LoginKey { get; set; }
+
 	}
 
 }
