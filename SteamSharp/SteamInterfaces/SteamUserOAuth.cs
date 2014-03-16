@@ -34,7 +34,7 @@ namespace SteamSharp {
 		/// <returns>Friends list for the target user.</returns>
 		public async static Task<FriendsList> GetFriendsListAsync( SteamClient client, SteamID steamID ) {
 
-			client.ConfirmAuthorizedCall( typeof( Authenticators.UserAuthenticator ) );
+			client.IsAuthorizedCall( typeof( Authenticators.UserAuthenticator ) );
 
 			SteamRequest request = new SteamRequest( SteamAPIInterface.ISteamUserOAuth, "GetFriendList", SteamMethodVersion.v0001 );
 			request.AddParameter( "steamID", steamID );

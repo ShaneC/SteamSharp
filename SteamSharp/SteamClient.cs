@@ -76,7 +76,7 @@ namespace SteamSharp {
 		/// </summary>
 		/// <param name="validAuthMethod">Required authenticator.</param>
 		/// <returns>Returns 'true' if the proper authenticator is attached. Throws <see cref="SteamAuthenticationException"/> otherwise.</returns>
-		internal bool ConfirmAuthorizedCall( Type validAuthMethod ) {
+		internal bool IsAuthorizedCall( Type validAuthMethod ) {
 			if( validAuthMethod != Authenticator.GetType() )
 				throw new SteamAuthenticationException( "API call has not been properly authenticated. Please ensure a " + validAuthMethod.FullName + " object is added to the SteamClient (SteamClient.Authenticator)." );
 			return true;
