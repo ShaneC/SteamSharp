@@ -11,7 +11,7 @@ namespace SteamSharp.FlowTests.Tests {
 			string Password = WriteConsole.Prompt( "Please enter password for " + Username + ":" );
 
 			SteamClient client = new SteamClient();
-			var result = SteamSharp.Authenticators.UserAuthenticator.GetAccessCookieForUser( Username, Password );
+			var result = SteamSharp.Authenticators.UserAuthenticator.GetAccessTokenForUser( Username, Password );
 
 			UserAuthenticator.CaptchaAnswer captcha = null;
 			UserAuthenticator.SteamGuardAnswer steamGuard = null;
@@ -38,7 +38,7 @@ namespace SteamSharp.FlowTests.Tests {
 				} else
 					steamGuard = null;
 
-				result = SteamSharp.Authenticators.UserAuthenticator.GetAccessCookieForUser( Username, Password, steamGuard, captcha );
+				result = SteamSharp.Authenticators.UserAuthenticator.GetAccessTokenForUser( Username, Password, steamGuard, captcha );
 
 				if( result.IsSuccessful ) {
 					WriteConsole.Success( "Yay, authentication was successful!" );
@@ -63,6 +63,18 @@ namespace SteamSharp.FlowTests.Tests {
 				SteamUser user = Login();
 				if( user == null )
 					return false;
+
+				WriteConsole.Information( "Now attempting basic protected API call..." );
+
+				SteamClient client = new SteamClient();
+				client.Authenticator = UserAuthenticator.ForProtectedResource( user );
+
+				// Validate basic protected API call
+				var response = SteamUserOAuth.GetFriendsList( client, user.SteamID );
+				if( response.Friends == null )
+					throw new Exception( "Unable to get protected data!" );
+
+				WriteConsole.Success( "Protected data retrieved!" );
 
 				return true;
 

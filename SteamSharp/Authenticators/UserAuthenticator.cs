@@ -57,7 +57,7 @@ namespace SteamSharp.Authenticators {
 		/// <param name="steamGuardAnswer"></param>
 		/// <param name="captchaAnswer"></param>
 		/// <returns>Access token which can then be used with the UserAuthenticator.ForProtectedResource method.</returns>
-		public static SteamAccessRequestResult GetAccessCookieForUser( string username, string password, SteamGuardAnswer steamGuardAnswer = null, CaptchaAnswer captchaAnswer = null ) {
+		public static SteamAccessRequestResult GetAccessTokenForUser( string username, string password, SteamGuardAnswer steamGuardAnswer = null, CaptchaAnswer captchaAnswer = null ) {
 
 			RSAValues publicKey = GetRSAKeyValues( username );
 
