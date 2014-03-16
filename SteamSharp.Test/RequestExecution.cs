@@ -27,9 +27,9 @@ namespace SteamSharp.Test {
 		[TestCategory( "Network Behavior" )]
 		public void ClientContext_Request_Correctly_Times_Out() {
 
-			using( SimulatedServer.Create( ResourceConstants.SimulatedServerUrl, Timeout_Simulator ) ) {
+			using( SimulatedServer.Create( AccessConstants.SimulatedServerUrl, Timeout_Simulator ) ) {
 
-				SteamClient client = new SteamClient( ResourceConstants.SimulatedServerUrl );
+				SteamClient client = new SteamClient( AccessConstants.SimulatedServerUrl );
 				client.Timeout = 1000;
 
 				SteamRequest request = new SteamRequest( "/404" );
@@ -45,9 +45,9 @@ namespace SteamSharp.Test {
 		[TestCategory( "Network Behavior" )]
 		public void RequestContext_Request_Correctly_Times_Out() {
 
-			using( SimulatedServer.Create( ResourceConstants.SimulatedServerUrl, Timeout_Simulator ) ) {
+			using( SimulatedServer.Create( AccessConstants.SimulatedServerUrl, Timeout_Simulator ) ) {
 
-				SteamClient client = new SteamClient( ResourceConstants.SimulatedServerUrl );
+				SteamClient client = new SteamClient( AccessConstants.SimulatedServerUrl );
 
 				SteamRequest request = new SteamRequest( "/404" );
 				request.Timeout = 1000;
@@ -63,9 +63,9 @@ namespace SteamSharp.Test {
 		[TestCategory( "POST Submission" )]
 		public void POST_Can_Add_Body_NoParams_Raw() {
 
-			using( SimulatedServer.Create( ResourceConstants.SimulatedServerUrl, Post_Body_Echo ) ) {
+			using( SimulatedServer.Create( AccessConstants.SimulatedServerUrl, Post_Body_Echo ) ) {
 
-				SteamClient client = new SteamClient( ResourceConstants.SimulatedServerUrl );
+				SteamClient client = new SteamClient( AccessConstants.SimulatedServerUrl );
 				var request = new SteamRequest( "/resource", HttpMethod.Post );
 				request.DataFormat = PostDataFormat.Raw;
 
@@ -87,9 +87,9 @@ namespace SteamSharp.Test {
 		[TestCategory( "POST Submission" )]
 		public void POST_Can_Add_Body_WithParams_Raw() {
 
-			using( SimulatedServer.Create( ResourceConstants.SimulatedServerUrl, Post_Body_Echo ) ) {
+			using( SimulatedServer.Create( AccessConstants.SimulatedServerUrl, Post_Body_Echo ) ) {
 
-				SteamClient client = new SteamClient( ResourceConstants.SimulatedServerUrl );
+				SteamClient client = new SteamClient( AccessConstants.SimulatedServerUrl );
 				var request = new SteamRequest( "/resource", HttpMethod.Post );
 				request.DataFormat = PostDataFormat.Raw;
 
@@ -113,9 +113,9 @@ namespace SteamSharp.Test {
 		[TestCategory( "POST Submission" )]
 		public void POST_Can_Add_Body_NoParams_Json() {
 
-			using( SimulatedServer.Create( ResourceConstants.SimulatedServerUrl, Post_Body_Echo ) ) {
+			using( SimulatedServer.Create( AccessConstants.SimulatedServerUrl, Post_Body_Echo ) ) {
 
-				SteamClient client = new SteamClient( ResourceConstants.SimulatedServerUrl );
+				SteamClient client = new SteamClient( AccessConstants.SimulatedServerUrl );
 				var request = new SteamRequest( "/resource", HttpMethod.Post );
 
 				// Verify request defaults to JSON
@@ -139,9 +139,9 @@ namespace SteamSharp.Test {
 		[TestCategory( "POST Submission" )]
 		public void POST_Can_Add_Body_WithParams_Json() {
 
-			using( SimulatedServer.Create( ResourceConstants.SimulatedServerUrl, Post_Body_Echo ) ) {
+			using( SimulatedServer.Create( AccessConstants.SimulatedServerUrl, Post_Body_Echo ) ) {
 
-				SteamClient client = new SteamClient( ResourceConstants.SimulatedServerUrl );
+				SteamClient client = new SteamClient( AccessConstants.SimulatedServerUrl );
 				var request = new SteamRequest( "/resource", HttpMethod.Post );
 				request.DataFormat = PostDataFormat.Json;
 
@@ -169,9 +169,9 @@ namespace SteamSharp.Test {
 		[TestCategory( "POST Submission" )]
 		public void POST_Can_Add_DataStructure_Json() {
 
-			using( SimulatedServer.Create( ResourceConstants.SimulatedServerUrl, Post_Body_Echo ) ) {
+			using( SimulatedServer.Create( AccessConstants.SimulatedServerUrl, Post_Body_Echo ) ) {
 
-				SteamClient client = new SteamClient( ResourceConstants.SimulatedServerUrl );
+				SteamClient client = new SteamClient( AccessConstants.SimulatedServerUrl );
 				var request = new SteamRequest( "/resource", HttpMethod.Post );
 				request.DataFormat = PostDataFormat.Json;
 

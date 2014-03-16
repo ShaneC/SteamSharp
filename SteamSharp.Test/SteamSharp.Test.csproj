@@ -74,7 +74,7 @@
     <Compile Include="ISteamUser.cs" />
     <Compile Include="ISteamUserStats.cs" />
     <Compile Include="RequestExecution.cs" />
-    <Compile Include="ResourceConstants.cs" />
+    <Compile Include="TestConstants\AccessConstants.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UriBuilderTests.cs" />
   </ItemGroup>

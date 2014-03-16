@@ -170,10 +170,10 @@ namespace SteamSharp.Test {
 		[TestCategory( "URI - Parameters" )]
 		public void GET_Add_QueryString_Params() {
 
-			using( SimulatedServer.Create( ResourceConstants.SimulatedServerUrl, QueryString_Echo ) ) {
+			using( SimulatedServer.Create( AccessConstants.SimulatedServerUrl, QueryString_Echo ) ) {
 
 				// All Params added, GetOrPost & QueryString, should be present in the result set
-				SteamClient client = new SteamClient( ResourceConstants.SimulatedServerUrl );
+				SteamClient client = new SteamClient( AccessConstants.SimulatedServerUrl );
 				var request = new SteamRequest( "/resource" );
 
 				request.AddParameter( "param1", "1234", ParameterType.GetOrPost );
@@ -205,10 +205,10 @@ namespace SteamSharp.Test {
 		[TestCategory( "URI - Parameters" )]
 		public void POST_Add_QueryString_Params_Raw() {
 
-			using( SimulatedServer.Create( ResourceConstants.SimulatedServerUrl, QueryString_Echo ) ) {
+			using( SimulatedServer.Create( AccessConstants.SimulatedServerUrl, QueryString_Echo ) ) {
 
 				// All Params added, GetOrPost & QueryString, should be present in the result set
-				SteamClient client = new SteamClient( ResourceConstants.SimulatedServerUrl );
+				SteamClient client = new SteamClient( AccessConstants.SimulatedServerUrl );
 				var request = new SteamRequest( "/resource", HttpMethod.Post );
 				request.DataFormat = PostDataFormat.Raw;
 
@@ -241,10 +241,10 @@ namespace SteamSharp.Test {
 		[TestCategory( "URI - Parameters" )]
 		public void POST_Add_QueryString_Params_Json() {
 
-			using( SimulatedServer.Create( ResourceConstants.SimulatedServerUrl, QueryString_Echo ) ) {
+			using( SimulatedServer.Create( AccessConstants.SimulatedServerUrl, QueryString_Echo ) ) {
 
 				// Query String params should be in the URI, GetOrPost should not
-				SteamClient client = new SteamClient( ResourceConstants.SimulatedServerUrl );
+				SteamClient client = new SteamClient( AccessConstants.SimulatedServerUrl );
 				var request = new SteamRequest( "/resource", HttpMethod.Post );
 				request.DataFormat = PostDataFormat.Json;
 

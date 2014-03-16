@@ -14,7 +14,7 @@ namespace SteamSharp.Test {
 		public void GET_GetPlayerSummaries_ByClass() {
 
 			SteamClient client = new SteamClient();
-			client.Authenticator = SteamSharp.Authenticators.APIKeyAuthenticator.ForProtectedResource( ResourceConstants.APIKey );
+			client.Authenticator = SteamSharp.Authenticators.APIKeyAuthenticator.ForProtectedResource( AccessConstants.APIKey );
 
 			var response = SteamUserInterface.GetPlayerSummaries( client, new string[] { "76561197960435530", "76561198067189899" } );
 
@@ -42,7 +42,7 @@ namespace SteamSharp.Test {
 		public void GET_GetPlayerSummaries_NoValues() {
 
 			SteamClient client = new SteamClient();
-			client.Authenticator = SteamSharp.Authenticators.APIKeyAuthenticator.ForProtectedResource( ResourceConstants.APIKey );
+			client.Authenticator = SteamSharp.Authenticators.APIKeyAuthenticator.ForProtectedResource( AccessConstants.APIKey );
 
 			SteamRequest request = new SteamRequest( "ISteamUser/GetPlayerSummaries/v0002/" );
 
@@ -90,7 +90,7 @@ namespace SteamSharp.Test {
 		public void GET_GetPlayerSummary_ByClass() {
 
 			SteamClient client = new SteamClient();
-			client.Authenticator = SteamSharp.Authenticators.APIKeyAuthenticator.ForProtectedResource( ResourceConstants.APIKey );
+			client.Authenticator = SteamSharp.Authenticators.APIKeyAuthenticator.ForProtectedResource( AccessConstants.APIKey );
 
 			var response = SteamUserInterface.GetPlayerSummary( client, "76561197960435530" );
 
@@ -118,7 +118,7 @@ namespace SteamSharp.Test {
 		public void GET_GetFriendList_ByClass_AllRelationships() {
 
 			SteamClient client = new SteamClient();
-			client.Authenticator = SteamSharp.Authenticators.APIKeyAuthenticator.ForProtectedResource( ResourceConstants.APIKey );
+			client.Authenticator = SteamSharp.Authenticators.APIKeyAuthenticator.ForProtectedResource( AccessConstants.APIKey );
 
 			var response = SteamUserInterface.GetFriendList( client, "76561197960435530", PlayerRelationshipType.All );
 
@@ -132,7 +132,7 @@ namespace SteamSharp.Test {
 		public void GET_GetFriendList_ByClass_FriendRelationships() {
 
 			SteamClient client = new SteamClient();
-			client.Authenticator = SteamSharp.Authenticators.APIKeyAuthenticator.ForProtectedResource( ResourceConstants.APIKey );
+			client.Authenticator = SteamSharp.Authenticators.APIKeyAuthenticator.ForProtectedResource( AccessConstants.APIKey );
 
 			var response = SteamUserInterface.GetFriendList( client, "76561197960435530", PlayerRelationshipType.Friend );
 

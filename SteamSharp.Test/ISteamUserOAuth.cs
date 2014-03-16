@@ -15,13 +15,13 @@ namespace SteamSharp.Test {
 		[TestCategory( "ISteamUserOAuth" )]
 		public void GET_GetFriendsList() {
 
-			Assert.IsFalse( ResourceConstants.OAuthAccessToken.Length < 1, "OPERATOR FAILURE: Must specify an OAuthAccessToken in ResourceConstants." );
+			Assert.IsFalse( AccessConstants.OAuthAccessToken.Length < 1, "OPERATOR FAILURE: Must specify an OAuthAccessToken in ResourceConstants." );
 
 			SteamClient client = new SteamClient();
-			client.Authenticator = UserAuthenticator.ForProtectedResource( ResourceConstants.OAuthAccessToken );
+			client.Authenticator = UserAuthenticator.ForProtectedResource( AccessConstants.OAuthAccessToken );
 
 			// Validate basic protected API call
-			var response = SteamUserOAuth.GetFriendsList( client, ResourceConstants.OAuthUserSteamID );
+			var response = SteamUserOAuth.GetFriendsList( client, AccessConstants.OAuthUserSteamID );
 			Assert.IsNotNull( response.Friends );
 
 		}
