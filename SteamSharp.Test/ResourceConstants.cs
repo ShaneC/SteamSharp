@@ -6,7 +6,9 @@ namespace SteamSharp.Test {
 		/// <summary>
 		/// This should be the Steam API Key for use with testing
 		/// </summary>
-		public const string AccessToken = "1241F1FF2496C1E6990F73E216C3C53D";
+		public const string APIKey = "";
+
+		public const string AccessToken = "";
 
 		/// <summary>
 		/// Address of the simulated web server for handling response call tests.

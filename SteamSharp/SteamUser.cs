@@ -20,17 +20,22 @@ namespace SteamSharp {
 		/// <summary>
 		/// Access Token to be passed on the Steam API for requests requiring first part authentication.
 		/// </summary>
+		public string OAuthAccessToken { get; set; }
+
+		/// <summary>
+		/// Obtained via <see cref="AuthCookieAuthenticator"/>. Transfer Token to be passed on Steam Store transactions.
+		/// </summary>
 		public string TransferToken { get; set; }
 
 		/// <summary>
-		/// Cookie which contains the authentication token for the user.
+		/// Obtained via <see cref="AuthCookieAuthenticator"/>. Cookie which contains the authentication token for the user.
 		/// </summary>
 		public Cookie AuthCookie { get; set; }
 
 		/// <summary>
-		/// Login Key obtained from the Authentication Cookie
+		/// Obtained via <see cref="AuthCookieAuthenticator"/>. Login Key obtained from the Authentication Cookie.
 		/// </summary>
-		public string LoginKey { get; set; }
+		public string AuthCookieLoginKey { get; set; }
 
 	}
 

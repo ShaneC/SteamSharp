@@ -15,19 +15,19 @@ namespace SteamSharp.Test {
 		public void Verify_APIKey_Added() {
 
 			// Did you remember to add your API Token?
-			Assert.IsNotNull( ResourceConstants.AccessToken );
-			Assert.AreNotEqual( ResourceConstants.AccessToken, "" );
+			Assert.IsNotNull( ResourceConstants.APIKey );
+			Assert.AreNotEqual( ResourceConstants.APIKey, "" );
 
 			using( SimulatedServer.Create( ResourceConstants.SimulatedServerUrl, ApiKeyEchoHandler ) ) {
 
 				var client = new SteamClient( ResourceConstants.SimulatedServerUrl );
 
-				client.Authenticator = SteamSharp.Authenticators.APIKeyAuthenticator.ForProtectedResource( ResourceConstants.AccessToken );
+				client.Authenticator = SteamSharp.Authenticators.APIKeyAuthenticator.ForProtectedResource( ResourceConstants.APIKey );
 
 				SteamRequest request = new SteamRequest( "/resource" );
 				var response = client.Execute( request );
 
-				Assert.AreEqual( "key|" + ResourceConstants.AccessToken, response.Content );
+				Assert.AreEqual( "key|" + ResourceConstants.APIKey, response.Content );
 
 			}
 

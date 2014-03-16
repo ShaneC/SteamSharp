@@ -61,6 +61,28 @@ namespace SteamSharp {
 		}
 
 		/// <summary>
+		/// Validates that the required ISteamAuthenticator object is attached to the client prior to initiating execution
+		/// </summary>
+		/// <param name="validAuthMethods">List of valid authenticators for API access.</param>
+		/// <returns>Returns 'true' if the proper authenticator is attached. Throws <see cref="SteamAuthenticationException"/> otherwise.</returns>
+		internal bool ConfirmAuthorizedCall( List<Type> validAuthMethods ) {
+			if( !validAuthMethods.Contains( Authenticator.GetType() ) )
+				throw new SteamAuthenticationException( "API call has not been properly authenticated. Please ensure the proper ISteamAuthenticator object is added to the SteamClient (SteamClient.Authenticator)." );
+			return true;
+		}
+
+		/// <summary>
+		/// Validates that the required ISteamAuthenticator object is attached to the client prior to initiating execution
+		/// </summary>
+		/// <param name="validAuthMethod">Required authenticator.</param>
+		/// <returns>Returns 'true' if the proper authenticator is attached. Throws <see cref="SteamAuthenticationException"/> otherwise.</returns>
+		internal bool ConfirmAuthorizedCall( Type validAuthMethod ) {
+			if( validAuthMethod != Authenticator.GetType() )
+				throw new SteamAuthenticationException( "API call has not been properly authenticated. Please ensure a " + validAuthMethod.FullName + " object is added to the SteamClient (SteamClient.Authenticator)." );
+			return true;
+		}
+
+		/// <summary>
 		/// Creates a SteamClient which facilitates requests to and responses from the Steam API.
 		/// All Steam API transactions are conducted through this object.
 		/// </summary>

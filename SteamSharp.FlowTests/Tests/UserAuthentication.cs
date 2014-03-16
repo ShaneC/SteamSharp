@@ -64,8 +64,6 @@ namespace SteamSharp.FlowTests.Tests {
 				if( user == null )
 					return false;
 
-				var result = UserAuthenticator.GetAccessTokenForUser( user );
-
 				return true;
 
 			} catch( Exception e ) {

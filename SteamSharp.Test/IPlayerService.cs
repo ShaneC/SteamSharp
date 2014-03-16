@@ -12,7 +12,7 @@ namespace SteamSharp.Test {
 		public void GET_GetOwnedGames_ByClass() {
 
 			SteamClient client = new SteamClient();
-			client.Authenticator = SteamSharp.Authenticators.APIKeyAuthenticator.ForProtectedResource( ResourceConstants.AccessToken );
+			client.Authenticator = SteamSharp.Authenticators.APIKeyAuthenticator.ForProtectedResource( ResourceConstants.APIKey );
 
 			var response = PlayerService.GetOwnedGames( client, "76561197960434622", true, true );
 			
@@ -56,7 +56,7 @@ namespace SteamSharp.Test {
 		public void GET_GetRecentlyPlayedGames_ByClass_BadSteamID() {
 
 			SteamClient client = new SteamClient();
-			client.Authenticator = SteamSharp.Authenticators.APIKeyAuthenticator.ForProtectedResource( ResourceConstants.AccessToken );
+			client.Authenticator = SteamSharp.Authenticators.APIKeyAuthenticator.ForProtectedResource( ResourceConstants.APIKey );
 
 			AssertException.Throws<SteamRequestException>( () => {
 				var response = PlayerService.GetRecentlyPlayedGames( client, "1234" );
@@ -69,7 +69,7 @@ namespace SteamSharp.Test {
 		public void GET_GetRecentlyPlayedGames_ByClass() {
 
 			SteamClient client = new SteamClient();
-			client.Authenticator = SteamSharp.Authenticators.APIKeyAuthenticator.ForProtectedResource( ResourceConstants.AccessToken );
+			client.Authenticator = SteamSharp.Authenticators.APIKeyAuthenticator.ForProtectedResource( ResourceConstants.APIKey );
 
 			var response = PlayerService.GetRecentlyPlayedGames( client, "76561197960434622" );
 
@@ -101,7 +101,7 @@ namespace SteamSharp.Test {
 		public void GET_IsPlayingSharedGame_ByClass() {
 
 			SteamClient client = new SteamClient();
-			client.Authenticator = SteamSharp.Authenticators.APIKeyAuthenticator.ForProtectedResource( ResourceConstants.AccessToken );
+			client.Authenticator = SteamSharp.Authenticators.APIKeyAuthenticator.ForProtectedResource( ResourceConstants.APIKey );
 
 			var response = PlayerService.IsPlayingSharedGame( client, "76561197960434622", 440 );
 

@@ -41,7 +41,7 @@ namespace SteamSharp.Test {
 		public void GET_GetPlayerAchievements_ByClass_NoLanguage() {
 
 			SteamClient client = new SteamClient();
-			client.Authenticator = SteamSharp.Authenticators.APIKeyAuthenticator.ForProtectedResource( ResourceConstants.AccessToken );
+			client.Authenticator = SteamSharp.Authenticators.APIKeyAuthenticator.ForProtectedResource( ResourceConstants.APIKey );
 
 			var response = SteamUserStats.GetPlayerAchievements( client, "76561197972495328", 440 );
 
@@ -55,7 +55,7 @@ namespace SteamSharp.Test {
 		public void GET_GetPlayerAchievements_ByClass_EnglishLanguage() {
 
 			SteamClient client = new SteamClient();
-			client.Authenticator = SteamSharp.Authenticators.APIKeyAuthenticator.ForProtectedResource( ResourceConstants.AccessToken );
+			client.Authenticator = SteamSharp.Authenticators.APIKeyAuthenticator.ForProtectedResource( ResourceConstants.APIKey );
 
 			var response = SteamUserStats.GetPlayerAchievements( client, "76561197972495328", 440, RequestedLangage.English );
 
@@ -69,7 +69,7 @@ namespace SteamSharp.Test {
 		public void GET_GetPlayerAchievements_ByClass_JapaneseLanguage() {
 
 			SteamClient client = new SteamClient();
-			client.Authenticator = SteamSharp.Authenticators.APIKeyAuthenticator.ForProtectedResource( ResourceConstants.AccessToken );
+			client.Authenticator = SteamSharp.Authenticators.APIKeyAuthenticator.ForProtectedResource( ResourceConstants.APIKey );
 
 			var response = SteamUserStats.GetPlayerAchievements( client, "76561197972495328", 440, RequestedLangage.Japanese );
 
@@ -83,7 +83,7 @@ namespace SteamSharp.Test {
 		public void GET_GetPlayerAchievements_ByClass_RussianLanguage() {
 
 			SteamClient client = new SteamClient();
-			client.Authenticator = SteamSharp.Authenticators.APIKeyAuthenticator.ForProtectedResource( ResourceConstants.AccessToken );
+			client.Authenticator = SteamSharp.Authenticators.APIKeyAuthenticator.ForProtectedResource( ResourceConstants.APIKey );
 
 			var response = SteamUserStats.GetPlayerAchievements( client, "76561197972495328", 440, RequestedLangage.Russian );
 
@@ -99,7 +99,7 @@ namespace SteamSharp.Test {
 		public void GET_GetUserStatsForGame_ByClass() {
 
 			SteamClient client = new SteamClient();
-			client.Authenticator = SteamSharp.Authenticators.APIKeyAuthenticator.ForProtectedResource( ResourceConstants.AccessToken );
+			client.Authenticator = SteamSharp.Authenticators.APIKeyAuthenticator.ForProtectedResource( ResourceConstants.APIKey );
 
 			var response = SteamUserStats.GetUserStatsForGame( client, "76561197972495328", 440 );
 

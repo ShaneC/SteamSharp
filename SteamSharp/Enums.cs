@@ -24,7 +24,11 @@ namespace SteamSharp {
 		/// <summary>
 		/// IPlayerService interface.
 		/// </summary>
-		IPlayerService
+		IPlayerService,
+		/// <summary>
+		/// ISteamUserOAuth interface.
+		/// </summary>
+		ISteamUserOAuth
 	}
 
 	/// <summary>

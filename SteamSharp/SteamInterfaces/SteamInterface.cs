@@ -1,5 +1,7 @@
 ﻿using Newtonsoft.Json;
+using SteamSharp.Authenticators;
 using System;
+using System.Collections.Generic;
 using System.Net;
 
 namespace SteamSharp {
