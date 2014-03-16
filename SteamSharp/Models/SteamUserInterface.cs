@@ -154,7 +154,7 @@ namespace SteamSharp {
 		private class GetFriendsListResponse {
 
 			/// <summary>
-			/// Container for the FriendsList object response.
+			/// Container for the SteamFriendsList object response.
 			/// </summary>
 			public FriendsList FriendsList { get; set; }
 

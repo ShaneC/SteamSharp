@@ -26,6 +26,18 @@ namespace SteamSharp.Test {
 
 		}
 
+		//[TestMethod]
+		//[TestCategory( "ISteamUserOAuth" )]
+		//public void GET_GetFriendsList_Convert() {
+
+		//	PlayerRelationshipType something = PlayerRelationshipType.Friend;
+
+		//	if( !( something is PlayerRelationshipType ) )
+		//		throw new Exception( "Specified object must be of type PlayerRelationshipType." );
+		//	Assert.AreEqual( "Friend", Enum.GetName( typeof( PlayerRelationshipType ), something ) );
+
+		//}
+
 	}
 
 }

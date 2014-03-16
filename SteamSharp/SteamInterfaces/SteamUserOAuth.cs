@@ -16,7 +16,7 @@ namespace SteamSharp {
 		/// <param name="client"><see cref="SteamClient"/> instance to use.</param>
 		/// <param name="steamID">SteamID of user to return friend's list for.</param>
 		/// <returns>Friends list for the target user.</returns>
-		public static FriendsList GetFriendsList( SteamClient client, SteamID steamID ) {
+		public static SteamFriendsList GetFriendsList( SteamClient client, SteamID steamID ) {
 			try {
 				return GetFriendsListAsync( client, steamID ).Result;
 			} catch( AggregateException e ) {
@@ -32,14 +32,14 @@ namespace SteamSharp {
 		/// <param name="client"><see cref="SteamClient"/> instance to use.</param>
 		/// <param name="steamID">SteamID of user to return friend's list for.</param>
 		/// <returns>Friends list for the target user.</returns>
-		public async static Task<FriendsList> GetFriendsListAsync( SteamClient client, SteamID steamID ) {
+		public async static Task<SteamFriendsList> GetFriendsListAsync( SteamClient client, SteamID steamID ) {
 
 			client.IsAuthorizedCall( typeof( Authenticators.UserAuthenticator ) );
 
 			SteamRequest request = new SteamRequest( SteamAPIInterface.ISteamUserOAuth, "GetFriendList", SteamMethodVersion.v0001 );
 			request.AddParameter( "steamID", steamID );
 
-			return VerifyAndDeserialize<FriendsList>( ( await client.ExecuteAsync( request ) ) );
+			return VerifyAndDeserialize<SteamFriendsList>( ( await client.ExecuteAsync( request ) ) );
 
 		}
 		#endregion

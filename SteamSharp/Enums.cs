@@ -186,7 +186,7 @@ namespace SteamSharp {
 	/* Interface Specific Enums */
 	#region Interface Specific Enums
 	/// <summary>
-	/// Relationship filter for profile/friend's list filtering. Possible values: All, Friend
+	/// Relationship filter for profile/friend's list filtering. Possible values: All, Friend, RequestInitiator, RequestRecipient
 	/// </summary>
 	public enum PlayerRelationshipType {
 		/// <summary>
@@ -196,7 +196,19 @@ namespace SteamSharp {
 		/// <summary>
 		/// Filter to retrieve only friends of a particular user from their profile.
 		/// </summary>
-		Friend
+		Friend,
+		/// <summary>
+		/// Pending Friend Request which was initiated by the calling user (current user context).
+		/// </summary>
+		RequestInitiator,
+		/// <summary>
+		/// Pending Friend Request which was received by the calling user and initiated by the remote user.
+		/// </summary>
+		RequestRecipient,
+		/// <summary>
+		/// Container for handling unknown or unmapped results from the API.
+		/// </summary>
+		Unknown
 	}
 
 	/// <summary>

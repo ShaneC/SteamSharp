@@ -10,6 +10,90 @@ namespace SteamSharp {
 	public static class SteamInterfaceHelpers {
 
 		/// <summary>
+		/// Json.Net converter class for reading/writing string/long to/from SteamID.
+		/// </summary>
+		public class SteamIDConverter : JsonConverter {
+
+			/// <summary>
+			/// Writes the JSON representation of the converted object (SteamID --> String).
+			/// </summary>
+			/// <param name="writer">The <see cref="T:Newtonsoft.Json.JsonWriter"/> to write to.</param>
+			/// <param name="value">The value.</param>
+			/// <param name="serializer">The calling serializer.</param>
+			/// <returns>The string equivalent of the specified SteamID object.</returns>
+			public override void WriteJson( JsonWriter writer, object value, JsonSerializer serializer ) {
+				if( !( value is SteamID ) )
+					throw new JsonReaderException( "Specified object must be of type SteamID." );
+				writer.WriteValue( value.ToString() );
+			}
+
+			/// <summary>
+			/// Read the JSON representation of the converted object (String --> SteamID)
+			/// </summary>
+			/// <param name = "reader">The <see cref = "JsonReader" /> to read from.</param>
+			/// <param name = "objectType">Type of the object.</param>
+			/// <param name = "existingValue">The existing value of object being read.</param>
+			/// <param name = "serializer">The calling serializer.</param>
+			/// <returns>SteamID object representing the input string.</returns>
+			public override object ReadJson( JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer ) {
+				if( reader.TokenType == JsonToken.String )
+					return new SteamID( (string)reader.Value );
+				else if( reader.TokenType == JsonToken.Integer )
+					return new SteamID( Int64.Parse( (string)reader.Value ).ToString() );
+				throw new JsonReaderException( "Token does not coorespond to the correct datatype (long or int)." );
+			}
+
+			public override bool CanConvert( Type objectType ) {
+				return ( objectType == typeof( SteamID ) || objectType == typeof( string ) || objectType == typeof( int ) );
+			}
+
+		}
+
+		/// <summary>
+		/// Json.Net converter class for reading/writing string/long to/from SteamID.
+		/// </summary>
+		public class RelationshipTypeConverter : JsonConverter {
+
+			/// <summary>
+			/// Writes the string representation of the converted object (PlayerRelationshipType --> String).
+			/// </summary>
+			/// <param name="writer">The <see cref="T:Newtonsoft.Json.JsonWriter"/> to write to.</param>
+			/// <param name="value">The value.</param>
+			/// <param name="serializer">The calling serializer.</param>
+			/// <returns>The string equivalent of the specified PlayerRelationshipType object.</returns>
+			public override void WriteJson( JsonWriter writer, object value, JsonSerializer serializer ) {
+				if( !( value is PlayerRelationshipType ) )
+					throw new JsonReaderException( "Specified object must be of type PlayerRelationshipType." );
+				writer.WriteValue( Enum.GetName( typeof( PlayerRelationshipType ), value ).ToLower() );
+			}
+
+			/// <summary>
+			/// Read the JSON representation of the converted object (String --> PlayerRelationshipType)
+			/// </summary>
+			/// <param name = "reader">The <see cref = "JsonReader" /> to read from.</param>
+			/// <param name = "objectType">Type of the object.</param>
+			/// <param name = "existingValue">The existing value of object being read.</param>
+			/// <param name = "serializer">The calling serializer.</param>
+			/// <returns>PlayerRelationshipType object representing the input string.</returns>
+			public override object ReadJson( JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer ) {
+				if( reader.TokenType != JsonToken.String )
+					throw new JsonReaderException( "Token does not coorespond to the correct datatype (string)." );
+				switch( ( (string)reader.Value ).ToLower() ) {
+					case "all": return PlayerRelationshipType.All;
+					case "friend": return PlayerRelationshipType.Friend;
+					case "requestinitiator": return PlayerRelationshipType.RequestInitiator;
+					case "requestrecipient": return PlayerRelationshipType.RequestRecipient;
+					default: return PlayerRelationshipType.Unknown;
+				}
+			}
+
+			public override bool CanConvert( Type objectType ) {
+				return ( objectType == typeof( PlayerRelationshipType ) || objectType == typeof( string ) );
+			}
+
+		}
+
+		/// <summary>
 		/// Json.Net converter class for reading/writing Unix Time from/to JSON.
 		/// </summary>
 		public class UnixDateTimeConverter : DateTimeConverterBase {
