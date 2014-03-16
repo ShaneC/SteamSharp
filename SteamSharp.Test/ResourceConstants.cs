@@ -8,7 +8,10 @@ namespace SteamSharp.Test {
 		/// </summary>
 		public const string APIKey = "";
 
-		public const string AccessToken = "";
+		// OAUTH VERIFICATION TESTS -- STEAM ID MUST MATCH VALID OAUTH ACCESS TOKEN
+
+		public static SteamID OAuthUserSteamID = new SteamID( "" );
+		public const string OAuthAccessToken = "";
 
 		/// <summary>
 		/// Address of the simulated web server for handling response call tests.
