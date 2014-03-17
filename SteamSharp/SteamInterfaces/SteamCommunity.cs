@@ -202,7 +202,7 @@ namespace SteamSharp {
 			else
 				request = new SteamRequest( "ISteamUser", "GetFriendList", "v0001" );
 
-			request.AddParameter( "steamID", steamID );
+			request.AddParameter( "steamID", steamID.ToString() );
 
 			return VerifyAndDeserialize<SteamFriendsList>( ( await client.ExecuteAsync( request ) ) );
 
@@ -318,7 +318,7 @@ namespace SteamSharp {
 			else
 				request = new SteamRequest( "ISteamUser", "GetPlayerSummaries", "v0002" );
 
-			request.AddParameter( "steamids", String.Join( ",", steamIDs.ToString() ) );
+			request.AddParameter( "steamids", String.Join<SteamID>( ",", steamIDs ) );
 
 			List<PlayerInfo> players = VerifyAndDeserialize<GetPlayerSummariesResponse>( ( await client.ExecuteAsync( request ) ) ).Response.Players;
 

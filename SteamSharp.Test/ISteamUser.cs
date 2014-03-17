@@ -31,7 +31,7 @@ namespace SteamSharp.Test {
 
 			SteamClient client = new SteamClient();
 
-			AssertException.Throws<SteamRequestException>( () => {
+			AssertException.Throws<SteamAuthenticationException>( () => {
 				SteamCommunity.GetUsers( client, SteamID.CreateFromList( new string[] { "76561197960435530", "76561198067189899" } ) );
 			} );
 
@@ -105,7 +105,7 @@ namespace SteamSharp.Test {
 
 			SteamClient client = new SteamClient();
 
-			AssertException.Throws<SteamRequestException>( () => {
+			AssertException.Throws<SteamAuthenticationException>( () => {
 				SteamCommunity.GetUser( client, new SteamID( "76561197960435530" ) );
 			} );
 
@@ -123,7 +123,7 @@ namespace SteamSharp.Test {
 			var response = SteamCommunity.GetFriendsList( client, new SteamID( "76561197960435530" ) );
 
 			Assert.IsNotNull( response );
-			Assert.IsInstanceOfType( response, typeof( List<SteamCommunity.SteamFriend> ) );
+			Assert.IsInstanceOfType( response, typeof( SteamCommunity.SteamFriendsList ) );
 
 		}
 
@@ -137,7 +137,7 @@ namespace SteamSharp.Test {
 			var response = SteamCommunity.GetFriendsList( client, new SteamID( "76561197960435530" ) );
 
 			Assert.IsNotNull( response );
-			Assert.IsInstanceOfType( response, typeof( List<SteamCommunity.SteamFriend> ) );
+			Assert.IsInstanceOfType( response, typeof( SteamCommunity.SteamFriendsList ) );
 
 		}
 
@@ -147,7 +147,7 @@ namespace SteamSharp.Test {
 
 			SteamClient client = new SteamClient();
 
-			AssertException.Throws<SteamRequestException>( () => {
+			AssertException.Throws<SteamAuthenticationException>( () => {
 				SteamCommunity.GetFriendsList( client, new SteamID( "76561197960435530" ) );
 			} );
 
