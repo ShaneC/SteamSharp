@@ -11,8 +11,6 @@ namespace SteamSharp {
 	/// </summary>
 	public class SteamID {
 
-		private string _steamID;
-
 		/// <summary>
 		/// Initialize SteamID from string.
 		/// </summary>
@@ -20,9 +18,22 @@ namespace SteamSharp {
 		public SteamID( string steamID ) {
 			_steamID = steamID;
 		}
+		private string _steamID;
 
 		public override string ToString() {
 			return _steamID;
+		}
+
+		/// <summary>
+		/// Generates a list of <see cref="SteamID"/> objects from an input array of strings.
+		/// </summary>
+		/// <param name="steamIDs">String representation of a 64-bit SteamID.</param>
+		/// <returns>List of <see cref="SteamID"/> objects representing the converted values of the input array.</returns>
+		public static SteamID[] CreateFromList( string[] steamIDs ) {
+			SteamID[] arr = new SteamID[steamIDs.Length];
+			for( int i = 0; i < steamIDs.Length; i++ )
+				arr[i] = new SteamID( steamIDs[i] );
+			return arr;
 		}
 
 	}

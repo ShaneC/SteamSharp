@@ -10,7 +10,7 @@ namespace SteamSharp {
 
 		#region GetOwnedGames
 		/// <summary>
-		/// (Requires Authentication) Returns a list of games a player owns along with some playtime information, if the profile is publicly visible.
+		/// (Requires UserAuthenticator, APIKeyAuthenticator) Returns a list of games a player owns along with some playtime information, if the profile is publicly visible.
 		/// Throws <see cref="SteamRequestException"/> on failure.
 		/// <a href="https://developer.valvesoftware.com/wiki/Steam_Web_API#GetOwnedGames_.28v0001.29">See official documentation.</a>
 		/// </summary>
@@ -30,7 +30,8 @@ namespace SteamSharp {
 		}
 
 		/// <summary>
-		/// (Requires Authentication) (Async) Returns a list of games a player owns along with some playtime information, if the profile is publicly visible.
+		/// (Async) (Requires UserAuthenticator, APIKeyAuthenticator)
+		/// Returns a list of games a player owns along with some playtime information, if the profile is publicly visible.
 		/// Throws <see cref="SteamRequestException"/> on failure.
 		/// <a href="https://developer.valvesoftware.com/wiki/Steam_Web_API#GetOwnedGames_.28v0001.29">See official documentation.</a>
 		/// </summary>
@@ -40,6 +41,11 @@ namespace SteamSharp {
 		/// <param name="getPlayedFreeGames">By default, free games are excluded (as technically everyone owns them). If flag is true, all games the user has played at some point will be returned.</param>
 		/// <returns><see cref="OwnedGames"/> object containing information about the specified user's game collection.</returns>
 		public async static Task<OwnedGames> GetOwnedGamesAsync( SteamClient client, string steamID, bool getAppInfo = true, bool getPlayedFreeGames = true ) {
+
+			client.IsAuthorizedCall( new Type[] { 
+				typeof( Authenticators.UserAuthenticator ), // Executes in User Context (private)
+				typeof( Authenticators.APIKeyAuthenticator ) // Executes in API context (public)
+			} );
 
 			SteamRequest request = new SteamRequest( SteamAPIInterface.IPlayerService, "GetOwnedGames", SteamMethodVersion.v0001 );
 			request.AddParameter( "steamid", steamID, ParameterType.QueryString );

@@ -17,7 +17,7 @@ namespace SteamSharp.FlowTests.Tests {
 			client.Authenticator = UserAuthenticator.ForProtectedResource( user );
 
 			//var response = PlayerService.GetRecentlyPlayedGames( client, user.SteamID.ToString() );
-			var response = SteamUserInterface.GetFriendList( client, user.SteamID.ToString(), PlayerRelationshipType.All );
+			var response = SteamCommunity.GetFriendsList( client, user.SteamID );
 
 			if( response == null )
 				return false;

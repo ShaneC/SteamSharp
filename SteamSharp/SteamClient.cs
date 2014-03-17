@@ -25,7 +25,6 @@ namespace SteamSharp {
 			get { return _apiEndpoint; }
 			private set { _apiEndpoint = value; }
 		}
-
 		private string _apiEndpoint = "https://api.steampowered.com";
 
 		/// <summary>
@@ -35,8 +34,12 @@ namespace SteamSharp {
 			get { return _timeout; }
 			set { _timeout = value; }
 		}
-
 		private int _timeout = 10000;
+
+		/// <summary>
+		/// Default User-Agent for use in the client. If not set, it will take the form of "SteamSharp/{SteamSharp_Version}".
+		/// </summary>
+		public string DefaultUserAgent { get; set; }
 
 		/// <summary>
 		/// Parameters that should be included with every request executed via this instance
@@ -65,7 +68,7 @@ namespace SteamSharp {
 		/// </summary>
 		/// <param name="validAuthMethods">List of valid authenticators for API access.</param>
 		/// <returns>Returns 'true' if the proper authenticator is attached. Throws <see cref="SteamAuthenticationException"/> otherwise.</returns>
-		internal bool ConfirmAuthorizedCall( List<Type> validAuthMethods ) {
+		internal bool IsAuthorizedCall( Type[] validAuthMethods ) {
 			if( !validAuthMethods.Contains( Authenticator.GetType() ) )
 				throw new SteamAuthenticationException( "API call has not been properly authenticated. Please ensure the proper ISteamAuthenticator object is added to the SteamClient (SteamClient.Authenticator)." );
 			return true;
@@ -179,7 +182,7 @@ namespace SteamSharp {
 			// HEADERS
 			// -- Add UserAgent header, if it does not already exist in both the request and the standard request message (shouldn't overwrite valuable system/platform data)
 			if( !request.Parameters.Any( p => p.Name == "User-Agent" && p.Type == ParameterType.HttpHeader ) && !httpRequest.Headers.Any( h => h.Key == "User-Agent" ) )
-				request.Parameters.Add( new SteamRequestParameter { Name = "User-Agent", Value = "SteamSharp/" + AssemblyVersion, Type = ParameterType.HttpHeader } );
+				request.Parameters.Add( new SteamRequestParameter { Name = "User-Agent", Value = ( ( DefaultUserAgent == null ) ? "SteamSharp/" + AssemblyVersion : DefaultUserAgent ), Type = ParameterType.HttpHeader } );
 
 			// -- Currently we only accept and deserialize JSON responses
 			request.Parameters.Add( new SteamRequestParameter { Name = "Accept", Value = "application/json", Type = ParameterType.HttpHeader } );

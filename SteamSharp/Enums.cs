@@ -294,9 +294,17 @@ namespace SteamSharp {
 		/// </summary>
 		Private = 1,
 		/// <summary>
+		/// User's profile is visible to only their friends.
+		/// </summary>
+		FriendsOnly = 2,
+		/// <summary>
 		/// User's profile is public.
 		/// </summary>
-		Public = 3
+		Public = 3,
+		/// <summary>
+		/// Container for unexpected results by the API.
+		/// </summary>
+		Unknown
 	}
 	#endregion
 

@@ -70,7 +70,7 @@ namespace SteamSharp.FlowTests.Tests {
 				client.Authenticator = UserAuthenticator.ForProtectedResource( user );
 
 				// Validate basic protected API call
-				var response = SteamUserOAuth.GetFriendsList( client, user.SteamID );
+				var response = SteamCommunity.GetFriendsList( client, user.SteamID );
 				if( response.Friends == null )
 					throw new Exception( "Unable to get protected data!" );
 

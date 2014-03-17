@@ -14,10 +14,10 @@ namespace SteamSharp.Test {
 
 			SteamClient client = new SteamClient();
 
-			var response = SteamUserStats.GetGlobalAchievementPercentagesForApp( client, 440 );
+			var response = SteamCommunity.GetGlobalAchievementPercentagesForApp( client, 440 );
 
 			Assert.IsNotNull( response );
-			Assert.IsInstanceOfType( response, typeof( List<SteamUserStats.GlobalAchievement> ) );
+			Assert.IsInstanceOfType( response, typeof( List<SteamCommunity.GlobalAchievement> ) );
 
 		}
 
@@ -43,10 +43,10 @@ namespace SteamSharp.Test {
 			SteamClient client = new SteamClient();
 			client.Authenticator = SteamSharp.Authenticators.APIKeyAuthenticator.ForProtectedResource( AccessConstants.APIKey );
 
-			var response = SteamUserStats.GetPlayerAchievements( client, "76561197972495328", 440 );
+			var response = SteamCommunity.GetPlayerAchievements( client, "76561197972495328", 440 );
 
 			Assert.IsNotNull( response );
-			Assert.IsInstanceOfType( response, typeof( SteamUserStats.PlayerAchievements ) );
+			Assert.IsInstanceOfType( response, typeof( SteamCommunity.PlayerAchievements ) );
 
 		}
 
@@ -57,10 +57,10 @@ namespace SteamSharp.Test {
 			SteamClient client = new SteamClient();
 			client.Authenticator = SteamSharp.Authenticators.APIKeyAuthenticator.ForProtectedResource( AccessConstants.APIKey );
 
-			var response = SteamUserStats.GetPlayerAchievements( client, "76561197972495328", 440, RequestedLangage.English );
+			var response = SteamCommunity.GetPlayerAchievements( client, "76561197972495328", 440, RequestedLangage.English );
 
 			Assert.IsNotNull( response );
-			Assert.IsInstanceOfType( response, typeof( SteamUserStats.PlayerAchievements ) );
+			Assert.IsInstanceOfType( response, typeof( SteamCommunity.PlayerAchievements ) );
 
 		}
 
@@ -71,10 +71,10 @@ namespace SteamSharp.Test {
 			SteamClient client = new SteamClient();
 			client.Authenticator = SteamSharp.Authenticators.APIKeyAuthenticator.ForProtectedResource( AccessConstants.APIKey );
 
-			var response = SteamUserStats.GetPlayerAchievements( client, "76561197972495328", 440, RequestedLangage.Japanese );
+			var response = SteamCommunity.GetPlayerAchievements( client, "76561197972495328", 440, RequestedLangage.Japanese );
 
 			Assert.IsNotNull( response );
-			Assert.IsInstanceOfType( response, typeof( SteamUserStats.PlayerAchievements ) );
+			Assert.IsInstanceOfType( response, typeof( SteamCommunity.PlayerAchievements ) );
 
 		}
 
@@ -85,10 +85,10 @@ namespace SteamSharp.Test {
 			SteamClient client = new SteamClient();
 			client.Authenticator = SteamSharp.Authenticators.APIKeyAuthenticator.ForProtectedResource( AccessConstants.APIKey );
 
-			var response = SteamUserStats.GetPlayerAchievements( client, "76561197972495328", 440, RequestedLangage.Russian );
+			var response = SteamCommunity.GetPlayerAchievements( client, "76561197972495328", 440, RequestedLangage.Russian );
 
 			Assert.IsNotNull( response );
-			Assert.IsInstanceOfType( response, typeof( SteamUserStats.PlayerAchievements ) );
+			Assert.IsInstanceOfType( response, typeof( SteamCommunity.PlayerAchievements ) );
 
 		}
 		#endregion
@@ -101,10 +101,10 @@ namespace SteamSharp.Test {
 			SteamClient client = new SteamClient();
 			client.Authenticator = SteamSharp.Authenticators.APIKeyAuthenticator.ForProtectedResource( AccessConstants.APIKey );
 
-			var response = SteamUserStats.GetUserStatsForGame( client, "76561197972495328", 440 );
+			var response = SteamCommunity.GetUserStatsForGame( client, "76561197972495328", 440 );
 
 			Assert.IsNotNull( response );
-			Assert.IsInstanceOfType( response, typeof( SteamUserStats.PlayerStats ) );
+			Assert.IsInstanceOfType( response, typeof( SteamCommunity.PlayerStats ) );
 
 			Assert.IsNotNull( response.GameName );
 			Assert.IsNotNull( response.Stats );

@@ -1,13 +1,25 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 
-namespace SteamSharp.Helpers {
+namespace SteamSharp {
 
 	/// <summary>
 	/// Class containing extension methods for SteamSharp.
 	/// </summary>
 	public static class Extensions {
+
+		/// <summary>
+		/// Sorts the target list of SteamUsers alphabetically (A to Z) based on Persona Name.
+		/// </summary>
+		/// <param name="list"></param>
+		/// <returns></returns>
+		public static List<SteamUser> SortByPersonaName( this List<SteamUser> list ) {
+			// Default behavior
+			list.Sort();
+			return list;
+		}
 
 		/// <summary>
 		/// Converts a valid hexadecimal string into is byte array equivalent.
