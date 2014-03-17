@@ -29,7 +29,7 @@ namespace SteamSharp.Test {
 
 		[TestMethod]
 		[TestCategory( "URI - Resource" )]
-		public void Testtesttest() {
+		public void VerifyHttpUrlEncoding() {
 
 			var test = HttpUtility.UrlEncode( testByteArr );
 			var test2 = SteamSharp.Helpers.StringFormat.UrlEncode( testByteArr );
