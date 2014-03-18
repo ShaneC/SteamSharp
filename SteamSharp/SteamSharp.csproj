@@ -58,8 +58,10 @@
     <Compile Include="Http\ISteamRequest.cs" />
     <Compile Include="Http\ISteamResponse.cs" />
     <Compile Include="Models\PlayerService.cs" />
+    <Compile Include="Models\SteamChat.cs" />
     <Compile Include="Models\SteamCommunity.cs" />
     <Compile Include="Models\SteamNews.cs" />
+    <Compile Include="SteamChatClient.cs" />
     <Compile Include="SteamID.cs" />
     <Compile Include="SteamInterfaces\SteamGames.cs" />
     <Compile Include="SteamInterfaces\SteamInterfaceHelpers.cs" />

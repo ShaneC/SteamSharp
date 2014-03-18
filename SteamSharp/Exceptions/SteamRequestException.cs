@@ -33,6 +33,13 @@ namespace SteamSharp {
 
 		private bool _isRequestIssue = false;
 
+		public bool IsAuthenticationIssue {
+			get { return _isAuthenticationIssue; }
+			set { _isAuthenticationIssue = value; }
+		}
+
+		private bool _isAuthenticationIssue = false;
+
 		/// <summary>
 		/// The feedback from a bad HTTP Request. If none, this value will be null.
 		/// </summary>

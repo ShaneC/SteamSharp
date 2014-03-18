@@ -47,8 +47,20 @@ namespace SteamSharp {
 		/// Returns true if the user object is capable of UserAuthentication to OAuth APIs. False otherwise.
 		/// </summary>
 		/// <returns></returns>
-		public bool CanAuthenticate() {
+		public bool IsAuthenticated() {
 			return ( !String.IsNullOrEmpty( this.OAuthAccessToken ) );
+		}
+
+		/// <summary>
+		/// (Async) If the user object is User Authenticated (IsAuthenticated() == true), creates a SteamClient and pulls the latest PlayerInfo data for the current user.
+		/// Throws <see cref="SteamSharp.SteamAuthenticationException"/> if the user is not authenticated or is no longer able to authenticate.
+		/// </summary>
+		public async Task GetProfileDataAsync() {
+			if( !this.IsAuthenticated() )
+				throw new SteamAuthenticationException( "User object is not capable of authenticating with the UserAuthenticator object." );
+			SteamClient client = new SteamClient();
+			client.Authenticator = Authenticators.UserAuthenticator.ForProtectedResource( this.OAuthAccessToken );
+			await GetProfileDataAsync( client );
 		}
 
 		/// <summary>

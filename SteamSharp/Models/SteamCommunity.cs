@@ -197,6 +197,7 @@ namespace SteamSharp {
 		/// </summary>
 		public class SteamFriend {
 
+			/// <summary>
 			/// 64bit SteamID of the user.
 			/// </summary>
 			[JsonConverter( typeof( SteamInterfaceHelpers.SteamIDConverter ) )]

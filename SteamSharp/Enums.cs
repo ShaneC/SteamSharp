@@ -107,6 +107,15 @@ namespace SteamSharp {
 		Aborted
 	}
 
+	/// <summary>
+	/// Connection Status representation for the SteamChatClient object.
+	/// </summary>
+	public enum ClientConnectionStatus {
+		Disconnected = -1,
+		Connected = 0,
+		Connecting = 1
+	}
+
 	///<summary>
 	/// The valid types of parameters that can be added to requests
 	///</summary>
@@ -283,6 +292,28 @@ namespace SteamSharp {
 		/// User is online and looking to play.
 		/// </summary>
 		LookingToPlay = 6
+	}
+
+	/// <summary>
+	/// The type of message that has been received via the SteamChatClient.
+	/// </summary>
+	public enum ChatMessageType {
+		/// <summary>
+		/// Container for an unknown result received by the API.
+		/// </summary>
+		Unknown = -1,
+		/// <summary>
+		/// Indicates the message is informing the client of a change in activity behavior (user log in or log out).
+		/// </summary>
+		PersonaState = 0,
+		/// <summary>
+		/// Indicates the MessageAuthor is currently typing a message but has not yet sent it.
+		/// </summary>
+		Typing = 1,
+		/// <summary>
+		/// Indicates the MessageAuthor has sent a message. Check the Message's "Text" property for contents.
+		/// </summary>
+		MessageText = 2
 	}
 
 	/// <summary>

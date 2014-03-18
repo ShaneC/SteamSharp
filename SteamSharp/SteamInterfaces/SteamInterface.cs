@@ -17,7 +17,7 @@ namespace SteamSharp {
 		/// <typeparam name="T">Object type for the <see cref="ISteamResponse"/> to be deserialized into.</typeparam>
 		/// <param name="response">Response object provided by the SteamClient's execution method.</param>
 		/// <returns>Deserialized representation of <see cref="ISteamResponse"/>'s server-recevied content.</returns>
-		protected static T VerifyAndDeserialize<T>( ISteamResponse response ) {
+		public static T VerifyAndDeserialize<T>( ISteamResponse response ) {
 
 			if( !response.IsSuccessful ) {
 
@@ -25,7 +25,7 @@ namespace SteamSharp {
 
 				switch( response.StatusCode ) {
 					case HttpStatusCode.Unauthorized:
-						message = "Steam Request Failed. Unauthorized to access this resource (have you authenticated the client? are your keys valid?).";
+						message = "Steam Request Failed. Unauthorized to access this resource. Typically this means the credentials provided (user token or API key) are no longer valid.";
 						break;
 					case HttpStatusCode.BadRequest:
 						message = "Steam Request Failed. Bad Request.";
@@ -40,8 +40,18 @@ namespace SteamSharp {
 						break;
 				}
 
+				var requestException = new SteamRequestException( message, response ) {
+					IsRequestIssue = true,
+					IsAuthenticationIssue = ( response.StatusCode == HttpStatusCode.Unauthorized )
+				};
+
+				// SPECIAL CASE: If the call is unauthorized, throw a SteamAuthenticationException so the client can take appropriate re-auth action.
+				if( response.StatusCode == HttpStatusCode.Unauthorized ) {
+
+				}
 				throw new SteamRequestException( message, response ) {
-					IsRequestIssue = true
+					IsRequestIssue = true,
+					IsAuthenticationIssue = ( response.StatusCode == HttpStatusCode.Unauthorized )
 				};
 
 			}
