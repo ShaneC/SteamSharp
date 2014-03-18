@@ -66,7 +66,6 @@
     <Compile Include="SteamInterfaces\SteamGames.cs" />
     <Compile Include="SteamInterfaces\SteamInterfaceHelpers.cs" />
     <Compile Include="SteamInterfaces\PlayerService.cs" />
-    <Compile Include="SteamInterfaces\SteamFriends.cs" />
     <Compile Include="SteamInterfaces\SteamCommunity.cs" />
     <Compile Include="SteamInterfaces\SteamInterface.cs" />
     <Compile Include="SteamInterfaces\SteamNews.cs" />
