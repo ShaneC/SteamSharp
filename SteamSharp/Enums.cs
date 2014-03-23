@@ -111,9 +111,36 @@ namespace SteamSharp {
 	/// Connection Status representation for the SteamChatClient object.
 	/// </summary>
 	public enum ClientConnectionStatus {
+		/// <summary>
+		/// Client is in a Disconnected state.
+		/// </summary>
 		Disconnected = -1,
+		/// <summary>
+		/// Client is in a Connected state.
+		/// </summary>
 		Connected = 0,
+		/// <summary>
+		/// Client is currently attempting to connect.
+		/// </summary>
 		Connecting = 1
+	}
+
+	/// <summary>
+	/// Status of the connection actively being used to poll the Steam Chat API.
+	/// </summary>
+	public enum ChatPollStatus {
+		/// <summary>
+		/// Indicates the poll is in a state we don't recognize.
+		/// </summary>
+		Unknown = 0,
+		/// <summary>
+		/// Indicates the response from the poll request is standard and contains new information.
+		/// </summary>
+		OK = 1,
+		/// <summary>
+		/// Indicates the poll connection has timed out and must be re-established (this is done automatically by the polling method).
+		/// </summary>
+		TimedOut = 2
 	}
 
 	///<summary>

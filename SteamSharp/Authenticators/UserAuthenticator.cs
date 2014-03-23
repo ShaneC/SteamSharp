@@ -24,7 +24,7 @@ namespace SteamSharp.Authenticators {
 		/// <param name="request">Request requiring authentication.</param>
 		public void Authenticate( SteamClient client, ISteamRequest request ) {
 			if( AccessToken != null )
-				request.AddParameter( "access_token", AccessToken, ParameterType.QueryString );
+				request.AddParameter( "access_token", AccessToken, ParameterType.GetOrPost );
 		}
 
 		/// <summary>

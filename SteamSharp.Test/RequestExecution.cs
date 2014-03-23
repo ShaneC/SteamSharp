@@ -117,9 +117,7 @@ namespace SteamSharp.Test {
 
 				SteamClient client = new SteamClient( AccessConstants.SimulatedServerUrl );
 				var request = new SteamRequest( "/resource", HttpMethod.Post );
-
-				// Verify request defaults to JSON
-				Assert.AreEqual( PostDataFormat.Json, request.DataFormat );
+				request.DataFormat = PostDataFormat.Json;
 
 				string payload = "myContent 123 abc's fun!";
 

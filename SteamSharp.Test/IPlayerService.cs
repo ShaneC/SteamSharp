@@ -45,7 +45,7 @@ namespace SteamSharp.Test {
 
 			SteamClient client = new SteamClient();
 
-			AssertException.Throws<SteamRequestException>( () => {
+			AssertException.Throws<SteamAuthenticationException>( () => {
 				var response = PlayerService.GetRecentlyPlayedGames( client, "76561197960434622" );
 			});
 

@@ -169,7 +169,7 @@ namespace SteamSharp {
 		/// Constructs the <see cref="HttpWebRequest" /> object which will be used to execute the web request. 
 		/// </summary>
 		/// <param name="request">Request for execution.</param>
-		private HttpRequestMessage BuildHttpRequest( ISteamRequest request ) {
+		protected HttpRequestMessage BuildHttpRequest( ISteamRequest request ) {
 
 			// Add any Default client parameters (if it exists in the request, the request wins)
 			foreach( var param in DefaultParameters ) {
@@ -221,7 +221,7 @@ namespace SteamSharp {
 
 		}
 
-		private SteamResponse CreateErrorResponse( ISteamRequest request, Exception ex ) {
+		protected SteamResponse CreateErrorResponse( ISteamRequest request, Exception ex ) {
 
 			SteamResponse response = new SteamResponse();
 			response.Request = request;
@@ -258,11 +258,14 @@ namespace SteamSharp {
 
 		}
 
-		private SteamResponse ConvertToResponse( ISteamRequest request, HttpResponseMessage response, CookieContainer cookies ) {
+		protected SteamResponse ConvertToResponse( ISteamRequest request, HttpResponseMessage response, CookieContainer cookies ) {
 
 			var cookieJar = new Dictionary<string,Cookie>();
-			foreach( Cookie cookie in cookies.GetCookies( response.RequestMessage.RequestUri ).Cast<Cookie>() ){
-				cookieJar.Add( cookie.Name, cookie );
+
+			if( cookies != null ) {
+				foreach( Cookie cookie in cookies.GetCookies( response.RequestMessage.RequestUri ).Cast<Cookie>() ) {
+					cookieJar.Add( cookie.Name, cookie );
+				}
 			}
 
 			SteamResponse steamResponse = new SteamResponse {

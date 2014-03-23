@@ -47,12 +47,9 @@ namespace SteamSharp {
 
 				// SPECIAL CASE: If the call is unauthorized, throw a SteamAuthenticationException so the client can take appropriate re-auth action.
 				if( response.StatusCode == HttpStatusCode.Unauthorized ) {
-
-				}
-				throw new SteamRequestException( message, response ) {
-					IsRequestIssue = true,
-					IsAuthenticationIssue = ( response.StatusCode == HttpStatusCode.Unauthorized )
-				};
+					throw new SteamAuthenticationException( message, requestException );
+				} else
+					throw requestException;
 
 			}
 

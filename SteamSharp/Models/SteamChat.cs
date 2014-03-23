@@ -30,7 +30,7 @@ namespace SteamSharp {
 			/// </summary>
 			[JsonConverter( typeof( SteamInterfaceHelpers.SteamIDConverter ) )]
 			[JsonProperty( "steamid_from" )]
-			public string MessageAuthor { get; set; }
+			public SteamID MessageAuthor { get; set; }
 
 			/// <summary>
 			/// Sorry, no clue.
@@ -118,7 +118,7 @@ namespace SteamSharp {
 
 		}
 
-		private class SteamChatSession {
+		internal class SteamChatSession {
 
 			/// <summary>
 			/// 64bit SteamID of the user.

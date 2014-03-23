@@ -1,8 +1,12 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace SteamSharp {
@@ -13,17 +17,21 @@ namespace SteamSharp {
 		public event EventHandler<SteamChatConnectionChangeEventArgs> SteamChatConnected;
 		public event EventHandler<SteamChatConnectionChangeEventArgs> SteamChatDisconnected;
 
-		public ClientConnectionStatus ConnectionStatus { get; private set; }
+		public ClientConnectionStatus ConnectionStatus {
+			get { return _connectionStatus; }
+			set { _connectionStatus = value; }
+		}
+		private ClientConnectionStatus _connectionStatus = ClientConnectionStatus.Connecting;
 
 		private SteamChatSession ChatSession;
 
 		private long LastMessageSentID = 0;
 
-		public SteamChatClient() {
+		private CancellationTokenSource Cancellation = new CancellationTokenSource();
 
+		public SteamChatClient() {
 			this.SteamChatConnected += SteamChatConnectionChangeHandler;
 			this.SteamChatDisconnected += SteamChatConnectionChangeHandler;
-
 		}
 
 		/// <summary>
@@ -49,28 +57,77 @@ namespace SteamSharp {
 
 			BeginPoll();
 
-			// Connection succeeded
-			var previousState = this.ConnectionStatus;
-			ConnectionStatus = ClientConnectionStatus.Connected;
+		}
 
-			OnSteamChatClientConnectionChange( new SteamChatConnectionChangeEventArgs {
-				ChangeDateTime = DateTime.UtcNow,
-				PreviousConnectionState = previousState,
-				NewConnectionState = ConnectionStatus
-			} );
+		/// <summary>
+		/// Opens a long-poll modeled connection to retrieve updated information from the Steam server.
+		/// </summary>
+		private async void BeginPoll() {
+
+			IndicateConnectionState( ClientConnectionStatus.Connecting );
+
+			SteamRequest requestBase = new SteamRequest( "ISteamWebUserPresenceOAuth", "Poll", "v0001", HttpMethod.Post );
+			requestBase.AddParameter( "umqid", ChatSession.ChatSessionID, ParameterType.GetOrPost );
+			requestBase.AddParameter( "sectimeout", 20, ParameterType.GetOrPost );
+
+			if( Authenticator != null ) {
+				Authenticator.Authenticate( this, requestBase );
+			}
+
+			using( var client = new HttpClient() ) {
+
+				Cancellation.Token.Register( () => client.CancelPendingRequests() );
+
+				while( true ) {
+
+					requestBase.AddParameter( "message", LastMessageSentID, ParameterType.GetOrPost );
+
+					using( var httpRequest = BuildHttpRequest( requestBase ) ) {
+
+						httpRequest.Headers.Add( "Connection", "Keep-Alive" );
+
+						try {
+
+							using( var response = await client.SendAsync( httpRequest, HttpCompletionOption.ResponseContentRead ).ConfigureAwait( false ) ) {
+
+								SteamChatPollResult result = SteamInterface.VerifyAndDeserialize<SteamChatPollResult>( ConvertToResponse( requestBase, response, null ) );
+
+								IndicateConnectionState( ClientConnectionStatus.Connected );
+
+								LastMessageSentID = result.PollLastMessageSentID;
+
+								System.Diagnostics.Debug.WriteLine( "-- Timeout = " + result.SecondsUntilTimeout );
+								System.Diagnostics.Debug.WriteLine( "-- Error = " + result.Error );
+
+								if( result.Messages != null )
+									System.Diagnostics.Debug.WriteLine( "-- Message Count = " + result.Messages.Count );
+
+								await Task.Delay( 1000, Cancellation.Token );
+
+							}
+
+						}catch( OperationCanceledException ) {
+							IndicateConnectionState( ClientConnectionStatus.Disconnected );
+							return;
+						}catch( Exception e ) {
+							IndicateConnectionState( ClientConnectionStatus.Disconnected );
+							if( e is SteamRequestException || e is SteamAuthenticationException )
+								throw e;
+						}
+
+					}
+
+				}
+
+			}
 
 		}
 
-		private void BeginPoll() {
-
-			SteamRequest request = new SteamRequest( "ISteamWebUserPresenceOAuth", "Poll", "v0001", HttpMethod.Post );
-			request.AddParameter( "steamid", ChatSession.SteamID.ToString(), ParameterType.GetOrPost );
-			request.AddParameter( "steamid", ChatSession.SteamID.ToString(), ParameterType.GetOrPost );
-
-		}
-
+		/// <summary>
+		/// Stops polling and disconnects the client from the Steam server.
+		/// </summary>
 		public void Disconnect() {
-
+			Cancellation.Cancel();
 		}
 
 		public async Task IndicateTyping( SteamID destinationUser ) {
@@ -92,8 +149,28 @@ namespace SteamSharp {
 
 		}
 
+		private void IndicateConnectionState( ClientConnectionStatus newState ) {
+
+			if( ConnectionStatus == newState )
+				return;
+
+			var previousState = ConnectionStatus;
+			ConnectionStatus = newState;
+
+			OnSteamChatClientConnectionChange( new SteamChatConnectionChangeEventArgs {
+				ChangeDateTime = DateTime.UtcNow,
+				PreviousConnectionState = previousState,
+				NewConnectionState = ConnectionStatus
+			} );
+
+		}
+
 		private void OnSteamChatClientConnectionChange( SteamChatConnectionChangeEventArgs e ) {
-			EventHandler<SteamChatConnectionChangeEventArgs> handler = SteamChatConnected;
+			EventHandler<SteamChatConnectionChangeEventArgs> handler;
+			if( e.NewConnectionState == ClientConnectionStatus.Connected )
+				handler = SteamChatConnected;
+			else
+				handler = SteamChatDisconnected;
 			if( handler != null )
 				handler( this, e );
 		}

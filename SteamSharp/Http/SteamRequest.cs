@@ -45,7 +45,7 @@ namespace SteamSharp {
 			set { _dataFormat = value; }
 		}
 
-		private PostDataFormat _dataFormat = PostDataFormat.Json;
+		private PostDataFormat _dataFormat = PostDataFormat.FormUrlEncoded;
 
 		/// <summary>
 		/// The URI the request will be made against.

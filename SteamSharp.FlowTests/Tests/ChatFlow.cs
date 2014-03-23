@@ -10,6 +10,7 @@ namespace SteamSharp.FlowTests.Tests {
 			try {
 
 				string accessToken = WriteConsole.Prompt( "Please enter valid OAuth access token:" );
+				SteamID targetUser = new SteamID( WriteConsole.Prompt( "Please enter valid SteamID of target user:" ) );
 
 				SteamClient client = new SteamClient();
 				client.Authenticator = UserAuthenticator.ForProtectedResource( accessToken );
@@ -21,16 +22,12 @@ namespace SteamSharp.FlowTests.Tests {
 
 				chatClient.SteamChatMessagesReceived += chatClient_SteamChatMessagesReceived;
 
-				chatClient.LogOn( client );
+				chatClient.LogOn( client ).Wait();
 
 				while( true ) {
-
-					chatClient.SendMessage( new SteamID( "" ), WriteConsole.Prompt( "New Message: " ) );
-
+					chatClient.SendMessage( targetUser, WriteConsole.Prompt( "Type New Message: " ) );
 				}
 				
-				return true;
-
 			} catch( Exception e ) {
 				WriteConsole.Error( e.Message + "\n" + e.ToString() );
 				return false;
