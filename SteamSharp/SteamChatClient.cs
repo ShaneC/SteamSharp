@@ -94,13 +94,20 @@ namespace SteamSharp {
 
 								IndicateConnectionState( ClientConnectionStatus.Connected );
 
-								LastMessageSentID = result.PollLastMessageSentID;
+								if( result.PollStatus == ChatPollStatus.OK ) {
 
-								System.Diagnostics.Debug.WriteLine( "-- Timeout = " + result.SecondsUntilTimeout );
-								System.Diagnostics.Debug.WriteLine( "-- Error = " + result.Error );
+									LastMessageSentID = result.PollLastMessageSentID;
+									
+									if( result.Messages != null ) {
+										// New messages available for processing
+										result.Messages.Sort();
+										OnSteamChatMessagesReceived( new SteamChatMessagesReceivedEventArgs {
+											UTCServerChangeDateTime = result.UTCTimestamp,
+											NewMessages = result.Messages
+										} );
+									}
 
-								if( result.Messages != null )
-									System.Diagnostics.Debug.WriteLine( "-- Message Count = " + result.Messages.Count );
+								}
 
 								await Task.Delay( 1000, Cancellation.Token );
 
@@ -207,12 +214,12 @@ namespace SteamSharp {
 		public class SteamChatMessagesReceivedEventArgs : EventArgs {
 
 			/// <summary>
-			/// UTC DateTime when the change took place.
+			/// UTC DateTime from the Steam API indicating when the poll was updated.
 			/// </summary>
-			public DateTime ChangeDateTime { get; set; }
+			public DateTime UTCServerChangeDateTime { get; set; }
 
 			/// <summary>
-			/// List of the <see cref="SteamChat.SteamChatMessage"/> objects which have been received since the last event.
+			/// Sorted list of the <see cref="SteamChat.SteamChatMessage"/> objects which have been received since the last event. Sort order is Old to New (MessageDateTime ASC).
 			/// </summary>
 			public List<SteamSharp.SteamChat.SteamChatMessage> NewMessages { get; set; }
 

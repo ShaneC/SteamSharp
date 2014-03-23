@@ -110,7 +110,7 @@ namespace SteamSharp {
 					throw new JsonReaderException( "Specified object must be of type ChatMessageType." );
 				switch( (ChatMessageType)value ) {
 					case ChatMessageType.MessageText: writer.WriteValue( "saytext" ); break;
-					case ChatMessageType.PersonaState: writer.WriteValue( "personastate" ); break;
+					case ChatMessageType.PersonaStateChange: writer.WriteValue( "personastate" ); break;
 					case ChatMessageType.Typing: writer.WriteValue( "typing" ); break;
 					default: writer.WriteValue( "unknown" ); break;
 				}
@@ -126,9 +126,9 @@ namespace SteamSharp {
 			/// <returns>PlayerRelationshipType object representing the input string.</returns>
 			public override object ReadJson( JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer ) {
 				if( reader.TokenType != JsonToken.String )
-					throw new JsonReaderException( "Token does not coorespond to the correct datatype (string)." );
+					throw new JsonReaderException( "Token does not coorespond to the correct data type (string)." );
 				switch( ( (string)reader.Value ).ToLower() ) {
-					case "personastate": return ChatMessageType.PersonaState;
+					case "personastate": return ChatMessageType.PersonaStateChange;
 					case "saytext": return ChatMessageType.MessageText;
 					case "typing": return ChatMessageType.Typing;
 					default: return ChatMessageType.Unknown;
@@ -137,6 +137,52 @@ namespace SteamSharp {
 
 			public override bool CanConvert( Type objectType ) {
 				return ( objectType == typeof( ChatMessageType ) || objectType == typeof( string ) );
+			}
+
+		}
+
+		/// <summary>
+		/// Json.Net converter class for ChatPollStatus.
+		/// </summary>
+		public class SteamChatPollStatusTypeConverter : JsonConverter {
+
+			/// <summary>
+			/// Writes the string representation of the converted object (ChatPollStatus --> String).
+			/// </summary>
+			/// <param name="writer">The <see cref="T:Newtonsoft.Json.JsonWriter"/> to write to.</param>
+			/// <param name="value">The value.</param>
+			/// <param name="serializer">The calling serializer.</param>
+			/// <returns>The string equivalent of the specified PlayerRelationshipType object.</returns>
+			public override void WriteJson( JsonWriter writer, object value, JsonSerializer serializer ) {
+				if( !( value is ChatPollStatus ) )
+					throw new JsonReaderException( "Specified object must be of type ChatPollStatus." );
+				switch( (ChatPollStatus)value ) {
+					case ChatPollStatus.OK: writer.WriteValue( "OK" ); break;
+					case ChatPollStatus.TimedOut: writer.WriteValue( "Timeout" ); break;
+					default: writer.WriteValue( "Unknown" ); break;
+				}
+			}
+
+			/// <summary>
+			/// Read the JSON representation of the converted object (String --> ChatPollStatus)
+			/// </summary>
+			/// <param name = "reader">The <see cref = "JsonReader" /> to read from.</param>
+			/// <param name = "objectType">Type of the object.</param>
+			/// <param name = "existingValue">The existing value of object being read.</param>
+			/// <param name = "serializer">The calling serializer.</param>
+			/// <returns>PlayerRelationshipType object representing the input string.</returns>
+			public override object ReadJson( JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer ) {
+				if( reader.TokenType != JsonToken.String )
+					throw new JsonReaderException( "Token does not coorespond to the correct data type (string)." );
+				switch( ( (string)reader.Value ).ToLower() ) {
+					case "ok": return ChatPollStatus.OK;
+					case "timeout": return ChatPollStatus.TimedOut;
+					default: return ChatPollStatus.Unknown;
+				}
+			}
+
+			public override bool CanConvert( Type objectType ) {
+				return ( objectType == typeof( ChatPollStatus ) || objectType == typeof( string ) );
 			}
 
 		}

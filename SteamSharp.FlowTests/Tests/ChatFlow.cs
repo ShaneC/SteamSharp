@@ -9,11 +9,10 @@ namespace SteamSharp.FlowTests.Tests {
 
 			try {
 
-				string accessToken = WriteConsole.Prompt( "Please enter valid OAuth access token:" );
-				SteamID targetUser = new SteamID( WriteConsole.Prompt( "Please enter valid SteamID of target user:" ) );
+				SteamID targetUser = new SteamID( "76561198129947779" );
 
 				SteamClient client = new SteamClient();
-				client.Authenticator = UserAuthenticator.ForProtectedResource( accessToken );
+				client.Authenticator = UserAuthenticator.ForProtectedResource( AccessConstants.OAuthAccessToken );
 
 				SteamChatClient chatClient = new SteamChatClient();
 
@@ -36,7 +35,18 @@ namespace SteamSharp.FlowTests.Tests {
 		}
 
 		private void chatClient_SteamChatMessagesReceived( object sender, SteamChatClient.SteamChatMessagesReceivedEventArgs e ) {
-			WriteConsole.Success( e.NewMessages.Count + " new message(s) received!" );
+
+			foreach( var message in e.NewMessages ) {
+
+				switch( message.Type ) {
+					case ChatMessageType.Typing: WriteConsole.Information( message.PersonaName + " is typing..." ); break;
+					case ChatMessageType.MessageText: WriteConsole.Information( message.PersonaName + ": " + message.Text ); break;
+					case ChatMessageType.PersonaStateChange: WriteConsole.Information( message.PersonaName + " is now " + Enum.GetName( typeof( PersonaState ), message.PersonaState ) ); break;
+					default: WriteConsole.Error( "Unknown message type detected!" ); break;
+				}
+
+			}
+
 		}
 
 		private void chatClient_SteamChatConnected( object sender, SteamSharp.SteamChatClient.SteamChatConnectionChangeEventArgs e ) {

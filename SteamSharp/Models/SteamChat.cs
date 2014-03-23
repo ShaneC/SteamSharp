@@ -9,28 +9,28 @@ namespace SteamSharp {
 
 	public partial class SteamChat {
 
-		public class SteamChatMessage {
+		public class SteamChatMessage : IComparable<SteamChatMessage> {
 
 			/// <summary>
 			/// Indicates the type of message received.
 			/// </summary>
 			[JsonProperty( "type" )]
 			[JsonConverter( typeof( SteamInterfaceHelpers.SteamChatMessageTypeConverter ) )]
-			public ChatMessageType MessageType { get; set; }
+			public ChatMessageType Type { get; set; }
 
 			/// <summary>
 			/// Timestamp the message was sent, in UTC.
 			/// </summary>
 			[JsonProperty( "utc_timestamp" )]
 			[JsonConverter( typeof( SteamInterfaceHelpers.UnixDateTimeConverter ) )]
-			public DateTime UTCTimestamp { get; set; }
+			public DateTime UTCMessageDateTime { get; set; }
 
 			/// <summary>
 			/// 64bit SteamID of the user who sent the message.
 			/// </summary>
 			[JsonConverter( typeof( SteamInterfaceHelpers.SteamIDConverter ) )]
 			[JsonProperty( "steamid_from" )]
-			public SteamID MessageAuthor { get; set; }
+			public SteamID FromUser { get; set; }
 
 			/// <summary>
 			/// Sorry, no clue.
@@ -51,9 +51,20 @@ namespace SteamSharp {
 			public string PersonaName { get; set; }
 
 			/// <summary>
-			/// If available, text sent from the MessageAuthor.
+			/// If available, text sent from the FromUser.
 			/// </summary>
 			public string Text { get; set; }
+
+			/// <summary>
+			/// Compares the value of this message to a specified message.
+			/// </summary>
+			/// <param name="target">Specified message.</param>
+			/// <returns>Returns an integer that indicates whether this instance is earlier than, the same as, or later than the specified Compares the value of this instance to a specified DateTime value and returns an integer that indicates whether this instance is earlier than, the same as, or later than the specified message.</returns>
+			public int CompareTo( SteamChatMessage target ) {
+				if( target == null )
+					return 1;
+				return this.UTCMessageDateTime.CompareTo( target.UTCMessageDateTime );
+			}
 
 		}
 
@@ -96,9 +107,11 @@ namespace SteamSharp {
 			public int SecondsUntilTimeout { get; set; }
 
 			/// <summary>
-			/// Text indicating OK for success or an error message in the event of failure. "Timeout" if the connection has timed out.
+			/// State indicating OK for success or an error message in the event of failure. "Timeout" if the poll connection has timed out and requires re-connection.
 			/// </summary>
-			public string Error { get; set; }
+			[JsonProperty( "error" )]
+			[JsonConverter( typeof( SteamInterfaceHelpers.SteamChatPollStatusTypeConverter ) )]
+			public ChatPollStatus PollStatus { get; set; }
 
 		}
 

@@ -332,13 +332,13 @@ namespace SteamSharp {
 		/// <summary>
 		/// Indicates the message is informing the client of a change in activity behavior (user log in or log out).
 		/// </summary>
-		PersonaState = 0,
+		PersonaStateChange = 0,
 		/// <summary>
-		/// Indicates the MessageAuthor is currently typing a message but has not yet sent it.
+		/// Indicates the FromUser is currently typing a message but has not yet sent it.
 		/// </summary>
 		Typing = 1,
 		/// <summary>
-		/// Indicates the MessageAuthor has sent a message. Check the Message's "Text" property for contents.
+		/// Indicates the FromUser has sent a message. Check the Message's "Text" property for contents.
 		/// </summary>
 		MessageText = 2
 	}
