@@ -1,11 +1,6 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -107,7 +102,6 @@ namespace SteamSharp {
 
 							using( var response = await client.SendAsync( httpRequest, HttpCompletionOption.ResponseContentRead ).ConfigureAwait( false ) ) {
 
-								System.Diagnostics.Debug.WriteLine( await response.Content.ReadAsStringAsync() );
 								SteamChatPollResult result = SteamInterface.VerifyAndDeserialize<SteamChatPollResult>( ConvertToResponse( requestBase, response, null ) );
 
 								IndicateConnectionState( ClientConnectionStatus.Connected );

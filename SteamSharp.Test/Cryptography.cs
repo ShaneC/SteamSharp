@@ -1,5 +1,4 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using SteamSharp.Helpers;
 using SteamSharp.Helpers.Cryptography;
 using SteamSharp.Test.TestHelpers;
 using System;

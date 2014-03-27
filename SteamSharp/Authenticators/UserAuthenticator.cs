@@ -1,9 +1,6 @@
 ﻿using Newtonsoft.Json;
-using Org.BouncyCastle.Security;
-using SteamSharp.Helpers;
 using SteamSharp.Helpers.Cryptography;
 using System;
-using System.Net;
 using System.Net.Http;
 using System.Text;
 

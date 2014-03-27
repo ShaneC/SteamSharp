@@ -1,7 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SteamSharp.Test.TestHelpers;
 using System;
-using System.Diagnostics;
 using System.Net;
 using System.Web;
 
