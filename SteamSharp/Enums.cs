@@ -340,7 +340,11 @@ namespace SteamSharp {
 		/// <summary>
 		/// Indicates the FromUser has sent a message. Check the Message's "Text" property for contents.
 		/// </summary>
-		MessageText = 2
+		MessageText = 2,
+		/// <summary>
+		/// Message type indicating the current state of various users in various relationship states with the user.
+		/// </summary>
+		PersonaRelationship = 3
 	}
 
 	/// <summary>

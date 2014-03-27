@@ -36,6 +36,14 @@ namespace SteamSharp {
 			return arr;
 		}
 
+		public override int GetHashCode() {
+			return ToString().GetHashCode();
+		}
+
+		public override bool Equals( object obj ) {
+			return ToString().Equals( obj.ToString() );
+		}
+
 	}
 
 }

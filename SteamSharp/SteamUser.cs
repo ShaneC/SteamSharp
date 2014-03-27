@@ -44,6 +44,11 @@ namespace SteamSharp {
 		public SteamCommunity.PlayerInfo PlayerInfo { get; set; }
 
 		/// <summary>
+		/// If the user object was generated via a GetFriendsList call, this field will contain the DateTime the friendship was established. Null otherwise.
+		/// </summary>
+		public DateTime FriendSince { get; set; }
+
+		/// <summary>
 		/// Returns true if the user object is capable of UserAuthentication to OAuth APIs. False otherwise.
 		/// </summary>
 		/// <returns></returns>

@@ -123,7 +123,7 @@ namespace SteamSharp.Test {
 			var response = SteamCommunity.GetFriendsList( client, new SteamID( "76561197960435530" ) );
 
 			Assert.IsNotNull( response );
-			Assert.IsInstanceOfType( response, typeof( SteamCommunity.SteamFriendsList ) );
+			Assert.IsInstanceOfType( response, typeof( SteamFriendsList ) );
 
 		}
 
@@ -137,7 +137,7 @@ namespace SteamSharp.Test {
 			var response = SteamCommunity.GetFriendsList( client, new SteamID( "76561197960435530" ) );
 
 			Assert.IsNotNull( response );
-			Assert.IsInstanceOfType( response, typeof( SteamCommunity.SteamFriendsList ) );
+			Assert.IsInstanceOfType( response, typeof( SteamFriendsList ) );
 
 		}
 

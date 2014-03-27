@@ -110,6 +110,7 @@ namespace SteamSharp {
 					throw new JsonReaderException( "Specified object must be of type ChatMessageType." );
 				switch( (ChatMessageType)value ) {
 					case ChatMessageType.MessageText: writer.WriteValue( "saytext" ); break;
+					case ChatMessageType.PersonaRelationship: writer.WriteValue( "personarelationship" ); break;
 					case ChatMessageType.PersonaStateChange: writer.WriteValue( "personastate" ); break;
 					case ChatMessageType.Typing: writer.WriteValue( "typing" ); break;
 					default: writer.WriteValue( "unknown" ); break;
@@ -129,6 +130,7 @@ namespace SteamSharp {
 					throw new JsonReaderException( "Token does not coorespond to the correct data type (string)." );
 				switch( ( (string)reader.Value ).ToLower() ) {
 					case "personastate": return ChatMessageType.PersonaStateChange;
+					case "personarelationship": return ChatMessageType.PersonaRelationship;
 					case "saytext": return ChatMessageType.MessageText;
 					case "typing": return ChatMessageType.Typing;
 					default: return ChatMessageType.Unknown;

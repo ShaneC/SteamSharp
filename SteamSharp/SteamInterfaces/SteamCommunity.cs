@@ -196,15 +196,30 @@ namespace SteamSharp {
 			} );
 
 			SteamRequest request;
-			if( client.Authenticator is Authenticators.UserAuthenticator )
+			List<SteamFriend> response;
+
+			if( client.Authenticator is Authenticators.UserAuthenticator ) {
 				// ISteamUserOAuth provides a higher level of access (with User Authentication), assuming a personal relationship with the target user
 				request = new SteamRequest( "ISteamUserOAuth", "GetFriendList", "v0001" );
-			else
+				request.AddParameter( "steamID", steamID.ToString() );
+				response = VerifyAndDeserialize<SteamFriendsListResponse>( ( await client.ExecuteAsync( request ) ) ).Friends;
+			} else {
 				request = new SteamRequest( "ISteamUser", "GetFriendList", "v0001" );
+				request.AddParameter( "steamID", steamID.ToString() );
+				response = VerifyAndDeserialize<GetFriendsListResponse>( ( await client.ExecuteAsync( request ) ) ).FriendsList.Friends;
+			}
 
-			request.AddParameter( "steamID", steamID.ToString() );
+			Dictionary<SteamID, SteamUser> users = new Dictionary<SteamID, SteamUser>();
+			foreach( var friend in response ) {
+				users.Add( friend.SteamID, new SteamUser {
+					SteamID = friend.SteamID,
+					FriendSince = friend.FriendSince,
+				} );
+			}
 
-			return VerifyAndDeserialize<SteamFriendsList>( ( await client.ExecuteAsync( request ) ) );
+			return new SteamFriendsList {
+				Friends = await GetBulkProfileDataAsync( client, users )
+			};
 
 		}
 		#endregion
@@ -212,6 +227,40 @@ namespace SteamSharp {
 
 		#region ISteamUserInterface interface
 		#region GetPlayerSummaries/GetUserSummaries (and overload GetUser)
+		/// <summary>
+		/// (Requires <see cref="SteamSharp.Authenticators.APIKeyAuthenticator"/> or <see cref="SteamSharp.Authenticators.UserAuthenticator"/>)
+		/// Updates the PlayerInfo property for a given dictionary of SteamUsers.
+		/// </summary>
+		/// <param name="client"><see cref="SteamClient"/> instance to use.</param>
+		/// <param name="users">Users to update the profile information for.</param>
+		/// <returns>Dictionary object containing the set of users with updated profile information.</returns>
+		public async static Task<Dictionary<SteamID, SteamUser>> GetBulkProfileDataAsync( SteamClient client, Dictionary<SteamID, SteamUser> users ) {
+
+			SteamID[] steamIDs = new SteamID[users.Count];
+			steamIDs = users.Keys.ToArray();
+
+			List<SteamUser> newUserData = new List<SteamUser>();
+
+			if( steamIDs.Length > 100 ) {
+				// GetUsers has an upper bound of 100 users per request, determine if aggregation is needed
+				SteamID[][] chunks = 
+					steamIDs.Select( ( v, i ) => new { Value = v, Index = i } )
+							.GroupBy( x => x.Index / 100 )
+							.Select( group => group.Select( x => x.Value ).ToArray() )
+							.ToArray();
+				for( int i = 0; i < chunks.Length; i++ )
+					newUserData.AddRange( await GetUsersAsync( client, chunks[i] ) );
+			}else
+				newUserData = await GetUsersAsync( client, steamIDs );
+
+			foreach( var newUser in newUserData ) {
+				users[newUser.SteamID].PlayerInfo = newUser.PlayerInfo;
+			}
+
+			return users;
+
+		}
+
 		/// <summary>
 		/// (Requires <see cref="SteamSharp.Authenticators.APIKeyAuthenticator"/> or <see cref="SteamSharp.Authenticators.UserAuthenticator"/>)
 		/// Returns basic profile information for a given 64-bit Steam ID.
@@ -312,15 +361,18 @@ namespace SteamSharp {
 				throw new SteamRequestException( "You can specify a maximum of 100 SteamIDs per call." );
 
 			SteamRequest request;
-			if( client.Authenticator is Authenticators.UserAuthenticator )
+			List<PlayerInfo> players;
+
+			if( client.Authenticator is Authenticators.UserAuthenticator ) {
 				// ISteamUserOAuth provides a higher level of access (with User Authentication), assuming a personal relationship with the target user
 				request = new SteamRequest( "ISteamUserOAuth", "GetUserSummaries", "v0001" );
-			else
+				request.AddParameter( "steamids", String.Join<SteamID>( ",", steamIDs ) );
+				players = VerifyAndDeserialize<GetPlayerSummariesContainer>( ( await client.ExecuteAsync( request ) ) ).Players;
+			} else {
 				request = new SteamRequest( "ISteamUser", "GetPlayerSummaries", "v0002" );
-
-			request.AddParameter( "steamids", String.Join<SteamID>( ",", steamIDs ) );
-
-			List<PlayerInfo> players = VerifyAndDeserialize<GetPlayerSummariesResponse>( ( await client.ExecuteAsync( request ) ) ).Response.Players;
+				request.AddParameter( "steamids", String.Join<SteamID>( ",", steamIDs ) );
+				players = VerifyAndDeserialize<GetPlayerSummariesResponse>( ( await client.ExecuteAsync( request ) ) ).Response.Players;
+			}
 
 			List<SteamUser> users = new List<SteamUser>();
 
@@ -335,8 +387,6 @@ namespace SteamSharp {
 
 		}
 		#endregion
-
-		
 		#endregion
 
 	}

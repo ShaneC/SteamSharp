@@ -174,52 +174,6 @@ namespace SteamSharp {
 		#endregion
 		#endregion
 
-		#region ISteamUserOAuth interface
-		/// <summary>
-		/// Specified user's Friend's List.
-		/// </summary>
-		public class SteamFriendsList {
-
-			/// <summary>
-			/// List of Friends for specified user.
-			/// </summary>
-			public List<SteamFriend> Friends { get; set; }
-
-			public int GetFriendCount() {
-				return ( ( Friends == null ) ? 0 : Friends.Count );
-			}
-
-		}
-
-		/// <summary>
-		/// Object representing a single Friend of the specified user.
-		/// Additional information can be pulled on the users by making a GetPlayerSummaries call with all SteamIDs contained in the List enumeration.
-		/// </summary>
-		public class SteamFriend {
-
-			/// <summary>
-			/// 64bit SteamID of the user.
-			/// </summary>
-			[JsonConverter( typeof( SteamInterfaceHelpers.SteamIDConverter ) )]
-			public SteamID SteamID { get; set; }
-
-			/// <summary>
-			/// Relationship filter for profile/friend's list filtering.
-			/// </summary>
-			[JsonProperty( "friend_since" )]
-			[JsonConverter( typeof( SteamInterfaceHelpers.UnixDateTimeConverter ) )]
-			public DateTime FriendSince { get; set; }
-
-			/// <summary>
-			/// DateTime of when the relationship was created.
-			/// </summary>
-			[JsonProperty( "relationship" )]
-			[JsonConverter( typeof( SteamInterfaceHelpers.RelationshipTypeConverter ) )]
-			public PlayerRelationshipType RelationshipType { get; set; }
-
-		}
-		#endregion
-
 		#region SteamUserInterface
 		#region GetPlayerSummaries
 		/// <summary>
@@ -372,7 +326,7 @@ namespace SteamSharp {
 			/// <summary>
 			/// Container for the SteamFriendsList object response.
 			/// </summary>
-			public SteamFriendsList FriendsList { get; set; }
+			public SteamFriendsListResponse FriendsList { get; set; }
 
 		}
 		#endregion

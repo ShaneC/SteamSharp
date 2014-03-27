@@ -5,6 +5,8 @@ namespace SteamSharp.FlowTests.Tests {
 
 	public class ChatFlow : ITestClass {
 
+		SteamChatClient chatClient = new SteamChatClient();
+
 		public bool Invoke() {
 
 			try {
@@ -14,12 +16,11 @@ namespace SteamSharp.FlowTests.Tests {
 				SteamClient client = new SteamClient();
 				client.Authenticator = UserAuthenticator.ForProtectedResource( AccessConstants.OAuthAccessToken );
 
-				SteamChatClient chatClient = new SteamChatClient();
-
 				chatClient.SteamChatConnected += chatClient_SteamChatConnected;
 				chatClient.SteamChatDisconnected += chatClient_SteamChatDisconnected;
 
 				chatClient.SteamChatMessagesReceived += chatClient_SteamChatMessagesReceived;
+				chatClient.SteamChatUserStateChange += chatClient_SteamChatUserStateChange;
 
 				chatClient.LogOn( client ).Wait();
 
@@ -34,19 +35,21 @@ namespace SteamSharp.FlowTests.Tests {
 
 		}
 
+		void chatClient_SteamChatUserStateChange( object sender, SteamChatClient.SteamChatUserStateChangeEventArgs e ) {
+			foreach( var notification in e.StateChanges ) {
+				if( notification.Type == ChatMessageType.PersonaStateChange )
+					WriteConsole.Information( notification.PersonaName + " is now " + Enum.GetName( typeof( PersonaState ), notification.PersonaState ) );
+			}
+		}
+
 		private void chatClient_SteamChatMessagesReceived( object sender, SteamChatClient.SteamChatMessagesReceivedEventArgs e ) {
-
 			foreach( var message in e.NewMessages ) {
-
 				switch( message.Type ) {
-					case ChatMessageType.Typing: WriteConsole.Information( message.PersonaName + " is typing..." ); break;
-					case ChatMessageType.MessageText: WriteConsole.Information( message.PersonaName + ": " + message.Text ); break;
-					case ChatMessageType.PersonaStateChange: WriteConsole.Information( message.PersonaName + " is now " + Enum.GetName( typeof( PersonaState ), message.PersonaState ) ); break;
+					case ChatMessageType.Typing: WriteConsole.Information( chatClient.FriendsList.Friends[message.FromUser].PlayerInfo.PersonaName + " is typing..." ); break;
+					case ChatMessageType.MessageText: WriteConsole.Information( chatClient.FriendsList.Friends[message.FromUser].PlayerInfo.PersonaName + ": " + message.Text ); break;
 					default: WriteConsole.Error( "Unknown message type detected!" ); break;
 				}
-
 			}
-
 		}
 
 		private void chatClient_SteamChatConnected( object sender, SteamSharp.SteamChatClient.SteamChatConnectionChangeEventArgs e ) {

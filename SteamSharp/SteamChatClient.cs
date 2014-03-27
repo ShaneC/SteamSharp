@@ -14,8 +14,22 @@ namespace SteamSharp {
 	public sealed partial class SteamChatClient : SteamClient {
 
 		public event EventHandler<SteamChatMessagesReceivedEventArgs> SteamChatMessagesReceived;
+		public event EventHandler<SteamChatUserStateChangeEventArgs> SteamChatUserStateChange;
 		public event EventHandler<SteamChatConnectionChangeEventArgs> SteamChatConnected;
 		public event EventHandler<SteamChatConnectionChangeEventArgs> SteamChatDisconnected;
+
+		/// <summary>
+		/// Maintains the list of users currently known to the Steam Chat Client. Not available until after the client has connected.
+		/// </summary>
+		public SteamFriendsList FriendsList {
+			get {
+				if( _friendsList == null )
+					throw new NullReferenceException( "Attempting to reference SteamFriendsList before it has loaded. Do not attempt a reference until after SteamChatConnected has been fired." );
+				return _friendsList;
+			}
+			private set { _friendsList = value; }
+		}
+		private SteamFriendsList _friendsList = null;
 
 		public ClientConnectionStatus ConnectionStatus {
 			get { return _connectionStatus; }
@@ -55,6 +69,9 @@ namespace SteamSharp {
 
 			Authenticator = client.Authenticator;
 
+			// Initialize Friends List
+			FriendsList = await SteamCommunity.GetFriendsListAsync( this, ChatSession.SteamID );
+			
 			BeginPoll();
 
 		}
@@ -90,23 +107,15 @@ namespace SteamSharp {
 
 							using( var response = await client.SendAsync( httpRequest, HttpCompletionOption.ResponseContentRead ).ConfigureAwait( false ) ) {
 
+								System.Diagnostics.Debug.WriteLine( await response.Content.ReadAsStringAsync() );
 								SteamChatPollResult result = SteamInterface.VerifyAndDeserialize<SteamChatPollResult>( ConvertToResponse( requestBase, response, null ) );
 
 								IndicateConnectionState( ClientConnectionStatus.Connected );
 
 								if( result.PollStatus == ChatPollStatus.OK ) {
-
 									LastMessageSentID = result.PollLastMessageSentID;
-									
-									if( result.Messages != null ) {
-										// New messages available for processing
-										result.Messages.Sort();
-										OnSteamChatMessagesReceived( new SteamChatMessagesReceivedEventArgs {
-											UTCServerChangeDateTime = result.UTCTimestamp,
-											NewMessages = result.Messages
-										} );
-									}
-
+									if( result.Messages != null )
+										ProcessMessagesReceived( result );
 								}
 
 								await Task.Delay( 1000, Cancellation.Token );
@@ -118,8 +127,7 @@ namespace SteamSharp {
 							return;
 						}catch( Exception e ) {
 							IndicateConnectionState( ClientConnectionStatus.Disconnected );
-							if( e is SteamRequestException || e is SteamAuthenticationException )
-								throw e;
+							throw e;
 						}
 
 					}
@@ -137,10 +145,21 @@ namespace SteamSharp {
 			Cancellation.Cancel();
 		}
 
+		/// <summary>
+		/// Informs the target user, via the Steam Service, that the current user is currently typing.
+		/// </summary>
+		/// <param name="destinationUser"></param>
+		/// <returns>Asynchronous task to be used for tracking request completion.</returns>
 		public async Task IndicateTyping( SteamID destinationUser ) {
 			await SendMessage( destinationUser, null );
 		}
 
+		/// <summary>
+		/// Sends a message, with text, to the target user.
+		/// </summary>
+		/// <param name="destinationUser">Targeted receipient for the message.</param>
+		/// <param name="text">Message to send.</param>
+		/// <returns>Asynchronous task to be used for tracking request completion.</returns>
 		public async Task SendMessage( SteamID destinationUser, string text ) {
 
 			SteamRequest request = new SteamRequest( "ISteamWebUserPresenceOAuth", "Message", "v0001", HttpMethod.Post );
@@ -172,12 +191,74 @@ namespace SteamSharp {
 
 		}
 
+		/// <summary>
+		/// Internal helper function to update local copy of the friends list.
+		/// </summary>
+		/// <param name="messages">Messages received from the Steam service.</param>
+		private async void ProcessMessagesReceived( SteamChatPollResult result ) {
+
+			result.Messages.Sort();
+
+			List<SteamChatMessage> messages = new List<SteamChatMessage>();
+			List<SteamChatRelationshipNotification> notifications = new List<SteamChatRelationshipNotification>();
+
+			foreach( var message in result.Messages ) {
+
+				if( message.Type == ChatMessageType.MessageText || message.Type == ChatMessageType.Typing ) {
+					messages.Add( SteamChatMessage.CreateFromPollMessage( message ) );
+				} else if( message.Type == ChatMessageType.PersonaStateChange || message.Type == ChatMessageType.PersonaRelationship ) {
+
+					notifications.Add( SteamChatRelationshipNotification.CreateFromPollMessage( message ) );
+
+					if( FriendsList.Friends.ContainsKey( message.FromUser ) ) {
+						FriendsList.Friends[message.FromUser].PlayerInfo.PersonaState = message.PersonaState;
+						FriendsList.Friends[message.FromUser].PlayerInfo.PersonaName = message.PersonaName;
+						if( message.PersonaState == PersonaState.Offline )
+							FriendsList.Friends[message.FromUser].PlayerInfo.LastLogOff = message.UTCMessageDateTime;
+					} else {
+						var newUser = new SteamUser {
+							SteamID = message.FromUser,
+							PlayerInfo = new SteamCommunity.PlayerInfo {
+								PersonaName = message.PersonaName,
+								PersonaState = message.PersonaState
+							}
+						};
+						await newUser.GetProfileDataAsync( this );
+						FriendsList.Friends.Add( message.FromUser, newUser );
+					}
+
+				}
+
+			}
+
+			if( messages.Count > 0 ) {
+				OnSteamChatMessagesReceived( new SteamChatMessagesReceivedEventArgs {
+					UTCServerChangeDateTime = result.UTCTimestamp,
+					NewMessages = messages
+				} );
+			}
+
+			if( notifications.Count > 0 ) {
+				OnSteamChatUserStateChange( new SteamChatUserStateChangeEventArgs {
+					UTCServerChangeDateTime = result.UTCTimestamp,
+					StateChanges = notifications
+				} );
+			}
+
+		}
+
 		private void OnSteamChatClientConnectionChange( SteamChatConnectionChangeEventArgs e ) {
 			EventHandler<SteamChatConnectionChangeEventArgs> handler;
 			if( e.NewConnectionState == ClientConnectionStatus.Connected )
 				handler = SteamChatConnected;
 			else
 				handler = SteamChatDisconnected;
+			if( handler != null )
+				handler( this, e );
+		}
+
+		private void OnSteamChatUserStateChange( SteamChatUserStateChangeEventArgs e ) {
+			EventHandler<SteamChatUserStateChangeEventArgs> handler = SteamChatUserStateChange;
 			if( handler != null )
 				handler( this, e );
 		}
@@ -219,9 +300,23 @@ namespace SteamSharp {
 			public DateTime UTCServerChangeDateTime { get; set; }
 
 			/// <summary>
-			/// Sorted list of the <see cref="SteamChat.SteamChatMessage"/> objects which have been received since the last event. Sort order is Old to New (MessageDateTime ASC).
+			/// Sorted list of the <see cref="SteamChat.SteamPollMessage"/> objects which have been received since the last event. Sort order is Old to New (MessageDateTime ASC).
 			/// </summary>
-			public List<SteamSharp.SteamChat.SteamChatMessage> NewMessages { get; set; }
+			public List<SteamChatMessage> NewMessages { get; set; }
+
+		}
+
+		public class SteamChatUserStateChangeEventArgs : EventArgs {
+
+			/// <summary>
+			/// UTC DateTime from the Steam API indicating when the poll was updated.
+			/// </summary>
+			public DateTime UTCServerChangeDateTime { get; set; }
+
+			/// <summary>
+			/// Sorted list of the <see cref="SteamChat.SteamPollMessage"/> objects which have been received since the last event. Sort order is Old to New (MessageDateTime ASC).
+			/// </summary>
+			public List<SteamChatRelationshipNotification> StateChanges { get; set; }
 
 		}
 
