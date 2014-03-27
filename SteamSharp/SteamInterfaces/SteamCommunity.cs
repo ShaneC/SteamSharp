@@ -239,23 +239,10 @@ namespace SteamSharp {
 			SteamID[] steamIDs = new SteamID[users.Count];
 			steamIDs = users.Keys.ToArray();
 
-			List<SteamUser> newUserData = new List<SteamUser>();
+			List<SteamUser> newUserData = await GetUsersAsync( client, steamIDs );
 
-			if( steamIDs.Length > 100 ) {
-				// GetUsers has an upper bound of 100 users per request, determine if aggregation is needed
-				SteamID[][] chunks = 
-					steamIDs.Select( ( v, i ) => new { Value = v, Index = i } )
-							.GroupBy( x => x.Index / 100 )
-							.Select( group => group.Select( x => x.Value ).ToArray() )
-							.ToArray();
-				for( int i = 0; i < chunks.Length; i++ )
-					newUserData.AddRange( await GetUsersAsync( client, chunks[i] ) );
-			}else
-				newUserData = await GetUsersAsync( client, steamIDs );
-
-			foreach( var newUser in newUserData ) {
+			foreach( var newUser in newUserData ) 
 				users[newUser.SteamID].PlayerInfo = newUser.PlayerInfo;
-			}
 
 			return users;
 
@@ -345,7 +332,7 @@ namespace SteamSharp {
 		/// Throws <see cref="SteamRequestException"/> on failure.
 		/// </summary>
 		/// <param name="client"><see cref="SteamClient"/> instance to use.</param>
-		/// <param name="steamIDs">List of 64 bit Steam IDs to return profile information for. Up to 100 Steam IDs can be requested.</param>
+		/// <param name="steamIDs">List of 64 bit Steam IDs to return profile information for. If more than 100 is requested, requests will be executed in batches (API limit of 100 per call).</param>
 		/// <returns>
 		///	Returns a large amount of profile data for the requested users in the form of a <see cref="Player"/> object. 
 		/// Some data associated with a Steam account may be hidden if the user has their profile visibility set to "Friends Only" or "Private". In that case, only public data will be returned.
@@ -357,30 +344,37 @@ namespace SteamSharp {
 				typeof( Authenticators.APIKeyAuthenticator )
 			} );
 
-			if( steamIDs.Length > 100 )
-				throw new SteamRequestException( "You can specify a maximum of 100 SteamIDs per call." );
+			// GetUsers has an upper bound of 100 users per request, determine if aggregation is needed
+			SteamID[][] chunks =
+				steamIDs.Select( ( v, i ) => new { Value = v, Index = i } )
+						.GroupBy( x => x.Index / 100 )
+						.Select( group => group.Select( x => x.Value ).ToArray() )
+						.ToArray();
 
+			List<SteamUser> users = new List<SteamUser>();
 			SteamRequest request;
 			List<PlayerInfo> players;
 
-			if( client.Authenticator is Authenticators.UserAuthenticator ) {
-				// ISteamUserOAuth provides a higher level of access (with User Authentication), assuming a personal relationship with the target user
-				request = new SteamRequest( "ISteamUserOAuth", "GetUserSummaries", "v0001" );
-				request.AddParameter( "steamids", String.Join<SteamID>( ",", steamIDs ) );
-				players = VerifyAndDeserialize<GetPlayerSummariesContainer>( ( await client.ExecuteAsync( request ) ) ).Players;
-			} else {
-				request = new SteamRequest( "ISteamUser", "GetPlayerSummaries", "v0002" );
-				request.AddParameter( "steamids", String.Join<SteamID>( ",", steamIDs ) );
-				players = VerifyAndDeserialize<GetPlayerSummariesResponse>( ( await client.ExecuteAsync( request ) ) ).Response.Players;
-			}
+			for( int i = 0; i < chunks.Length; i++ ) {
 
-			List<SteamUser> users = new List<SteamUser>();
+				if( client.Authenticator is Authenticators.UserAuthenticator ) {
+					// ISteamUserOAuth provides a higher level of access (with User Authentication), assuming a personal relationship with the target user
+					request = new SteamRequest( "ISteamUserOAuth", "GetUserSummaries", "v0001" );
+					request.AddParameter( "steamids", String.Join<SteamID>( ",", steamIDs ) );
+					players = VerifyAndDeserialize<GetPlayerSummariesContainer>( ( await client.ExecuteAsync( request ) ) ).Players;
+				} else {
+					request = new SteamRequest( "ISteamUser", "GetPlayerSummaries", "v0002" );
+					request.AddParameter( "steamids", String.Join<SteamID>( ",", steamIDs ) );
+					players = VerifyAndDeserialize<GetPlayerSummariesResponse>( ( await client.ExecuteAsync( request ) ) ).Response.Players;
+				}
 
-			foreach( var player in players ) {
-				users.Add( new SteamUser {
-					SteamID = player.SteamID,
-					PlayerInfo = player
-				} );
+				foreach( var player in players ) {
+					users.Add( new SteamUser {
+						SteamID = player.SteamID,
+						PlayerInfo = player
+					} );
+				}
+
 			}
 
 			return users;
