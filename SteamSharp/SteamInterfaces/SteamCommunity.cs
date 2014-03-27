@@ -261,7 +261,7 @@ namespace SteamSharp {
 		/// </returns>
 		public static SteamUser GetUser( SteamClient client, SteamID steamID ) {
 			try {
-				return GetUserAsync( client, steamID ).Result;
+				return GetUsersAsync( client, new SteamID[] { steamID } ).Result.FirstOrDefault();
 			} catch( AggregateException e ) {
 				if( e.InnerException != null )
 					throw e.InnerException;
@@ -302,28 +302,7 @@ namespace SteamSharp {
 		/// Some data associated with a Steam account may be hidden if the user has their profile visibility set to "Friends Only" or "Private". In that case, only public data will be returned.
 		/// </returns>
 		public async static Task<SteamUser> GetUserAsync( SteamClient client, SteamID steamID ) {
-
-			client.IsAuthorizedCall( new Type[] {
-				typeof( Authenticators.UserAuthenticator ),
-				typeof( Authenticators.APIKeyAuthenticator )
-			} );
-
-			SteamRequest request;
-			if( client.Authenticator is Authenticators.UserAuthenticator )
-				// ISteamUserOAuth provides a higher level of access (with User Authentication), assuming a personal relationship with the target user
-				request = new SteamRequest( "ISteamUserOAuth", "GetUserSummaries", "v0001" );
-			else
-				request = new SteamRequest( "ISteamUser", "GetPlayerSummaries", "v0002" );
-
-			request.AddParameter( "steamids", steamID.ToString() );
-
-			PlayerInfo player = VerifyAndDeserialize<GetPlayerSummariesResponse>( ( await client.ExecuteAsync( request ) ) ).Response.Players.FirstOrDefault();
-			
-			return new SteamUser() {
-				SteamID = player.SteamID,
-				PlayerInfo = player
-			};
-
+			return ( await GetUsersAsync( client, new SteamID[] { steamID } ) ).FirstOrDefault();
 		}
 
 		/// <summary>
