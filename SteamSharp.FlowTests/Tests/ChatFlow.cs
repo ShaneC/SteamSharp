@@ -25,7 +25,10 @@ namespace SteamSharp.FlowTests.Tests {
 				chatClient.LogOn( client ).Wait();
 
 				while( true ) {
-					chatClient.SendMessage( targetUser, WriteConsole.Prompt( "Type New Message: " ) );
+					switch( WriteConsole.Prompt( "Command (msg, status): " ) ) {
+						case "msg": chatClient.SendMessage( targetUser, WriteConsole.Prompt( "Type New Message: " ) ); break;
+						case "dcn": chatClient.Disconnect(); break; 
+					}
 				}
 				
 			} catch( Exception e ) {

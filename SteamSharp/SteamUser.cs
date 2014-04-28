@@ -70,8 +70,7 @@ namespace SteamSharp {
 		/// </summary>
 		/// <param name="client">SteamClient for use in executing the request.</param>
 		public async Task GetProfileDataAsync( SteamClient client ) {
-			var freshUser = await SteamCommunity.GetUserAsync( client, this.SteamID );
-			this.PlayerInfo = freshUser.PlayerInfo;
+			this.PlayerInfo = ( await SteamCommunity.GetUserAsync( client, this.SteamID ) ).PlayerInfo;
 		}
 
 		/// <summary>

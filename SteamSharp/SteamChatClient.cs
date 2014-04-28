@@ -46,28 +46,37 @@ namespace SteamSharp {
 		/// <summary>
 		/// (Async) (Requires <see cref="SteamSharp.Authenticators.UserAuthenticator"/>)
 		/// Logs the SteamChatClient on to the Steam Chat Service under the context of the authenticated user (UserAuthenticator attached to the targeted SteamClient).
-		/// Throws <see cref="SteamRequestException"/> or <see cref="SteamAuthenticationException"/> on failure.
 		/// </summary>
 		/// <param name="client"><see cref="SteamClient"/> instance to use.</param>
 		/// <returns>
 		///	Logs the SteamClient authenticated user on to the Steam Chat Service.
 		/// </returns>
+		/// <exception cref="SteamRequestException">SteamRequestException</exception>
+		/// <exception cref="SteamAuthenticationException">SteamAuthenticationException</exception>
 		public async Task LogOn( SteamClient client ) {
 
-			client.IsAuthorizedCall( new Type[] {
-				typeof( Authenticators.UserAuthenticator )
-			} );
+			try { 
 
-			SteamRequest request = new SteamRequest( "ISteamWebUserPresenceOAuth", "Logon", "v0001", HttpMethod.Post );
-			ChatSession = SteamInterface.VerifyAndDeserialize<SteamChatSession>( ( await client.ExecuteAsync( request ) ) );
-			LastMessageSentID = ChatSession.MessageBaseID;
+				client.IsAuthorizedCall( new Type[] {
+					typeof( Authenticators.UserAuthenticator )
+				} );
 
-			Authenticator = client.Authenticator;
+				SteamRequest request = new SteamRequest( "ISteamWebUserPresenceOAuth", "Logon", "v0001", HttpMethod.Post );
+				ChatSession = SteamInterface.VerifyAndDeserialize<SteamChatSession>( ( await client.ExecuteAsync( request ) ) );
+				LastMessageSentID = ChatSession.MessageBaseID;
 
-			// Initialize Friends List
-			FriendsList = await SteamCommunity.GetFriendsListAsync( this, ChatSession.SteamID );
+				Authenticator = client.Authenticator;
+
+				// Initialize Friends List
+				FriendsList = await SteamCommunity.GetFriendsListAsync( this, ChatSession.SteamID );
 			
-			BeginPoll();
+				BeginPoll();
+
+			} catch( Exception e ) {
+				if( e is AggregateException && e.InnerException != null )
+					throw e.InnerException;
+				throw e;
+			}
 
 		}
 
@@ -86,48 +95,57 @@ namespace SteamSharp {
 				Authenticator.Authenticate( this, requestBase );
 			}
 
-			using( var client = new HttpClient() ) {
+			try {
 
-				Cancellation.Token.Register( () => client.CancelPendingRequests() );
+				using( var client = new HttpClient() ) {
 
-				while( true ) {
+					Cancellation.Token.Register( () => client.CancelPendingRequests() );
+					client.Timeout = TimeSpan.FromSeconds( 25 );
 
-					requestBase.AddParameter( "message", LastMessageSentID, ParameterType.GetOrPost );
+					while( true ) {
 
-					using( var httpRequest = BuildHttpRequest( requestBase ) ) {
+						requestBase.AddParameter( "message", LastMessageSentID, ParameterType.GetOrPost );
 
-						httpRequest.Headers.Add( "Connection", "Keep-Alive" );
+						using( var httpRequest = BuildHttpRequest( requestBase ) ) {
 
-						try {
+							httpRequest.Headers.Add( "Connection", "Keep-Alive" );
 
-							using( var response = await client.SendAsync( httpRequest, HttpCompletionOption.ResponseContentRead ).ConfigureAwait( false ) ) {
+							try {
 
-								SteamChatPollResult result = SteamInterface.VerifyAndDeserialize<SteamChatPollResult>( ConvertToResponse( requestBase, response, null ) );
+								using( var response = await client.SendAsync( httpRequest, HttpCompletionOption.ResponseContentRead ).ConfigureAwait( false ) ) {
 
-								IndicateConnectionState( ClientConnectionStatus.Connected );
+									SteamChatPollResult result = SteamInterface.VerifyAndDeserialize<SteamChatPollResult>( ConvertToResponse( requestBase, response, null ) );
+									System.Diagnostics.Debug.WriteLine( await response.Content.ReadAsStringAsync() );
 
-								if( result.PollStatus == ChatPollStatus.OK ) {
-									LastMessageSentID = result.PollLastMessageSentID;
-									if( result.Messages != null )
-										ProcessMessagesReceived( result );
+									IndicateConnectionState( ClientConnectionStatus.Connected );
+
+									if( result.PollStatus == ChatPollStatus.OK ) {
+										LastMessageSentID = result.PollLastMessageSentID;
+										if( result.Messages != null )
+											ProcessMessagesReceived( result );
+									}
+
+									await Task.Delay( 1000, Cancellation.Token );
+
 								}
 
-								await Task.Delay( 1000, Cancellation.Token );
-
+							} catch( Exception e ) {
+								IndicateConnectionState( ClientConnectionStatus.Disconnected );
+								throw e;
 							}
 
-						}catch( OperationCanceledException ) {
-							IndicateConnectionState( ClientConnectionStatus.Disconnected );
-							return;
-						}catch( Exception e ) {
-							IndicateConnectionState( ClientConnectionStatus.Disconnected );
-							throw e;
 						}
 
 					}
 
 				}
 
+			} catch( Exception e ) {
+				IndicateConnectionState( ClientConnectionStatus.Disconnected );
+				if( e is OperationCanceledException || e is TaskCanceledException )
+					return;
+				System.Diagnostics.Debug.WriteLine( "Encountered Unexpected Exception: " + e.StackTrace );
+				return;
 			}
 
 		}
@@ -135,8 +153,14 @@ namespace SteamSharp {
 		/// <summary>
 		/// Stops polling and disconnects the client from the Steam server.
 		/// </summary>
-		public void Disconnect() {
+		public async Task Disconnect() {
+
 			Cancellation.Cancel();
+			SteamRequest request = new SteamRequest( "ISteamWebUserPresenceOAuth", "Logoff", "v0001", HttpMethod.Post );
+			request.AddParameter( "umqid", ChatSession.ChatSessionID, ParameterType.GetOrPost );
+
+			await ExecuteAsync( request );
+			
 		}
 
 		/// <summary>
@@ -198,7 +222,7 @@ namespace SteamSharp {
 
 			foreach( var message in result.Messages ) {
 
-				if( message.Type == ChatMessageType.MessageText || message.Type == ChatMessageType.Typing ) {
+				if( message.Type == ChatMessageType.MessageText || message.Type == ChatMessageType.Typing || message.Type == ChatMessageType.LeftConversation ) {
 					messages.Add( SteamChatMessage.CreateFromPollMessage( message ) );
 				} else if( message.Type == ChatMessageType.PersonaStateChange || message.Type == ChatMessageType.PersonaRelationship ) {
 

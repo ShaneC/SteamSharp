@@ -344,7 +344,11 @@ namespace SteamSharp {
 		/// <summary>
 		/// Message type indicating the current state of various users in various relationship states with the user.
 		/// </summary>
-		PersonaRelationship = 3
+		PersonaRelationship = 3,
+		/// <summary>
+		/// The FromUser has left the active conversation.
+		/// </summary>
+		LeftConversation = 4
 	}
 
 	/// <summary>

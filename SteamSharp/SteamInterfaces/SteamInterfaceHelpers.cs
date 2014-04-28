@@ -113,6 +113,7 @@ namespace SteamSharp {
 					case ChatMessageType.PersonaRelationship: writer.WriteValue( "personarelationship" ); break;
 					case ChatMessageType.PersonaStateChange: writer.WriteValue( "personastate" ); break;
 					case ChatMessageType.Typing: writer.WriteValue( "typing" ); break;
+					case ChatMessageType.LeftConversation: writer.WriteValue( "leftconversation" ); break;
 					default: writer.WriteValue( "unknown" ); break;
 				}
 			}
@@ -133,6 +134,7 @@ namespace SteamSharp {
 					case "personarelationship": return ChatMessageType.PersonaRelationship;
 					case "saytext": return ChatMessageType.MessageText;
 					case "typing": return ChatMessageType.Typing;
+					case "leftconversation": return ChatMessageType.LeftConversation;
 					default: return ChatMessageType.Unknown;
 				}
 			}
