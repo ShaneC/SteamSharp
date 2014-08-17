@@ -90,6 +90,10 @@ namespace SteamSharp {
 			Response = response;
 			StatusCode = response.StatusCode;
 
+			this.Data.Add( "HttpErrorMessage", Response.ErrorMessage );
+			this.Data.Add( "HttpStatusDescription", Response.StatusDescription );
+			this.Data.Add( "HttpStatusCode", StatusCode );
+
 			if( !response.IsSuccessful ) {
 
 				RequestErrorMessage = response.ErrorMessage;
