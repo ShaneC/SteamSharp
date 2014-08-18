@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
+//using Windows.Web.Http;
 
 namespace SteamSharp {
 	
@@ -108,8 +109,6 @@ namespace SteamSharp {
 
 						using( var httpRequest = BuildHttpRequest( requestBase ) ) {
 
-							httpRequest.Headers.Add( "Connection", "Keep-Alive" );
-
 							try {
 
 								using( var response = await client.SendAsync( httpRequest, HttpCompletionOption.ResponseContentRead ).ConfigureAwait( false ) ) {
@@ -145,7 +144,7 @@ namespace SteamSharp {
 				if( e is OperationCanceledException || e is TaskCanceledException )
 					return;
 				System.Diagnostics.Debug.WriteLine( "Encountered Unexpected Exception: " + e.StackTrace );
-				return;
+				throw e;
 			}
 
 		}
