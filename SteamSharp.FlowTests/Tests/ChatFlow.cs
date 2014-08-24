@@ -16,8 +16,7 @@ namespace SteamSharp.FlowTests.Tests {
 				SteamClient client = new SteamClient();
 				client.Authenticator = UserAuthenticator.ForProtectedResource( AccessConstants.OAuthAccessToken );
 
-				chatClient.SteamChatConnected += chatClient_SteamChatConnected;
-				chatClient.SteamChatDisconnected += chatClient_SteamChatDisconnected;
+				chatClient.SteamChatConnectionChanged += chatClient_SteamChatConnected;
 
 				chatClient.SteamChatMessagesReceived += chatClient_SteamChatMessagesReceived;
 				chatClient.SteamChatUserStateChange += chatClient_SteamChatUserStateChange;
@@ -56,11 +55,11 @@ namespace SteamSharp.FlowTests.Tests {
 		}
 
 		private void chatClient_SteamChatConnected( object sender, SteamSharp.SteamChatClient.SteamChatConnectionChangeEventArgs e ) {
-			WriteConsole.Success( "-- STEAM CLIENT CONNECTED --" );
-		}
-
-		private void chatClient_SteamChatDisconnected( object sender, SteamChatClient.SteamChatConnectionChangeEventArgs e ) {
-			WriteConsole.Success( "-- STEAM CLIENT DISCONNECTED --" );
+			switch( e.NewConnectionState ) {
+				case ClientConnectionStatus.Connected: WriteConsole.Success( "-- STEAM CLIENT CONNECTED --" ); break;
+				case ClientConnectionStatus.Disconnected: WriteConsole.Success( "-- STEAM CLIENT DISCONNECTED --" ); break;
+				case ClientConnectionStatus.Connecting: WriteConsole.Success( "-- STEAM CLIENT CONNECTING --" ); break;
+			}
 		}
 
 	}

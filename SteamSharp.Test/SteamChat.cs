@@ -16,8 +16,7 @@ namespace SteamSharp.Test {
 
 			SteamChatClient chatClient = new SteamChatClient();
 
-			chatClient.SteamChatConnected += chatClient_SteamChatConnected;
-			chatClient.SteamChatDisconnected += chatClient_SteamChatDisconnected;
+			chatClient.SteamChatConnectionChanged += chatClient_SteamChatConnected;
 
 			chatClient.SteamChatMessagesReceived += chatClient_SteamChatMessagesReceived;
 
@@ -30,11 +29,11 @@ namespace SteamSharp.Test {
 		}
 
 		private void chatClient_SteamChatConnected( object sender, SteamSharp.SteamChatClient.SteamChatConnectionChangeEventArgs e ) {
-			Debug.WriteLine( "-- STEAM CLIENT CONNECTED --" );
-		}
-
-		private void chatClient_SteamChatDisconnected( object sender, SteamChatClient.SteamChatConnectionChangeEventArgs e ) {
-			Debug.WriteLine( "-- STEAM CLIENT DISCONNECTED --" );
+			switch( e.NewConnectionState ) {
+				case ClientConnectionStatus.Connected: Debug.WriteLine( "-- STEAM CLIENT CONNECTED --" ); break;
+				case ClientConnectionStatus.Disconnected: Debug.WriteLine( "-- STEAM CLIENT DISCONNECTED --" ); break;
+				case ClientConnectionStatus.Connecting: Debug.WriteLine( "-- STEAM CLIENT CONNECTING --" ); break;
+			}
 		}
 
 	}

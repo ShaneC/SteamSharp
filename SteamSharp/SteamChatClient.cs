@@ -11,8 +11,7 @@ namespace SteamSharp {
 
 		public event EventHandler<SteamChatMessagesReceivedEventArgs> SteamChatMessagesReceived;
 		public event EventHandler<SteamChatUserStateChangeEventArgs> SteamChatUserStateChange;
-		public event EventHandler<SteamChatConnectionChangeEventArgs> SteamChatConnected;
-		public event EventHandler<SteamChatConnectionChangeEventArgs> SteamChatDisconnected;
+		public event EventHandler<SteamChatConnectionChangeEventArgs> SteamChatConnectionChanged;
 
 		/// <summary>
 		/// Maintains the list of users currently known to the Steam Chat Client. Not available until after the client has connected.
@@ -31,7 +30,7 @@ namespace SteamSharp {
 			get { return _connectionStatus; }
 			set { _connectionStatus = value; }
 		}
-		private ClientConnectionStatus _connectionStatus = ClientConnectionStatus.Connecting;
+		private ClientConnectionStatus _connectionStatus = ClientConnectionStatus.Disconnected;
 
 		private SteamChatSession ChatSession;
 
@@ -39,9 +38,28 @@ namespace SteamSharp {
 
 		private CancellationTokenSource Cancellation = new CancellationTokenSource();
 
+		public SteamClient SteamClient { get; set; }
+
+		public SteamChatClient( SteamClient client ) {
+			this.SteamChatConnectionChanged += SteamChatConnectionChangeHandler;
+			SteamClient = client;
+		}
+
 		public SteamChatClient() {
-			this.SteamChatConnected += SteamChatConnectionChangeHandler;
-			this.SteamChatDisconnected += SteamChatConnectionChangeHandler;
+			this.SteamChatConnectionChanged += SteamChatConnectionChangeHandler;
+		}
+
+		/// <summary>
+		/// (Async) (Requires <see cref="SteamSharp.Authenticators.UserAuthenticator"/>)
+		/// Logs the SteamChatClient on to the Steam Chat Service under the context of the authenticated user (UserAuthenticator attached to the targeted SteamClient).
+		/// </summary>
+		/// <returns>
+		///	Logs the SteamClient authenticated user on to the Steam Chat Service.
+		/// </returns>
+		/// <exception cref="SteamRequestException">SteamRequestException</exception>
+		/// <exception cref="SteamAuthenticationException">SteamAuthenticationException</exception>
+		public async Task LogOn() {
+			await LogOn( SteamClient );
 		}
 
 		/// <summary>
@@ -129,7 +147,7 @@ namespace SteamSharp {
 								}
 
 							} catch( Exception e ) {
-								IndicateConnectionState( ClientConnectionStatus.Disconnected );
+								System.Diagnostics.Debug.WriteLine( e.ToString() );
 								throw e;
 							}
 
@@ -140,9 +158,13 @@ namespace SteamSharp {
 				}
 
 			} catch( Exception e ) {
+				System.Diagnostics.Debug.WriteLine( e.ToString() );
 				IndicateConnectionState( ClientConnectionStatus.Disconnected );
-				if( e is OperationCanceledException || e is TaskCanceledException )
+				if( e is OperationCanceledException || e is TaskCanceledException ) {
+					Cancellation.Dispose();
+					Cancellation = new CancellationTokenSource();
 					return;
+				}
 				System.Diagnostics.Debug.WriteLine( "Encountered Unexpected Exception: " + e.StackTrace );
 				throw e;
 			}
@@ -266,10 +288,7 @@ namespace SteamSharp {
 
 		private void OnSteamChatClientConnectionChange( SteamChatConnectionChangeEventArgs e ) {
 			EventHandler<SteamChatConnectionChangeEventArgs> handler;
-			if( e.NewConnectionState == ClientConnectionStatus.Connected )
-				handler = SteamChatConnected;
-			else
-				handler = SteamChatDisconnected;
+			handler = SteamChatConnectionChanged;
 			if( handler != null )
 				handler( this, e );
 		}
