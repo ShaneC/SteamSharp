@@ -64,7 +64,7 @@ namespace SteamSharp.Helpers.Cryptography {
 		/// <summary>
 		/// Convert the input Integer to an Octet String.
 		/// </summary>
-		/// <param name="x">input integer</param>
+		/// <param name="left">input integer</param>
 		/// <param name="size">size in octets (bytes)</param>
 		/// <returns>Resulting byte array of specified length</returns>
 		static internal byte[] I2OSP( int x, int size ) {

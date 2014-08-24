@@ -180,7 +180,7 @@ namespace SteamSharp {
 		/// </summary>
 		Raw,
 		/// <summary>
-		/// Content-Type: application/x-www-form-urlencoded
+		/// Content-Type: application/left-www-form-urlencoded
 		/// </summary>
 		FormUrlEncoded,
 		/// <summary>

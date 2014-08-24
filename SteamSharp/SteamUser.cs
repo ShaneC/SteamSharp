@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
 
@@ -45,6 +46,11 @@ namespace SteamSharp {
 		public DateTime FriendSince { get; set; }
 
 		/// <summary>
+		/// Only available in FriendsList property of a Connected SteamChatClient. Messages between the authenticated user and this SteamUser.
+		/// </summary>
+		public List<SteamChatMessage> MessagesWithUser { get; set; }
+
+		/// <summary>
 		/// Returns true if the user object is capable of UserAuthentication to OAuth APIs. False otherwise.
 		/// </summary>
 		/// <returns></returns>
@@ -82,6 +88,66 @@ namespace SteamSharp {
 			if( target == null )
 				return 1;
 			return this.PlayerInfo.PersonaName.CompareTo( target.PlayerInfo.PersonaName );
+		}
+
+		/// <summary>
+		/// Method for use in IList.Sort() operations to sort a list of SteamUsers by their PersonaState.
+		/// Users will be sorted by Available, Busy, Away, Offline. If the PersonaState is the same, users are sorted by PersonaName alphabetical.
+		/// </summary>
+		public static int PersonaSortComparer( SteamUser left, SteamUser right ) {
+
+			Func<PersonaState, PersonaState> NormalizePersona = delegate( PersonaState state ) {
+				if( state == PersonaState.LookingToPlay || state == PersonaState.LookingToTrade )
+					return PersonaState.Online;
+				if( state == PersonaState.Snooze )
+					return PersonaState.Away;
+				return state;
+			};
+
+			var leftState = NormalizePersona( left.PlayerInfo.PersonaState );
+			var rightState = NormalizePersona( right.PlayerInfo.PersonaState );
+
+			// If the PersonaState is identical, sort by most recent message (if available), then alphabetically
+			if( leftState == rightState ) {
+
+				if( left.MessagesWithUser != null && left.MessagesWithUser != null ) {
+
+					// Recent Messages are available
+					var leftRecentMessage = left.MessagesWithUser[left.MessagesWithUser.Count - 1];
+					var rightRecentMessage = right.MessagesWithUser[left.MessagesWithUser.Count - 1];
+
+					if( leftRecentMessage != null && rightRecentMessage == null )
+						return -1;
+					else if( leftRecentMessage == null && rightRecentMessage != null )
+						return 1;
+
+					var timeCompare = leftRecentMessage.UTCMessageDateTime.CompareTo( rightRecentMessage.UTCMessageDateTime );
+					if( timeCompare != 0 )
+						return timeCompare;
+
+				}
+
+				return left.PlayerInfo.PersonaName.CompareTo( right.PlayerInfo.PersonaName );
+
+			}
+
+			if( leftState == PersonaState.Online )
+				return -1;
+			else if( rightState == PersonaState.Online )
+				return 1;
+
+			if( leftState == PersonaState.Busy )
+				return -1;
+			else if( rightState == PersonaState.Busy )
+				return 1;
+
+			if( leftState == PersonaState.Away )
+				return -1;
+			else if( rightState == PersonaState.Away )
+				return 1;
+
+			return 1;
+
 		}
 
 	}

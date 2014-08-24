@@ -1628,7 +1628,7 @@ namespace SteamSharp.Helpers {
 
 		//***********************************************************************
 		// Fast calculation of modular reduction using Barrett's reduction.
-		// Requires x < b^(2k), where b is the base.  In this case, base is
+		// Requires left < b^(2k), where b is the base.  In this case, base is
 		// 2^32 (uint).
 		//
 		// Reference [4]
@@ -1642,7 +1642,7 @@ namespace SteamSharp.Helpers {
 
 			BigInteger q1 = new BigInteger();
 
-			// q1 = x / b^(k-1)
+			// q1 = left / b^(k-1)
 			for (int i = kMinusOne, j = 0; i < x.dataLength; i++, j++)
 				q1.data[j] = x.data[i];
 			q1.dataLength = x.dataLength - kMinusOne;
@@ -1661,7 +1661,7 @@ namespace SteamSharp.Helpers {
 				q3.dataLength = 1;
 
 
-			// r1 = x mod b^(k+1)
+			// r1 = left mod b^(k+1)
 			// i.e. keep the lowest (k+1) words
 			BigInteger r1 = new BigInteger();
 			int lengthToCopy = (x.dataLength > kPlusOne) ? kPlusOne : x.dataLength;
