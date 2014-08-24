@@ -247,6 +247,10 @@ namespace SteamSharp {
 					messages.Add( SteamChatMessage.CreateFromPollMessage( message ) );
 				} else if( message.Type == ChatMessageType.PersonaStateChange || message.Type == ChatMessageType.PersonaRelationship ) {
 
+					// Filter out notifications about the currently authenticated user
+					if( message.FromUser.Equals( ChatSession.SteamID ) )
+						continue;
+
 					notifications.Add( SteamChatRelationshipNotification.CreateFromPollMessage( message ) );
 
 					if( FriendsList.Friends.ContainsKey( message.FromUser ) ) {
