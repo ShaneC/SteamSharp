@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
@@ -18,8 +19,6 @@ namespace SteamSharp {
 		/// </summary>
 		public SteamFriendsList FriendsList {
 			get {
-				if( _friendsList == null )
-					throw new NullReferenceException( "Attempting to reference SteamFriendsList before it has loaded. Do not attempt a reference until after SteamChatConnected has been fired." );
 				return _friendsList;
 			}
 			private set { _friendsList = value; }
@@ -37,6 +36,8 @@ namespace SteamSharp {
 		private long LastMessageSentID = 0;
 
 		private CancellationTokenSource Cancellation = new CancellationTokenSource();
+
+		private bool IsManualDisconnection = false;
 
 		public SteamClient SteamClient { get; set; }
 
@@ -73,6 +74,8 @@ namespace SteamSharp {
 		/// <exception cref="SteamRequestException">SteamRequestException</exception>
 		/// <exception cref="SteamAuthenticationException">SteamAuthenticationException</exception>
 		public async Task LogOn( SteamClient client ) {
+
+			IsManualDisconnection = false;
 
 			try { 
 
@@ -164,6 +167,16 @@ namespace SteamSharp {
 					Cancellation.Dispose();
 					Cancellation = new CancellationTokenSource();
 					return;
+				} else if( e is SteamRequestException ) {
+					if( ( e as SteamRequestException ).StatusCode == HttpStatusCode.NotFound ) {
+						// Network Problem
+						return;
+					}else if( ( e as SteamRequestException ).StatusCode == HttpStatusCode.Unauthorized ){
+						// User is Unauthorized
+						throw e;
+					}
+					// Likely a transient Steam API problem
+					System.Diagnostics.Debug.WriteLine( "SteamRequestException Encountered: " + ( e as SteamRequestException ).StatusCode );
 				}
 				System.Diagnostics.Debug.WriteLine( "Encountered Unexpected Exception: " + e.StackTrace );
 				throw e;
@@ -175,6 +188,11 @@ namespace SteamSharp {
 		/// Stops polling and disconnects the client from the Steam server.
 		/// </summary>
 		public async Task Disconnect() {
+
+			IsManualDisconnection = true;
+
+			if( this.ConnectionStatus == ClientConnectionStatus.Disconnected )
+				return;
 
 			Cancellation.Cancel();
 			SteamRequest request = new SteamRequest( "ISteamWebUserPresenceOAuth", "Logoff", "v0001", HttpMethod.Post );
@@ -228,6 +246,8 @@ namespace SteamSharp {
 				NewConnectionState = ConnectionStatus
 			} );
 
+			AttemptReconnectIfAppropriate();
+
 		}
 
 		/// <summary>
@@ -266,7 +286,11 @@ namespace SteamSharp {
 								PersonaState = message.PersonaState
 							}
 						};
-						await newUser.GetProfileDataAsync( this );
+						try {
+							await newUser.GetProfileDataAsync( this );
+						} catch( Exception ) {
+							// Likely Network Connectivity Failure
+						}
 						FriendsList.Friends.Add( message.FromUser, newUser );
 					}
 
@@ -286,6 +310,17 @@ namespace SteamSharp {
 					UTCServerChangeDateTime = result.UTCTimestamp,
 					StateChanges = notifications
 				} );
+			}
+
+		}
+
+		private async void AttemptReconnectIfAppropriate(){
+
+			while( this.ConnectionStatus == ClientConnectionStatus.Disconnected && IsManualDisconnection ){
+				System.Diagnostics.Debug.WriteLine( "SteamChat: Attempting Reconnect..." );
+				await this.LogOn();
+				System.Diagnostics.Debug.WriteLine( "SteamChat: Delaying..." );
+				await Task.Delay( 5000 );
 			}
 
 		}
