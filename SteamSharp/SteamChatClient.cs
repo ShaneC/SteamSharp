@@ -31,6 +31,14 @@ namespace SteamSharp {
 		}
 		private ClientConnectionStatus _connectionStatus = ClientConnectionStatus.Disconnected;
 
+		public bool AutoReconnect {
+			get { return _autoReconnect; }
+			set {
+				_autoReconnect = value;
+			}
+		}
+		private bool _autoReconnect = true;
+
 		private SteamChatSession ChatSession;
 
 		private long LastMessageSentID = 0;
@@ -244,7 +252,7 @@ namespace SteamSharp {
 			var previousState = ConnectionStatus;
 			ConnectionStatus = newState;
 
-			if( newState == ClientConnectionStatus.Disconnected ) {
+			if( newState == ClientConnectionStatus.Disconnected && AutoReconnect ) {
 				AttemptReconnectIfAppropriate();
 			}
 
@@ -324,14 +332,11 @@ namespace SteamSharp {
 
 			Task retry = Task.Run( async () => {
 
-				while( this.ConnectionStatus == ClientConnectionStatus.Disconnected ) {
+				while( this.ConnectionStatus == ClientConnectionStatus.Disconnected && AutoReconnect ) {
 
-					System.Diagnostics.Debug.WriteLine( "SteamChat: Ping at Retry" );
-					if( HasInitialized && !IsManualDisconnection && this.ConnectionStatus == ClientConnectionStatus.Disconnected ) {
-						System.Diagnostics.Debug.WriteLine( "SteamChat: Attempting Reconnect..." );
+					if( HasInitialized && !IsManualDisconnection && this.ConnectionStatus == ClientConnectionStatus.Disconnected )
 						this.BeginPoll();
-					}
-					await Task.Delay( 5000 );
+					await Task.Delay( 10000 );
 
 				}
 
