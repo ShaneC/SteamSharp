@@ -173,7 +173,7 @@ namespace SteamSharp {
 						return;
 					}else if( ( e as SteamRequestException ).StatusCode == HttpStatusCode.Unauthorized ){
 						// User is Unauthorized
-						throw e;
+						throw new SteamAuthenticationException( "User is Unauthorized", e );
 					}
 					// Likely a transient Steam API problem
 					System.Diagnostics.Debug.WriteLine( "SteamRequestException Encountered: " + ( e as SteamRequestException ).StatusCode );
