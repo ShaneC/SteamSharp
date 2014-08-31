@@ -39,6 +39,8 @@ namespace SteamSharp {
 
 		private bool IsManualDisconnection = false;
 
+		private bool HasInitialized = false;
+
 		public SteamClient SteamClient { get; set; }
 
 		public SteamChatClient( SteamClient client ) {
@@ -91,7 +93,9 @@ namespace SteamSharp {
 
 				// Initialize Friends List
 				FriendsList = await SteamCommunity.GetFriendsListAsync( this, ChatSession.SteamID );
-			
+
+				HasInitialized = true;
+
 				BeginPoll();
 
 			} catch( Exception e ) {
@@ -173,7 +177,7 @@ namespace SteamSharp {
 						return;
 					}else if( ( e as SteamRequestException ).StatusCode == HttpStatusCode.Unauthorized ){
 						// User is Unauthorized
-						throw new SteamAuthenticationException( "User is Unauthorized", e );
+						throw new SteamAuthenticationException( "SteamChat Client: User is Unauthorized", e );
 					}
 					// Likely a transient Steam API problem
 					System.Diagnostics.Debug.WriteLine( "SteamRequestException Encountered: " + ( e as SteamRequestException ).StatusCode );
@@ -240,13 +244,15 @@ namespace SteamSharp {
 			var previousState = ConnectionStatus;
 			ConnectionStatus = newState;
 
+			if( newState == ClientConnectionStatus.Disconnected ) {
+				AttemptReconnectIfAppropriate();
+			}
+
 			OnSteamChatClientConnectionChange( new SteamChatConnectionChangeEventArgs {
 				ChangeDateTime = DateTime.UtcNow,
 				PreviousConnectionState = previousState,
 				NewConnectionState = ConnectionStatus
 			} );
-
-			AttemptReconnectIfAppropriate();
 
 		}
 
@@ -314,14 +320,22 @@ namespace SteamSharp {
 
 		}
 
-		private async void AttemptReconnectIfAppropriate(){
+		private void AttemptReconnectIfAppropriate(){
 
-			while( this.ConnectionStatus == ClientConnectionStatus.Disconnected && IsManualDisconnection ){
-				System.Diagnostics.Debug.WriteLine( "SteamChat: Attempting Reconnect..." );
-				await this.LogOn();
-				System.Diagnostics.Debug.WriteLine( "SteamChat: Delaying..." );
-				await Task.Delay( 5000 );
-			}
+			Task retry = Task.Run( async () => {
+
+				while( this.ConnectionStatus == ClientConnectionStatus.Disconnected ) {
+
+					System.Diagnostics.Debug.WriteLine( "SteamChat: Ping at Retry" );
+					if( HasInitialized && !IsManualDisconnection && this.ConnectionStatus == ClientConnectionStatus.Disconnected ) {
+						System.Diagnostics.Debug.WriteLine( "SteamChat: Attempting Reconnect..." );
+						this.BeginPoll();
+					}
+					await Task.Delay( 5000 );
+
+				}
+
+			});
 
 		}
 
