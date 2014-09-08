@@ -7,7 +7,7 @@ using System.Resources;
 [assembly: AssemblyTitle("SteamSharp")]
 [assembly: AssemblyCompany("Shane Chism")]
 [assembly: AssemblyProduct("SteamSharp")]
-[assembly: AssemblyCopyright("Copyright © Shane Chism 2013")]
+[assembly: AssemblyCopyright("Copyright © Shane Chism 2014")]
 [assembly: NeutralResourcesLanguage("en")]
 
 // Version information for an assembly consists of the following four values:
