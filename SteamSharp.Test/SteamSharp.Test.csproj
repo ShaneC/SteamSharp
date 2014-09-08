@@ -71,6 +71,7 @@
     <Compile Include="Cryptography.cs" />
     <Compile Include="ISteamUserOAuth.cs" />
     <Compile Include="SteamChat.cs" />
+    <Compile Include="SteamIDTest.cs" />
     <Compile Include="TestHelpers\Extensions.cs" />
     <Compile Include="TestHelpers\SimulatedServer.cs" />
     <Compile Include="IPlayerService.cs" />

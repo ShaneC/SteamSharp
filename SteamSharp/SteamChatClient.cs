@@ -87,7 +87,9 @@ namespace SteamSharp {
 
 			IsManualDisconnection = false;
 
-			try { 
+			try {
+
+				IndicateConnectionState( ClientConnectionStatus.Connecting );
 
 				client.IsAuthorizedCall( new Type[] {
 					typeof( Authenticators.UserAuthenticator )
@@ -107,6 +109,7 @@ namespace SteamSharp {
 				BeginPoll();
 
 			} catch( Exception e ) {
+				IndicateConnectionState( ClientConnectionStatus.Disconnected );
 				if( e is AggregateException && e.InnerException != null )
 					throw e.InnerException;
 				throw e;
@@ -147,7 +150,6 @@ namespace SteamSharp {
 								using( var response = await client.SendAsync( httpRequest, HttpCompletionOption.ResponseContentRead ).ConfigureAwait( false ) ) {
 
 									SteamChatPollResult result = SteamInterface.VerifyAndDeserialize<SteamChatPollResult>( ConvertToResponse( requestBase, response, null ) );
-									System.Diagnostics.Debug.WriteLine( await response.Content.ReadAsStringAsync() );
 
 									IndicateConnectionState( ClientConnectionStatus.Connected );
 
@@ -246,15 +248,15 @@ namespace SteamSharp {
 
 		private void IndicateConnectionState( ClientConnectionStatus newState ) {
 
+			if( newState == ClientConnectionStatus.Disconnected && AutoReconnect ) {
+				AttemptReconnectIfAppropriate();
+			}
+
 			if( ConnectionStatus == newState )
 				return;
 
 			var previousState = ConnectionStatus;
 			ConnectionStatus = newState;
-
-			if( newState == ClientConnectionStatus.Disconnected && AutoReconnect ) {
-				AttemptReconnectIfAppropriate();
-			}
 
 			OnSteamChatClientConnectionChange( new SteamChatConnectionChangeEventArgs {
 				ChangeDateTime = DateTime.UtcNow,
@@ -333,11 +335,9 @@ namespace SteamSharp {
 			Task retry = Task.Run( async () => {
 
 				while( this.ConnectionStatus == ClientConnectionStatus.Disconnected && AutoReconnect ) {
-
 					if( HasInitialized && !IsManualDisconnection && this.ConnectionStatus == ClientConnectionStatus.Disconnected )
 						this.BeginPoll();
-					await Task.Delay( 10000 );
-
+					await Task.Delay( 5000 );
 				}
 
 			});

@@ -1,10 +1,16 @@
-﻿
+﻿using System;
+
 namespace SteamSharp {
 
 	/// <summary>
 	/// Object representing a Steam ID.
 	/// </summary>
-	public class SteamID {
+	public class SteamID : IComparable<SteamID> {
+
+		public long LongSteamID {
+			get;
+			private set;
+		}
 
 		/// <summary>
 		/// Initialize SteamID from string.
@@ -12,6 +18,7 @@ namespace SteamSharp {
 		/// <param name="steamID"></param>
 		public SteamID( string steamID ) {
 			_steamID = steamID;
+			LongSteamID = Int64.Parse( steamID );
 		}
 		private string _steamID;
 
@@ -36,7 +43,21 @@ namespace SteamSharp {
 		}
 
 		public override bool Equals( object obj ) {
-			return ToString().Equals( obj.ToString() );
+			if( obj is SteamID )
+				return ( this.GetHashCode() == ( (SteamID)obj ).GetHashCode() );
+			return false;
+		}
+
+		public int CompareTo( SteamID obj ){
+			return this.LongSteamID.CompareTo( obj.LongSteamID );
+		}
+
+		public static bool operator ==( SteamID a, SteamID b ) {
+			return a.Equals( b );
+		}
+
+		public static bool operator !=( SteamID a, SteamID b ) {
+			return !a.Equals( b );
 		}
 
 	}
