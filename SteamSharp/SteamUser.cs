@@ -80,14 +80,56 @@ namespace SteamSharp {
 		}
 
 		/// <summary>
-		/// Sorts of a list of <see cref="SteamUser"/> into alphabetical order based on their Persona Name (display name).
+		/// Provides a comparer, assisting to sort a list of <see cref="SteamUser"/> into alphabetical order based on their Persona Name (display name).
 		/// </summary>
 		/// <param name="target">Target for comparison</param>
-		/// <returns>Alphabetical order sorted by PersonaName.</returns>
+		/// <returns>Comparator which allows alphabetical order sorted by PersonaName.</returns>
 		public int CompareTo( SteamUser target ) {
 			if( target == null )
 				return 1;
 			return this.PlayerInfo.PersonaName.CompareTo( target.PlayerInfo.PersonaName );
+		}
+
+		/// <summary>
+		/// Operator comparator for comparing the <see cref="SteamID"/>s of two <see cref="SteamUser"/> objects.
+		/// </summary>
+		/// <param name="obj">Object to compare against this SteamUser.</param>
+		/// <returns>True if both SteamUsers have the same SteamID. False otherwise.</returns>
+		public override bool Equals( object obj ) {
+			if( obj is SteamUser && this.SteamID != null && ((SteamUser)obj).SteamID != null )
+				return ( this.SteamID.Equals( ((SteamUser)obj).SteamID ) );
+			return false;
+		}
+
+		/// <summary>
+		/// Operator comparator for comparing the <see cref="SteamID"/>s of two <see cref="SteamUser"/> objects.
+		/// </summary>
+		/// <param name="a">Input A</param>
+		/// <param name="b">Input B</param>
+		/// <returns>True if both SteamUsers have the same SteamID. False otherwise.</returns>
+		public static bool operator ==( SteamUser a, SteamUser b ) {
+			return a.Equals( b );
+		}
+
+		/// <summary>
+		/// Returns the HashCode of the user's SteamID. If null, generates random HashCode.
+		/// </summary>
+		/// <returns>HashCode of the SteamUser object.</returns>
+		public override int GetHashCode() {
+			if( this.SteamID != null )
+				return this.SteamID.GetHashCode();
+			else
+				return Guid.NewGuid().GetHashCode();
+		}
+
+		/// <summary>
+		/// Operator comparator for comparing the <see cref="SteamID"/>s of two <see cref="SteamUser"/> objects.
+		/// </summary>
+		/// <param name="a">Input A</param>
+		/// <param name="b">Input B</param>
+		/// <returns>True if both SteamUsers have different SteamIDs. True otherwise.</returns>
+		public static bool operator !=( SteamUser a, SteamUser b ) {
+			return !a.Equals( b );
 		}
 
 		/// <summary>

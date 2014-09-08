@@ -1,5 +1,6 @@
 ﻿using SteamSharp.Authenticators;
 using System;
+using System.Threading.Tasks;
 
 namespace SteamSharp.FlowTests.Tests {
 
@@ -9,31 +10,35 @@ namespace SteamSharp.FlowTests.Tests {
 
 		public bool Invoke() {
 
-			try {
+			return Task.Run( async () => {
 
-				SteamID targetUser = new SteamID( "76561198129947779" );
+				try {
 
-				SteamClient client = new SteamClient();
-				client.Authenticator = UserAuthenticator.ForProtectedResource( AccessConstants.OAuthAccessToken );
+					SteamID targetUser = new SteamID( "76561198129947779" );
 
-				chatClient.SteamChatConnectionChanged += chatClient_SteamChatConnected;
+					SteamClient client = new SteamClient();
+					client.Authenticator = UserAuthenticator.ForProtectedResource( AccessConstants.OAuthAccessToken );
 
-				chatClient.SteamChatMessagesReceived += chatClient_SteamChatMessagesReceived;
-				chatClient.SteamChatUserStateChange += chatClient_SteamChatUserStateChange;
+					chatClient.SteamChatConnectionChanged += chatClient_SteamChatConnected;
 
-				chatClient.LogOn( client ).Wait();
+					chatClient.SteamChatMessagesReceived += chatClient_SteamChatMessagesReceived;
+					chatClient.SteamChatUserStateChange += chatClient_SteamChatUserStateChange;
 
-				while( true ) {
-					switch( WriteConsole.Prompt( "Command (msg, status): " ) ) {
-						case "msg": chatClient.SendMessage( targetUser, WriteConsole.Prompt( "Type New Message: " ) ); break;
-						case "dcn": chatClient.Disconnect(); break; 
+					chatClient.LogOn( client ).Wait();
+
+					while( true ) {
+						switch( WriteConsole.Prompt( "Command (msg, status): " ) ) {
+							case "msg": await chatClient.SendMessage( targetUser, WriteConsole.Prompt( "Type New Message: " ) ); break;
+							case "dcn": await chatClient.Disconnect(); break;
+						}
 					}
+
+				} catch( Exception e ) {
+					WriteConsole.Error( e.Message + "\n" + e.ToString() );
+					return false;
 				}
-				
-			} catch( Exception e ) {
-				WriteConsole.Error( e.Message + "\n" + e.ToString() );
-				return false;
-			}
+
+			} ).Result;
 
 		}
 
