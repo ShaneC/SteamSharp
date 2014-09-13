@@ -8,7 +8,7 @@ namespace SteamSharp {
 	/// <summary>
 	/// Object representing a Steam User. This class includes authentication data for use in authorizing a user.
 	/// </summary>
-	public class SteamUser : IComparable<SteamUser> {
+	public class SteamUser : IComparable<SteamUser>, IEquatable<SteamUser> {
 
 		/// <summary>
 		/// User's SteamID.
@@ -93,12 +93,20 @@ namespace SteamSharp {
 		/// <summary>
 		/// Operator comparator for comparing the <see cref="SteamID"/>s of two <see cref="SteamUser"/> objects.
 		/// </summary>
-		/// <param name="obj">Object to compare against this SteamUser.</param>
+		/// <param name="a">Input A</param>
+		/// <param name="b">Input B</param>
 		/// <returns>True if both SteamUsers have the same SteamID. False otherwise.</returns>
-		public override bool Equals( object obj ) {
-			if( obj is SteamUser && this.SteamID != null && ((SteamUser)obj).SteamID != null )
-				return ( this.SteamID.Equals( ((SteamUser)obj).SteamID ) );
-			return false;
+		public static bool operator ==( SteamUser f1, SteamUser f2 ) {
+
+			if( object.ReferenceEquals( f1, f2 ) )
+				return true;
+			if( object.ReferenceEquals( f1, null ) ||
+				object.ReferenceEquals( f2, null ) ) {
+				return false;
+			}
+
+			return ( f1.SteamID == f2.SteamID );
+
 		}
 
 		/// <summary>
@@ -106,9 +114,27 @@ namespace SteamSharp {
 		/// </summary>
 		/// <param name="a">Input A</param>
 		/// <param name="b">Input B</param>
+		/// <returns>True if both SteamUsers have different SteamIDs. True otherwise.</returns>
+		public static bool operator !=( SteamUser f1, SteamUser f2 ) {
+			return !( f1 == f2 );
+		}
+
+		/// <summary>
+		/// Operator comparator for comparing the <see cref="SteamID"/>s of two <see cref="SteamUser"/> objects.
+		/// </summary>
+		/// <param name="obj">Object to compare against this SteamUser.</param>
 		/// <returns>True if both SteamUsers have the same SteamID. False otherwise.</returns>
-		public static bool operator ==( SteamUser a, SteamUser b ) {
-			return a.Equals( b );
+		public override bool Equals( object obj ) {
+			return this == ( obj as SteamUser );
+		}
+
+		/// <summary>
+		/// Operator comparator for comparing the <see cref="SteamID"/>s of two <see cref="SteamUser"/> objects.
+		/// </summary>
+		/// <param name="obj">Object to compare against this SteamUser.</param>
+		/// <returns>True if both SteamUsers have the same SteamID. False otherwise.</returns>
+		public bool Equals( SteamUser obj ) {
+			return this == obj;
 		}
 
 		/// <summary>
@@ -120,16 +146,6 @@ namespace SteamSharp {
 				return this.SteamID.GetHashCode();
 			else
 				return Guid.NewGuid().GetHashCode();
-		}
-
-		/// <summary>
-		/// Operator comparator for comparing the <see cref="SteamID"/>s of two <see cref="SteamUser"/> objects.
-		/// </summary>
-		/// <param name="a">Input A</param>
-		/// <param name="b">Input B</param>
-		/// <returns>True if both SteamUsers have different SteamIDs. True otherwise.</returns>
-		public static bool operator !=( SteamUser a, SteamUser b ) {
-			return !a.Equals( b );
 		}
 
 		/// <summary>

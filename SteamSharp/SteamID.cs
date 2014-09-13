@@ -5,7 +5,7 @@ namespace SteamSharp {
 	/// <summary>
 	/// Object representing a Steam ID.
 	/// </summary>
-	public class SteamID : IComparable<SteamID> {
+	public class SteamID : IComparable<SteamID>, IEquatable<SteamID> {
 
 		public long LongSteamID {
 			get;
@@ -42,22 +42,56 @@ namespace SteamSharp {
 			return ToString().GetHashCode();
 		}
 
-		public override bool Equals( object obj ) {
-			if( obj is SteamID )
-				return ( this.GetHashCode() == ( (SteamID)obj ).GetHashCode() );
-			return false;
-		}
 
-		public int CompareTo( SteamID obj ){
+		public int CompareTo( SteamID obj ) {
 			return this.LongSteamID.CompareTo( obj.LongSteamID );
 		}
 
-		public static bool operator ==( SteamID a, SteamID b ) {
-			return a.Equals( b );
+		/// <summary>
+		/// Operator comparator for comparing <see cref="SteamID"/>s.
+		/// </summary>
+		/// <param name="f1">Input A</param>
+		/// <param name="f2">Input B</param>
+		/// <returns>True if both SteamIDs match. False otherwise.</returns>
+		public static bool operator ==( SteamID f1, SteamID f2 ) {
+
+			if( object.ReferenceEquals( f1, f2 ) )
+				return true;
+			if( object.ReferenceEquals( f1, null ) ||
+				object.ReferenceEquals( f2, null ) ) {
+				return false;
+			}
+
+			return ( f1.GetHashCode() == f2.GetHashCode() );
+
 		}
 
-		public static bool operator !=( SteamID a, SteamID b ) {
-			return !a.Equals( b );
+		/// <summary>
+		/// Operator comparator for comparing <see cref="SteamID"/>s.
+		/// </summary>
+		/// <param name="f1">Input A</param>
+		/// <param name="f2">Input B</param>
+		/// <returns>False if both SteamIDs match. True otherwise.</returns>
+		public static bool operator !=( SteamID f1, SteamID f2 ) {
+			return !( f1 == f2 );
+		}
+
+		/// <summary>
+		/// Method for determining if two <see cref="SteamID"/>s are equal.
+		/// </summary>
+		/// <param name="obj">Object to compare against this SteamID.</param>
+		/// <returns>False if both SteamIDs match. True otherwise.</returns>
+		public override bool Equals( object obj ) {
+			return this == ( obj as SteamID );
+		}
+
+		/// <summary>
+		/// Method for determining if two <see cref="SteamID"/>s are equal.
+		/// </summary>
+		/// <param name="obj">SteamID to compare against this SteamID.</param>
+		/// <returns>False if both SteamIDs match. True otherwise.</returns>
+		public bool Equals( SteamID obj ) {
+			return this == obj;
 		}
 
 	}
