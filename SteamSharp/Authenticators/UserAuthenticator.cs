@@ -121,7 +121,7 @@ namespace SteamSharp.Authenticators {
 			}
 
 			if( result.OAuthParams == null )
-				throw new SteamRequestException( "Login was successful did the response did not contain expected OAuth access information.", response );
+				throw new SteamRequestException( "Login was successful but the response did not contain expected OAuth access information.", response );
 
 			OAuthParameters oauthParams = JsonConvert.DeserializeObject<OAuthParameters>( result.OAuthParams );
 
