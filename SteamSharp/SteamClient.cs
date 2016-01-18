@@ -184,6 +184,11 @@ namespace SteamSharp {
 			if( !request.Parameters.Any( p => p.Name == "User-Agent" && p.Type == ParameterType.HttpHeader ) && !httpRequest.Headers.Any( h => h.Key == "User-Agent" ) )
 				request.Parameters.Add( new SteamRequestParameter { Name = "User-Agent", Value = ( ( DefaultUserAgent == null ) ? "SteamSharp/" + AssemblyVersion : DefaultUserAgent ), Type = ParameterType.HttpHeader } );
 
+			// -- Specify cookies which indicate this is an OAuth call
+			//    Resolves Steam API change made in mid-2015
+			request.Cookies.Add(new Cookie("forceMobile", "1"));
+			request.Cookies.Add(new Cookie("mobileClient", "Steam App / SteamSharp / " + AssemblyVersion));
+
 			// -- Currently we only accept and deserialize JSON responses
 			request.Parameters.Add( new SteamRequestParameter { Name = "Accept", Value = "application/json", Type = ParameterType.HttpHeader } );
 
