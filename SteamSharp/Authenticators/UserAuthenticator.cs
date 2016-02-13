@@ -114,6 +114,7 @@ namespace SteamSharp.Authenticators {
 					IsCaptchaNeeded = result.IsCaptchaNeeded,
 					CaptchaURL = ( String.IsNullOrEmpty( result.CaptchaGID ) ) ? null : "https://steamcommunity.com/public/captcha.php?gid=" + result.CaptchaGID,
 					CaptchaGID = ( String.IsNullOrEmpty( result.CaptchaGID ) ) ? null : result.CaptchaGID,
+					IsIncorrectLoginWithCaptcha = result.IsIncorrectLoginWithCaptcha,
 					IsSteamGuardNeeded = result.IsEmailAuthNeeded,
 					SteamGuardID = ( String.IsNullOrEmpty( result.EmailSteamID ) ) ? null : result.EmailSteamID,
 					SteamGuardEmailDomain = ( String.IsNullOrEmpty( result.EmailDomain ) ) ? null : result.EmailDomain
@@ -212,6 +213,9 @@ namespace SteamSharp.Authenticators {
 
 			public string EmailSteamID { get; set; }
 
+			[JsonProperty("clear_password_field")]
+			public bool IsIncorrectLoginWithCaptcha { get; set; }
+
 			[JsonProperty( "oauth" )]
 			public string OAuthParams { get; set; }
 
@@ -284,6 +288,11 @@ namespace SteamSharp.Authenticators {
 			/// Flag indicating if the login was successful and the transaction has been completed.
 			/// </summary>
 			public bool IsLoginComplete { get; set; }
+
+			/// <summary>
+			/// Flag indicating if the CAPTCHA was successful but the credentials were invalid.
+			/// </summary>
+			public bool IsIncorrectLoginWithCaptcha { get; set; }
 
 			/// <summary>
 			/// URL for Steam Transfer.
