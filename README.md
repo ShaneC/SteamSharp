@@ -1,6 +1,6 @@
 # SteamSharp
 
-SteamSharp is a portable class library for use in .NET 4.5+ projects. Due to its portability, this library can be used in Windows Store (8 or higher) and Windows Phone (8 or higher) applications (among others).
+SteamSharp is a portable class library for use in .NET 4.5+ projects. Due to its portability, this library can be used in Windows Store applications (8, 8.1, or UWP), Silverlight projects, and .NET projects (4.5.1+).
 
 ## Using Unit Test Framework
 
