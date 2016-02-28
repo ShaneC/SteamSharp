@@ -208,6 +208,9 @@ namespace SteamSharp {
 			if( this.ConnectionStatus == ClientConnectionStatus.Disconnected )
 				return;
 
+			if (ChatSession == null)
+				return;
+
 			Cancellation.Cancel();
 			SteamRequest request = new SteamRequest( "ISteamWebUserPresenceOAuth", "Logoff", "v0001", HttpMethod.Post );
 			request.AddParameter( "umqid", ChatSession.ChatSessionID, ParameterType.GetOrPost );
