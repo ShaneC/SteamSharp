@@ -63,6 +63,7 @@
     <Compile Include="Models\SteamNews.cs" />
     <Compile Include="SteamChatClient.cs" />
     <Compile Include="SteamID.cs" />
+    <Compile Include="SteamInterfaces\AppOwnership.cs" />
     <Compile Include="SteamInterfaces\SteamInterfaceHelpers.cs" />
     <Compile Include="SteamInterfaces\PlayerService.cs" />
     <Compile Include="SteamInterfaces\SteamCommunity.cs" />
