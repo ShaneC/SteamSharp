@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using System;
+using Newtonsoft.Json;
 using System.Collections.Generic;
 
 namespace SteamSharp {
@@ -172,8 +173,66 @@ namespace SteamSharp {
 			public bool HasCommunityVisibileStats { get; set; }
 
 		}
-		#endregion
+        #endregion
 
-	}
+
+        /// <summary>
+        /// Information about the application you can get the owner of the application
+        /// </summary>
+        public class App
+        {
+            /// <summary>
+            /// Unique ID of the Application (synonymous with AppID).
+            /// </summary>
+            [JsonProperty("appid")]
+            public int ApplicationId { get; set; }
+
+            [JsonProperty("ownsapp")]
+            public bool IsApplicationOwned { get; set; }
+
+            [JsonProperty("permanent")]
+            public bool IsApplicationPermanent { get; set; }
+
+            [JsonProperty("timestamp")]
+            public DateTime OwnedTimestamp { get; set; }
+
+            [JsonProperty("ownersteamid")]
+            public long OwnerSteamId { get; set; }
+        }
+
+        /// <summary>
+        /// A container for a response, which contains the container application
+        /// </summary>
+        public class GetOwnedGamesOwnershipResponseContainer
+        {
+            /// <summary>
+            /// Information about the specified Steam user's games library.
+            /// </summary>
+            [JsonProperty("appownership")]
+            public AppContainer Response { get; set; }
+        }
+
+        /// <summary>
+        /// The container for the application, which contains an array of application property
+        /// </summary>
+        public class AppContainer
+        {
+            [JsonProperty("apps")]
+            public AppCollectionContainer Apps { get; set; }
+        }
+
+        /// <summary>
+        /// The container for the application, which contains an array of application property
+        /// </summary>
+        public class AppCollectionContainer
+        {
+            [JsonProperty("app")]
+            public List<App> Application { get; set; }
+            public int Count => Application.Count;
+        }
+
+
+
+    }
 
 }
