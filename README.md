@@ -1,3 +1,7 @@
+# DEPRECATED
+
+Please note that SteamSharp is no longer under active development. If you are interested in taking over the project please feel free to shoot me a message to discuss.
+
 # SteamSharp
 
 SteamSharp is a portable class library for use in .NET 4.5+ projects. Due to its portability, this library can be used in Windows Store applications (8, 8.1, or UWP), Silverlight projects, and .NET projects (4.5.1+).
